@@ -26,6 +26,7 @@ const createTables = async () => {
 				lastname VARCHAR NOT NULL,
 				email VARCHAR UNIQUE NOT NULL,
 				password VARCHAR NOT NULL,
+				verified BOOLEAN DEFAULT false,
 				status VARCHAR DEFAULT 'offline',
 				last_connection TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 				gender VARCHAR,
@@ -166,4 +167,4 @@ const closePool = async () => {
 	await pool.end();
 }
 
-module.exports = { createTables, closePool };
+module.exports = { pool, createTables, closePool };

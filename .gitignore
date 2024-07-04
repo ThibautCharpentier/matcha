@@ -4,5 +4,7 @@ ignore
 .env
 
 /backend/node_modules
+/backend/dist
 /backend/package-lock.json
 /backend/package.json
+/backend/babel.config.json
