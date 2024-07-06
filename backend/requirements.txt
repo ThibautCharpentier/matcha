@@ -14,3 +14,4 @@ bcrypt@5.1.1
 @babel/preset-env@7.24.7
 nodemailer@6.9.14
 jsonwebtoken@9.0.2
+cookie-parser@1.4.6

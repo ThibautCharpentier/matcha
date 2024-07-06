@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { pool } = require('./db');
 
 const insert = async (username, firstname, lastname, email, password) => {
@@ -10,6 +11,22 @@ const insert = async (username, firstname, lastname, email, password) => {
 const validateEmail = async (id) => {
 	const client = await pool.connect();
 	await client.query(`UPDATE public.user SET verified = true WHERE id = $1`, [id]);
+	client.release();
+}
+
+const changePassword = async (id, password) => {
+	const hashedPassword = await bcrypt.hash(password, 10);
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET password = $1 WHERE id = $2`, [hashedPassword, id]);
+	client.release();
+}
+
+const connect = async (id, connected) => {
+	const client = await pool.connect();
+	if (connected)
+		await client.query(`UPDATE public.user SET status = 'online' WHERE id = $1`, [id]);
+	else
+		await client.query(`UPDATE public.user SET status = 'offline', last_connection = CURRENT_TIMESTAMP WHERE id = $1`, [id]);
 	client.release();
 }
 
@@ -31,4 +48,13 @@ const selectByEmail = async (email) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, selectByUsername, selectByEmail };
+const selectById = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT * FROM public.user WHERE id = $1`, [id]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
+module.exports = { insert, validateEmail, changePassword, connect, selectByUsername, selectByEmail, selectById };
