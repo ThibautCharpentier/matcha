@@ -4,6 +4,7 @@ ignore
 .env
 
 /backend/node_modules
+/backend/dist
 /backend/package-lock.json
 /backend/package.json
 
@@ -27,3 +28,4 @@ ignore
 /frontend/*.njsproj
 /frontend/*.sln
 /frontend/*.sw?
+/backend/babel.config.json
