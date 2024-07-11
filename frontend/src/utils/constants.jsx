@@ -1,8 +1,12 @@
-const API_URL = "http://localhost:5173";
+const API_URL = "http://localhost:8000";
+
 export const API_ROUTES = {
 	SIGN_UP: 					`${API_URL}/auth/signup`,
+	VERIFY_EMAIL: 				`${API_URL}/auth/verifyemail`,
 	SIGN_IN: 					`${API_URL}/auth/signin`,
-	SIGN_PUT: 					`${API_URL}/auth/signout`,
+	FORGOT_PASSWORD: 			`${API_URL}/auth/forgotpassword`,
+	CHANGE_PASSWORD: 			`${API_URL}/auth/changepassword`,
+	SIGN_OUT: 					`${API_URL}/auth/signout`,
 	REFRESH: 					`${API_URL}/auth/refresh`,
 	IS_CONNECTED: 				`${API_URL}/auth/isconnected`,
 	GET_MY_PROFILE: 			`${API_URL}/profile/getmyprofile`,

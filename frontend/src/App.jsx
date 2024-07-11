@@ -26,7 +26,6 @@ function App() {
 
 export default App
 
-
 /* <Route path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
    <Route path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
    <Route path={ APP_ROUTES.MENU } element={<Menu />} />
