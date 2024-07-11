@@ -3,25 +3,26 @@ import './App.css'
 import { APP_ROUTES } from "./utils/constants"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Welcome from "./components/Welcome"
-import Header from "./components/Header"
+import Navbar from "./components/Navbar"
+import ProtectedRoute from "./components/ProtectedRoute"
 import { AuthProvider } from "./components/AuthContext"
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <AuthProvider>
-        <Header />
-        <BrowserRouter>
-          <Routes>
-            <Route path={ APP_ROUTES.WELCOME } element={<Welcome />} />
-          </Routes>
-        </BrowserRouter>
-        <footer></footer>
-      </AuthProvider>
-    </>
-  )
+	return (
+    	<>
+    		<AuthProvider>
+    			<Navbar />
+    			<BrowserRouter>
+    				<Routes>
+    			    	<Route path={ APP_ROUTES.WELCOME } element={<Welcome />} />
+    			    	{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
+    				</Routes>
+    			</BrowserRouter>
+    			<footer></footer>
+    		</AuthProvider>
+    	</>
+	)
 }
 
 export default App

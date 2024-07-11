@@ -1,7 +1,12 @@
 export default function Welcome() {
   return (
     <>
-      <p className="text-4xl font-semibold text-center pt-10 text-red-600">Hello World</p>
+      <div className="back h-screen w-screen">
+        <button>Connexion</button>
+        <h1>Rencontre ton âme soeur</h1>
+        <p>Trouve la meilleure personne pour toi ici</p>
+        <button>Commencer</button>
+      </div>
     </>
   );
 }
