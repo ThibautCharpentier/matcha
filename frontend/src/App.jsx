@@ -1,3 +1,4 @@
+import './style/App.css'
 import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
