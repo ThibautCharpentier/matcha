@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './App.css'
 import { APP_ROUTES } from "./utils/constants"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Welcome from "./components/Welcome"
@@ -12,7 +11,7 @@ function App() {
 	return (
     	<>
     		<AuthProvider>
-    			<Navbar />
+    			{/* <Navbar /> */}
     			<BrowserRouter>
     				<Routes>
     			    	<Route path={ APP_ROUTES.WELCOME } element={<Welcome />} />

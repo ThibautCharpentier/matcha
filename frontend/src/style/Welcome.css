@@ -1,0 +1,98 @@
+@keyframes animate {
+    0%{
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+    100%{
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+}
+
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    background: #F1B5CB;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.background li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background:
+     radial-gradient(circle at 60% 65%, rgba(255, 255, 255, 0.3) 64%, transparent 65%) top left,
+     radial-gradient(circle at 40% 65%, rgba(255, 255, 255, 0.5) 64%, transparent 65%) top right,
+     linear-gradient(to bottom left, rgba(255, 255, 255, 0.3) 43%,transparent 43%) bottom left ,
+     linear-gradient(to bottom right,rgba(255, 255, 255, 0.5) 43%,transparent 43%) bottom right;
+    background-size:50% 50%;
+    background-repeat:no-repeat;
+    animation: animate 19s linear infinite;
+}
+
+.background li::before {
+    content:"";
+    display:block;
+    padding-top:100%;
+}
+
+
+.background li:nth-child(1) {
+    left: 28%;
+    width: 200px;
+    height: 200px;
+    bottom: -200px;
+    animation-delay: 1s;
+}
+.background li:nth-child(2) {
+    left: 65%;
+    width: 164px;
+    height: 164px;
+    bottom: -164px;
+    animation-delay: 1s;
+}
+.background li:nth-child(3) {
+    left: 58%;
+    width: 216px;
+    height: 216px;
+    bottom: -216px;
+    animation-delay: 7s;
+}
+.background li:nth-child(4) {
+    left: 74%;
+    width: 140px;
+    height: 140px;
+    bottom: -140px;
+    animation-delay: 4s;
+}
+.background li:nth-child(5) {
+    left: 7%;
+    width: 156px;
+    height: 156px;
+    bottom: -156px;
+    animation-delay: 9s;
+}
+.background li:nth-child(6) {
+    left: 82%;
+    width: 180px;
+    height: 180px;
+    bottom: -180px;
+    animation-delay: 5s;
+}
+.background li:nth-child(7) {
+    left: 72%;
+    width: 138px;
+    height: 138px;
+    bottom: -138px;
+    animation-delay: 9s;
+}
