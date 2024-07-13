@@ -2,10 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const { SignupDto, validateSignupDto } = require('../dto/signup.dto');
-const { SigninDto, validateSigninDto } = require('../dto/signin.dto');
-const { ForgotPasswordDto, validateForgotPasswordDto } = require('../dto/forgotpassword.dto');
-const { ChangePasswordDto, validateChangePasswordDto } = require('../dto/changepassword.dto');
+const { validateDto } = require('../dto/validateDto');
+const { SignupDto } = require('../dto/signup.dto');
+const { SigninDto } = require('../dto/signin.dto');
+const { ForgotPasswordDto } = require('../dto/forgotpassword.dto');
+const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const user = require('../db/user');
 const mail = require('../config/mail');
 const { jwtrequired } = require('../config/jwt');
@@ -27,7 +28,7 @@ router.get('/isconnected', jwtrequired(), async (req, res) => {
 	return res.status(200).json({message: 'OK'});
 });
 
-router.post('/signup', validateSignupDto(SignupDto), async (req, res) => {
+router.post('/signup', validateDto(SignupDto), async (req, res) => {
 	const { username, firstname, lastname, email, password } = req.body;
 	try
 	{
@@ -71,7 +72,7 @@ router.get('/verifyemail', async (req, res) => {
 	return res.status(200).json({message: 'OK'});
 });
 
-router.post('/signin', validateSigninDto(SigninDto), async (req, res) => {
+router.post('/signin', validateDto(SigninDto), async (req, res) => {
 	const { username, password } = req.body;
 	try
 	{
@@ -99,7 +100,7 @@ router.post('/signin', validateSigninDto(SigninDto), async (req, res) => {
 	return res.status(200).json({message: 'OK'});
 });
 
-router.post('/forgotpassword', validateForgotPasswordDto(ForgotPasswordDto), async (req, res) => {
+router.post('/forgotpassword', validateDto(ForgotPasswordDto), async (req, res) => {
 	const { email } = req.body;
 	try
 	{
@@ -116,7 +117,7 @@ router.post('/forgotpassword', validateForgotPasswordDto(ForgotPasswordDto), asy
 	return res.status(200).json({message: 'OK'});
 })
 
-router.post('/changepassword', validateChangePasswordDto(ChangePasswordDto), async (req, res) => {
+router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) => {
 	const { password } = req.body;
 	try
 	{
