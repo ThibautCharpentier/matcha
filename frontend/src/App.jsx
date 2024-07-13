@@ -4,6 +4,8 @@ import { APP_ROUTES } from "./utils/constants"
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Welcome from "./components/Welcome"
 import Navbar from "./components/Navbar"
+import SignIn from "./components/SignIn"
+import SignUp from "./components/SignUp"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { AuthProvider } from "./components/AuthContext"
 
@@ -16,6 +18,8 @@ function App() {
     			<BrowserRouter>
     				<Routes>
     			    	<Route path={ APP_ROUTES.WELCOME } element={<Welcome />} />
+						<Route path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
+   						<Route path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
     			    	{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
     				</Routes>
     			</BrowserRouter>
