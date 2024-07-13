@@ -1,5 +1,4 @@
-const { plainToClass } = require('class-transformer');
-const { validate, IsEmail, IsString, Length, MinLength } = require('class-validator');
+const { IsEmail, IsString, Length, MinLength } = require('class-validator');
 
 class SignupDto {
 	@IsString()
@@ -30,25 +29,4 @@ class SignupDto {
     }
 }
 
-const validateSignupDto = (dtoClass) => (req, res, next) => {
-	const dtoInstance = plainToClass(dtoClass, req.body);
-	validate(dtoInstance).then(errors => {
-		if (errors.length > 0)
-			return res.status(400).json({message: errors.map(err => err.constraints)})
-		else
-		{
-			try
-			{
-                dtoInstance.validateFields();
-                req.body = dtoInstance;
-                next();
-            }
-			catch (error)
-			{
-                return res.status(400).json({ message: error.message });
-            }
-		}
-	});
-}
-
-module.exports = { SignupDto, validateSignupDto };
+module.exports = { SignupDto };
