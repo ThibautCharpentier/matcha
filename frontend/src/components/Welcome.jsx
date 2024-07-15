@@ -1,11 +1,10 @@
-import '../style/Welcome.css'
 import { APP_ROUTES } from "../utils/constants"
 import { Link } from "react-router-dom"
 
 export default function Welcome() {
     return (
         <div>
-            <ul className="background">
+            {/* <ul className="background">
                <li></li>
                <li></li>
                <li></li>
@@ -13,7 +12,7 @@ export default function Welcome() {
                <li></li>
                <li></li>
                <li></li>
-            </ul>
+            </ul> */}
             <div className="relative">
 			    <header className="flex flex-row justify-between m-6 items-center">
 			    	<p className="font-poppins-bold text-xl ">SMACK</p>
