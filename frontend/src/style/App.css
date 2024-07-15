@@ -39,7 +39,7 @@
 }
 
 * {
-    font-family: PoppinsMedium;
+    font-family: PoppinsRegular;
 }
 
 .font-poppins-semibold {
@@ -62,7 +62,7 @@
   font-family: PoppinsRegular;
 }
 
-.font-poppins-Bold {
+.font-poppins-bold {
   font-family: PoppinsBold;
 }
 
