@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "http://" + window.location.hostname + ":8000";
 
 export const API_ROUTES = {
 	SIGN_UP: 					`${API_URL}/auth/signup`,
