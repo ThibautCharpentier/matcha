@@ -12,21 +12,21 @@ import { AuthProvider } from "./components/AuthContext"
 function App() {
 
 	return (
-    	<>
-    		<AuthProvider>
-    			{/* <Navbar /> */}
-    			<BrowserRouter>
-					<AnimationBackground />
-    				<Routes>
-    			    	<Route exact path={ APP_ROUTES.WELCOME } element={<Welcome />} />
-						<Route exact path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
-   						<Route exact path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
-    			    	{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
-    				</Routes>
-    			</BrowserRouter>
-    			<footer></footer>
-    		</AuthProvider>
-    	</>
+	<>
+		<AuthProvider>
+    		{/* <Navbar /> */}
+			<BrowserRouter>
+				<AnimationBackground />
+				<Routes>
+					<Route exact path={ APP_ROUTES.WELCOME } element={<Welcome />} />
+					<Route exact path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
+					<Route exact path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
+    		    	{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
+				</Routes>
+				</BrowserRouter>
+			<footer></footer>
+		</AuthProvider>
+	</>
 	)
 }
 

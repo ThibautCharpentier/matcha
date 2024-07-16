@@ -5,11 +5,11 @@ const Navbar = () => {
 
   return (
     <div className="h-screen w-64 bg-gray-800 text-white fixed">
-    	<div className="flex items-center justify-center h-16 border-b border-gray-700">
-    		<h1 className="text-xl font-semibold">Smack</h1>
-    	</div>
+	<div className="flex items-center justify-center h-16 border-b border-gray-700">
+		<h1 className="text-xl font-semibold">Smack</h1>
+    </div>
     	<nav className="mt-10">
-    	  <ul>
+			<ul>
     	  	<li>
     	  		<NavLink
     	  		  to="/"
@@ -56,9 +56,9 @@ const Navbar = () => {
 				</NavLink>
 			</li>
 			<li>
-    	  		<button>Déconnexion</button>
+				<button>Déconnexion</button>
 			</li>
-    	  </ul>
+		</ul>
     	</nav>
     	{/* <ul>
     	  {isLoggedIn ? (

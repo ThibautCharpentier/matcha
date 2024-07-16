@@ -66,6 +66,10 @@
   font-family: PoppinsBold;
 }
 
+.font-poppins-medium {
+  font-family: PoppinsMedium;
+}
+
 /* CSS */
 .btn {
   background-color: #fff;
