@@ -6,6 +6,7 @@ const { validateDto } = require('../dto/validateDto');
 const { SignupDto } = require('../dto/signup.dto');
 const { SigninDto } = require('../dto/signin.dto');
 const { ForgotPasswordDto } = require('../dto/forgotpassword.dto');
+const { ForgotUsernameDto } = require('../dto/forgotusername.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const user = require('../db/user');
 const mail = require('../config/mail');
@@ -58,11 +59,19 @@ router.post('/signup', validateDto(SignupDto), async (req, res) => {
 });
 
 router.get('/verifyemail', async (req, res) => {
+	let userId;
 	try
 	{
 		const { token } = req.query
 		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
-        const userId = decoded.id;
+        userId = decoded.id;
+	}
+	catch (err)
+	{
+		return res.status(403).json({message: err});
+	}
+	try
+	{
 		await user.validateEmail(userId);
 	}
 	catch (err)
@@ -101,12 +110,13 @@ router.post('/signin', validateDto(SigninDto), async (req, res) => {
 });
 
 router.post('/forgotpassword', validateDto(ForgotPasswordDto), async (req, res) => {
-	const { email } = req.body;
+	const { username } = req.body;
+	let res_query;
 	try
 	{
-		let res_query = await user.selectByEmail(email);
+		res_query = await user.selectByUsername(username);
 		if (!res_query)
-			return res.status(400).json({message: 'Invalid email'});
+			return res.status(400).json({message: 'Invalid username'});
 		await mail.sendForgotPassword(res_query.email);
 	}
 	catch (err)
@@ -114,16 +124,24 @@ router.post('/forgotpassword', validateDto(ForgotPasswordDto), async (req, res) 
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
-	return res.status(200).json({message: 'OK'});
+	return res.status(200).json({message: res_query.email});
 })
 
 router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) => {
 	const { password } = req.body;
+	let userId;
 	try
 	{
 		const { token } = req.query
 		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
-        const userId = decoded.id;
+        userId = decoded.id;
+	}
+	catch (err)
+	{
+		return res.status(403).json({message: err});
+	}
+	try
+	{
 		await user.changePassword(userId, password);
 	}
 	catch (err)
@@ -132,6 +150,24 @@ router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) 
 	}
 	return res.status(200).json({message: 'OK'});
 });
+
+router.post('/forgotusername', validateDto(ForgotUsernameDto), async (req, res) => {
+	const { email } = req.body;
+	let res_query;
+	try
+	{
+		res_query = await user.selectByEmail(email);
+		if (!res_query)
+			return res.status(400).json({message: 'Invalid email'});
+		await mail.sendForgotUsername(res_query.email, res_query.username);
+	}
+	catch (err)
+	{
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
 
 router.get('/refresh', async (req, res) => {
 	if (!req.cookies.refreshToken)
