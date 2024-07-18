@@ -10,13 +10,13 @@ export default function SignIn() {
 
 	function togglePasswordVisibility()
 	{
-        setIsPasswordVisible((prevState) => !prevState);
-    }
+		setIsPasswordVisible((prevState) => !prevState);
+	}
 
 	function checkError(username, password)
 	{
 		let errUsername = "";
-    	let errPassword = "";
+		let errPassword = "";
 
 		if (username.length == 0)
 			errUsername = "Veuillez entrer un nom d'utilisateur";
@@ -36,8 +36,8 @@ export default function SignIn() {
 			document.getElementById("errPassword").textContent = "";
 		document.getElementById("errServ").textContent = "";
 		if (errUsername.length == 0 && errPassword.length == 0)
-        	return (0);
-    	return (1);
+			return (0);
+		return (1);
 	}
 
 	function formSignIn()
