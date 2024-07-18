@@ -3,15 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import { APP_ROUTES, API_ROUTES } from "../utils/constants";
 import DOMPurify from 'dompurify';
 import axios from 'axios';
+import ForgotPassword from "./ForgotPassword"
+import ForgotUsername from "./ForgotUsername"
 
 export default function SignIn() {
 	const navigate = useNavigate();
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isForgotPassword, setIsForgotPassword] = useState(false);
+	const [isForgotUsername, setIsForgotUsername] = useState(false);
+	const [isSignIn, setIsSignIn] = useState(true);
 
 	function togglePasswordVisibility()
 	{
 		setIsPasswordVisible((prevState) => !prevState);
 	}
+
+	function toggleForgotPassword()
+	{
+        setIsForgotPassword((prevState) => !prevState);
+		setIsSignIn((prevState) => !prevState);
+    }
+
+	function toggleForgotUsername()
+	{
+        setIsForgotUsername((prevState) => !prevState);
+		setIsSignIn((prevState) => !prevState);
+    }
 
 	function checkError(username, password)
 	{
@@ -24,7 +41,7 @@ export default function SignIn() {
 			errUsername = "Nom d'utilisateur invalide";
 		if (password.length == 0)
 			errPassword = "Veuillez entrer un mot de passe";
-		else if (password.length < 10 || password.length > 20)
+		else if (password.length < 10)
 			errPassword = "Mot de passe invalide";
 		if (errUsername.length != 0)
 			document.getElementById("errUsername").textContent = errUsername;
@@ -75,6 +92,9 @@ export default function SignIn() {
 
 	return (
 		<div className="flex justify-center">
+		{isForgotPassword && <ForgotPassword changeState={toggleForgotPassword}/>}
+		{isForgotUsername && <ForgotUsername changeState={toggleForgotUsername}/>}
+		{isSignIn && 
 			<div className="w-80 flex flex-col p-2 mt-6">
 				<h1 className="text-5xl text-center font-poppins-bold ">Connexion</h1>
 				<p className="font-poppins-regular mt-4 text-sm">Vous n'avez pas de compte ? <Link className="underline hover:text-[--color-pink]" to={ APP_ROUTES.SIGN_UP } >S'inscrire</Link></p>
@@ -95,10 +115,12 @@ export default function SignIn() {
 					</div>
 					<p className="text-center mt-1 text-sm" id="errPassword"></p>
 				</form>
-				<p className="font-poppins-regular mt-2 text-sm"><Link className="underline hover:text-[--color-pink]" to={ APP_ROUTES.SIGN_UP } >Mot de passe oublié</Link></p>
+				<p className="font-poppins-regular mt-2 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotUsername} >Nom d'utilisateur oublié</Link></p>
+				<p className="font-poppins-regular mt-2 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotPassword} >Mot de passe oublié</Link></p>
 				<p className="text-center mt-2 text-sm" id="errServ"></p>
 				<button className="btn mt-4" onClick={formSignIn}>Se connecter</button>
 			</div>
+		}
 		</div>
 	)
 }

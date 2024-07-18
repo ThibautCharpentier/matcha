@@ -30,7 +30,7 @@ const sendMail = async (dest, subject, text) => {
 const sendVerifyEmail = async (email) => {
 	let query_user = await user.selectByEmail(email);
 	const verificationToken = jwt.sign({ id: query_user.id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.MAIL_TOKEN_EXPIRATION });
-	const verificationLink = `http://${process.env.HOST_IP}:${process.env.FRONT_PORT}/token_mail=${verificationToken}`;
+	const verificationLink = `http://${process.env.HOST_IP}:${process.env.FRONT_PORT}/token_mail?token=${verificationToken}`;
 	await sendMail(email, 'email de vérification', `SMACK
 Veuillez cliquer sur ce lien pour vérifier votre adresse email : ${verificationLink}
 
@@ -40,11 +40,18 @@ Attention ce lien expirera au bout de 10 minutes.`);
 const sendForgotPassword = async (email) => {
 	let query_user = await user.selectByEmail(email);
 	const verificationToken = jwt.sign({ id: query_user.id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.MAIL_TOKEN_EXPIRATION });
-	const verificationLink = `http://${process.env.HOST_IP}:${process.env.FRONT_PORT}/token_password=${verificationToken}`;
+	const verificationLink = `http://${process.env.HOST_IP}:${process.env.FRONT_PORT}/token_password?token=${verificationToken}`;
 	await sendMail(email, 'mot de passe oublié', `SMACK
 Veuillez cliquer sur ce lien pour renouveler votre mot de passe : ${verificationLink}
 
 Attention ce lien expirera au bout de 10 minutes. Si vous n'êtes pas à l'origine de cette demande de changement de mot de passe, veuillez ignorer ce mail.`);
 }
 
-module.exports = { sendMail, sendVerifyEmail, sendForgotPassword };
+const sendForgotUsername = async (email, username) => {
+	let query_user = await user.selectByEmail(email);
+	await sendMail(email, "nom d'utilisateur oublié", `SMACK
+Voici l'intitulé de votre nom d'utilisateur : '${username}'.
+A bientôt sur SMACK ;)`);
+}
+
+module.exports = { sendMail, sendVerifyEmail, sendForgotPassword, sendForgotUsername };

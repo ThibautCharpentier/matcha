@@ -1,11 +1,11 @@
-const { IsString } = require('class-validator');
+const { IsEmail } = require('class-validator');
 
-class ForgotPasswordDto {
-	@IsString()
-	username;
+class ForgotUsernameDto {
+	@IsEmail()
+	email;
 
 	validateFields() {
-    	const allowedFields = ['username'];
+    	const allowedFields = ['email'];
     	const receivedFields = Object.keys(this);
     	const unauthorizedFields = receivedFields.filter(field => !allowedFields.includes(field));
     	if (unauthorizedFields.length > 0)
@@ -13,4 +13,4 @@ class ForgotPasswordDto {
     }
 }
 
-module.exports = { ForgotPasswordDto };
+module.exports = { ForgotUsernameDto };
