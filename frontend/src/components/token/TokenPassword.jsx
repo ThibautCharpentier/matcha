@@ -10,60 +10,67 @@ export default function TokenPassword() {
     const token = queryParams.get('token');
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [isValidForm, setIsValidForm] = useState(false);
+	const [inputsStates, setInputsStates] = useState({
+		password: "",
+		confirmPassword: "",
+	});
+	const [showValidation, setShowValidation] = useState({
+		password: "",
+		server: "",
+	});
 
 	function togglePasswordVisibility()
 	{
         setIsPasswordVisible((prevState) => !prevState);
     }
 
-	function checkError(password, confirmPassword)
-	{
-    	let errPassword = "";
+	function handleSubmit(e) {
+		e.preventDefault()
 
-		if (password.length == 0)
-			errPassword = "Veuillez entrer un mot de passe";
-		else if (confirmPassword.length == 0)
-			errPassword = "Veuillez confirmer votre mot de passe";
-		else if (password != confirmPassword)
-			errPassword = "Les mots de passe ne correspondent pas";
-		else if (password.length < 10)
-			errPassword = "Le mot de passe doit contenir au moins 10 caractères";
-		if (errPassword.length != 0)
-			document.getElementById("errPassword").textContent = errPassword;
-		else
-			document.getElementById("errPassword").textContent = "";
-		document.getElementById("errServ").textContent = "";
-		if (errPassword.length == 0)
-        	return (0);
-    	return (1);
+		if (validationCheck()) {
+			const obj = {
+				password: DOMPurify.sanitize(inputsStates.password),
+			}
+
+			axios.post(`${API_ROUTES.CHANGE_PASSWORD}?token=${token}`, obj, {
+				withCredentials: true,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('Une erreur est survenue');
+				else
+					setIsValidForm(true);
+			})
+			.catch((err) => {
+				if (err.response.status == 403)
+					setShowValidation(state => ({...state, server: "Le formulaire a expiré ! Veuillez fermer cette page."}))
+				else
+					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
+			});
+		}
 	}
 
-	function formChangePassword()
-	{
-		let password = DOMPurify.sanitize(document.getElementById("password").value);
-		let confirmPassword = DOMPurify.sanitize(document.getElementById("confirmpassword").value);
-
-		if (checkError(password, confirmPassword))
-			return ;
-
-		const obj = {
-			password: password
+	function validationCheck() {
+		const areValid = {
+			password: false,
 		}
-		axios.post(`${API_ROUTES.CHANGE_PASSWORD}?token=${token}`, obj, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-			else
-				setIsValidForm(true);
-		})
-		.catch((err) => {
-			if (err.response.status == 403)
-				document.getElementById("errServ").textContent = "Le formulaire a expiré ! Veuillez fermer cette page.";
-			else
-				document.getElementById("errServ").textContent = "Formulaire invalide";
-		});
+
+		if (inputsStates.password.length < 10)
+			setShowValidation(state => ({...state, password: "Le mot de passe doit contenir au moins 10 caractères"}))
+		else if (inputsStates.confirmPassword.length == 0)
+			setShowValidation(state => ({...state, password: "Veuillez confirmer votre mot de passe"}))
+		else if (inputsStates.confirmPassword != inputsStates.password)
+			setShowValidation(state => ({...state, password: "Les mots de passe ne correspondent pas"}))
+		else {
+			areValid.password = true
+			setShowValidation(state => ({...state, password: ""}))
+		}
+		
+		setShowValidation(state => ({...state, server: ""}))
+		if (Object.values(areValid).every(value => value)) {
+			return true
+		}
+		return false
 	}
 
 	return (
@@ -73,10 +80,17 @@ export default function TokenPassword() {
 			) : (
 				<div className="w-80 flex flex-col p-2 mt-6">
 					<p className="font-poppins-regular mt-4 text-sm">Veuillez indiquer un nouveau mot de passe</p>
-					<form action="" className="flex flex-col mt-4">
+					<form action="" className="flex flex-col mt-6">
 						<label className="font-poppins-medium" htmlFor="password">Mot de passe</label>
 						<div className="relative">
-							<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none" placeholder="Entrez mot de passe" type={isPasswordVisible ? "text" : "password"} name="password" id="password"/>
+							<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="Entrez un mot de passe"
+							type={isPasswordVisible ? "text" : "password"} name="password"
+							id="password"
+							autoComplete="new-password"
+							value={inputsStates.password}
+							onChange={e => setInputsStates({...inputsStates, password: e.target.value})}
+							/>
 							<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
 								{isPasswordVisible ? (
 									<svg width="24" height="24" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 2L22 22" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></g></svg>
@@ -85,9 +99,16 @@ export default function TokenPassword() {
 								)}
 							</button>
 						</div>
-						<label className="mt-2 font-poppins-medium" htmlFor="confirmpassword">Confirmer mot de passe</label>
+						<label className="mt-3 font-poppins-medium" htmlFor="confirmpassword">Confirmer mot de passe</label>
 						<div className="relative">
-							<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none" placeholder="Confirmez mot de passe" type={isPasswordVisible ? "text" : "password"} name="confirmpassword" id="confirmpassword"/>
+							<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
+							placeholder="Confirmez mot de passe"
+							type={isPasswordVisible ? "text" : "password"} name="confirmpassword"
+							id="confirmpassword"
+							autoComplete="new-password"
+							value={inputsStates.confirmPassword}
+							onChange={e => setInputsStates({...inputsStates, confirmPassword: e.target.value})}
+							/>
 							<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
 								{isPasswordVisible ? (
 									<svg width="24" height="24" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 2L22 22" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#ababab" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></g></svg>
@@ -96,10 +117,14 @@ export default function TokenPassword() {
 								)}
 							</button>
 						</div>
-						<p className="text-center mt-1 text-sm" id="errPassword"></p>
+						{showValidation.password != "" && (
+							<p className="text-red-600 text-sm">{showValidation.password}</p>
+						)}
 					</form>
-					<p className="text-center mt-2 text-sm" id="errServ"></p>
-					<button className="btn mt-4" onClick={formChangePassword}>Envoyer</button>
+					{showValidation.server != "" && (
+						<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
+					)}
+					<button className="btn mt-6" onClick={handleSubmit}>Envoyer</button>
 				</div>
 			)}
 		</div>
