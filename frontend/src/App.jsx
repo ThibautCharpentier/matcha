@@ -1,7 +1,7 @@
 import './style/App.css'
 import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Welcome from "./components/Welcome"
 import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/SignIn"
@@ -9,28 +9,54 @@ import SignUp from "./components/Signup/SignUp"
 import TokenMail from "./components/token/TokenMail"
 import TokenPassword from "./components/token/TokenPassword"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Dashboard from "./components/Dashboard"
+import Navbar from "./components/Navbar/Navbar"
 import { AuthProvider } from "./components/AuthContext"
+
+const Layout = ({ children }) => {
+	const location = useLocation();
+
+	const navbarRoutes = [
+		APP_ROUTES.DASHBOARD,
+		APP_ROUTES.MATCH,
+		APP_ROUTES.CONVERSATION,
+		APP_ROUTES.NOTIFICATION,
+		APP_ROUTES.PARAMETERS
+	];
+
+	const showNavbar = navbarRoutes.includes(location.pathname)
+
+	return (
+		<div className="">
+			{showNavbar && <Navbar />}
+			{children}
+			<footer></footer>
+		</div>
+	);
+}
 
 export default function App() {
 
 	return (
-    	<>
-    		<AuthProvider>
-    			{/* <Navbar /> */}
-    			<BrowserRouter>
+		<>
+			<AuthProvider>
+				<BrowserRouter>
 					<AnimationBackground />
-    				<Routes>
-    			    	<Route exact path={ APP_ROUTES.WELCOME } element={<Welcome />} />
-						<Route exact path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
-   						<Route exact path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
-						<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
-						<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
-    			    	{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
-    				</Routes>
-    			</BrowserRouter>
-    			<footer></footer>
-    		</AuthProvider>
-    	</>
+					<Layout>
+						<Routes>
+							<Route exact path={ APP_ROUTES.WELCOME } element={<Welcome />} />
+							<Route exact path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
+							<Route exact path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
+							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
+							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
+							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
+							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
+							{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
+					</Routes>
+					</Layout>
+				</BrowserRouter>
+			</AuthProvider>
+		</>
 	)
 }
 

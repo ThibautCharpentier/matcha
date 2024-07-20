@@ -33,15 +33,14 @@ export const API_ROUTES = {
 };
 
 export const APP_ROUTES = {
-  WELCOME: "/",
-  SIGN_UP: "/signup",
-  SIGN_IN: "/signin",
-  TOKEN_MAIL: "/token_mail",
-  TOKEN_PASSWORD: "/token_password",
-  PARAMETERS: "/parameters",
-  MENU: "/menu",
-  MATCH: "/match",
-  RESEARCH: "/research",
-  CONVERSATION: "/conversation",
-  NOTIFICATION: "/notification",
+    WELCOME: "/",
+    SIGN_UP: "/signup",
+    SIGN_IN: "/signin",
+    TOKEN_MAIL: "/token_mail",
+    TOKEN_PASSWORD: "/token_password",
+    PARAMETERS: "/parameters",
+    DASHBOARD: "/dashboard",
+    MATCH: "/match",
+    CONVERSATION: "/conversation",
+    NOTIFICATION: "/notification",
 };
