@@ -29,11 +29,7 @@ export default function SignUp() {
 		password: false,
 		confirmPassword: false,
 	});
-
-	const [errRequestUsername, setErrRequestUsername] = useState(false)
-	const [errRequestMail, setErrRequestMail] = useState(false)
 	
-
 	function handleSubmit(e) {
 		e.preventDefault()
 
