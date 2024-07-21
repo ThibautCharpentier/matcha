@@ -7,11 +7,13 @@ import LastNameInput from "./LastNameInput"
 import MailInput from "./MailInput"
 import PasswordInput from "./PasswordInput"
 import ConfirmPasswordInput from "./ConfirmPasswordInput"
+import ValidateSignup from "./ValidateSignup"
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 
 export default function SignUp() {
 	const navigate = useNavigate();
+    const [showValidateSignup, setShowValidateSignup] = useState(false)
 	const [inputsStates, setInputsStates] = useState({
 		username: "",
 		name: "",
@@ -49,7 +51,7 @@ export default function SignUp() {
 				if (res.status != 201)
 					throw new Error('une erreur est survenue')
 				else
-					navigate('/signin')
+					setShowValidateSignup(true)
 			})
 			.catch((err) => {
 				if (err.response.data.message == "Username already exists")
@@ -121,6 +123,9 @@ export default function SignUp() {
 
 	return (
 		<div className="flex justify-center">
+            {showValidateSignup ? 
+            <ValidateSignup mailUser={inputsStates.mail}/>
+            :
 			<div className="w-80 flex flex-col p-2 mt-6">
 				<h1 className="text-5xl text-center font-poppins-bold ">
 					Créer un compte
@@ -168,6 +173,7 @@ export default function SignUp() {
 					<button className="btn mt-8">Créer un compte</button>
 				</form>
 			</div>
+            }
 		</div>
 	);
 }
