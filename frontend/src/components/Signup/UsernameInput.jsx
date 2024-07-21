@@ -1,14 +1,5 @@
 export default function UsernameInput({inputsStates, setInputsStates, showValidation}) {
 
-	let contentError = ""
-
-	if (showValidation.username) {
-		if (inputsStates.username.length < 3 || inputsStates.username.length > 10)
-			contentError = "Votre nom d'utilisateur doit contenir entre 3 et 10 caractères"
-		else
-			contentError = "Le nom d'utilisateur est déjà pris"
-
-	}
 
 	return (
 		<>
@@ -25,8 +16,8 @@ export default function UsernameInput({inputsStates, setInputsStates, showValida
 			value={inputsStates.username}
 			onChange={e => setInputsStates({...inputsStates, username: e.target.value})}
 			/>
-			{showValidation.username && (
-				<p className=" text-red-600 text-sm ">{contentError}</p>
+			{showValidation.username != "" && (
+				<p className=" text-red-600 text-sm ">{showValidation.username}</p>
 			)}
 		</>
 	)

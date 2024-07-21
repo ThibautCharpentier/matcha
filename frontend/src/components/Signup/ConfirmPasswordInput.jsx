@@ -2,14 +2,10 @@ import { useState } from "react";
 
 export default function ConfirmPasswordInput({inputsStates, setInputsStates, showValidation}) {
 	const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-	let contentError = ""
 	
 	function toggleConfirmPasswordVisibility() {
 		setIsConfirmPasswordVisible((prevState) => !prevState);
 	}
-
-	if (inputsStates.confirmPassword !== inputsStates.password)
-		contentError = "Les mots de passe ne correspondent pas"
 
 	return (
 	<>
@@ -114,8 +110,8 @@ export default function ConfirmPasswordInput({inputsStates, setInputsStates, sho
 				)}
 			</button>
 		</div>
-		{showValidation.confirmPassword && (
-			<p className=" text-red-600 text-sm ">{contentError}</p>
+        {showValidation.confirmPassword != "" && (
+			<p className=" text-red-600 text-sm ">{showValidation.confirmPassword}</p>
 		)}
 	</>
 	)

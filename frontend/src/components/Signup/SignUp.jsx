@@ -13,23 +13,24 @@ import axios from 'axios';
 
 export default function SignUp() {
 	const navigate = useNavigate();
-    const [showValidateSignup, setShowValidateSignup] = useState(false)
+	const [showValidateSignup, setShowValidateSignup] = useState(false)
 	const [inputsStates, setInputsStates] = useState({
 		username: "",
 		name: "",
 		lastname: "",
 		mail: "",
 		password: "",
-		confirmPassword: "",
+		confirmPassword: ""
 	});
 
 	const [showValidation, setShowValidation] = useState({
-		username: false,
-		name: false,
-		lastname: false,
-		mail: false,
-		password: false,
-		confirmPassword: false,
+		username: "",
+		name: "",
+		lastname: "",
+		mail: "",
+		password: "",
+		confirmPassword: "",
+		server: ""
 	});
 	
 	function handleSubmit(e) {
@@ -57,9 +58,11 @@ export default function SignUp() {
 			.catch((err) => {
 				console.log(err)
 				if (err.response.data.message == "Username already exists")
-					setShowValidation(state => ({...state, username: true}))
+					setShowValidation(state => ({...state, username: "Le nom d'utilisateur est déjà pris"}))
 				else if (err.response.data.message == "Email already exists")
-					setShowValidation(state => ({...state, mail: true}))
+					setShowValidation(state => ({...state, mail: "Cette adresse e-mail est déjà utilisée"}))
+				else
+					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
 		}
 	}
@@ -75,45 +78,47 @@ export default function SignUp() {
 		}
 
 		if (inputsStates.username.length < 3 || inputsStates.username.length > 10)
-			setShowValidation(state => ({...state, username: true}))
+			setShowValidation(state => ({...state, username: "Votre nom d'utilisateur doit contenir entre 3 et 10 caractères"}))
 		else {
 			areValid.username = true
-			setShowValidation(state => ({...state, username: false}))
+			setShowValidation(state => ({...state, username: ""}))
 		}
 
 		if (inputsStates.name.length == 0)
-			setShowValidation(state => ({...state, name: true}))
+			setShowValidation(state => ({...state, name: "Ce champ ne peut pas être vide"}))
 		else {
 			areValid.name = true
-			setShowValidation(state => ({...state, name: false}))
+			setShowValidation(state => ({...state, name: ""}))
 		}
 
 		if (inputsStates.lastname.length == 0)
-			setShowValidation(state => ({...state, lastname: true}))
+			setShowValidation(state => ({...state, lastname: "Ce champ ne peut pas être vide"}))
 		else {
 			areValid.lastname = true
-			setShowValidation(state => ({...state, lastname: false}))
+			setShowValidation(state => ({...state, lastname: ""}))
 		}
 
 		if (inputsStates.mail.length == 0)
-			setShowValidation(state => ({...state, mail: true}))
+			setShowValidation(state => ({...state, mail: "Ce champ ne peut pas être vide"}))
 		else {
 			areValid.mail = true
-			setShowValidation(state => ({...state, mail: false}))
+			setShowValidation(state => ({...state, mail: ""}))
 		}
 
 		if (inputsStates.password.length < 10)
-			setShowValidation(state => ({...state, password: true}))
+			setShowValidation(state => ({...state, password: "Votre mot de passe doit contenir au moins 10 caractères"}))
 		else {
 			areValid.password = true
-			setShowValidation(state => ({...state, password: false}))
+			setShowValidation(state => ({...state, password: ""}))
 		}
 
 		if (inputsStates.confirmPassword !== inputsStates.password)
-			setShowValidation(state => ({...state, confirmPassword: true}))
+			setShowValidation(state => ({...state, confirmPassword: "Les mots de passe ne correspondent pas"}))
+		else if (inputsStates.confirmPassword.length == 0)
+			setShowValidation(state => ({...state, confirmPassword: "Ce champ ne peut pas être vide"}))
 		else {
 			areValid.confirmPassword = true
-			setShowValidation(state => ({...state, confirmPassword: false}))
+			setShowValidation(state => ({...state, confirmPassword: ""}))
 		}
 		console.log(areValid)
 
@@ -126,9 +131,9 @@ export default function SignUp() {
 
 	return (
 		<div className="flex justify-center">
-            {showValidateSignup ? 
-            <ValidateSignup mailUser={inputsStates.mail}/>
-            :
+			{showValidateSignup ? 
+			<ValidateSignup mailUser={inputsStates.mail}/>
+			:
 			<div className="w-80 flex flex-col p-2 mt-6">
 				<h1 className="text-5xl text-center font-poppins-bold ">
 					Créer un compte
@@ -173,10 +178,13 @@ export default function SignUp() {
 					setInputsStates={setInputsStates}
 					showValidation={showValidation}
 					/>
+					{showValidation.server != "" && (
+					<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
+					)}
 					<button className="btn mt-8">Créer un compte</button>
 				</form>
 			</div>
-            }
+			}
 		</div>
 	);
 }

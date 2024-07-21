@@ -2,14 +2,10 @@ import { useState } from "react";
 
 export default function PasswordInput({inputsStates, setInputsStates, showValidation}) {
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	let contentError = ""
 
 	function togglePasswordVisibility() {
 		setIsPasswordVisible((prevState) => !prevState);
 	}
-
-	if (inputsStates.password.length < 10)
-		contentError = "Votre mot de passe doit contenir au moins 10 caractères"
 
 	return (
 	<>
@@ -23,7 +19,7 @@ export default function PasswordInput({inputsStates, setInputsStates, showValida
 			className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 			id="password"
 			name="password"
-			placeholder="Entrez mot de passe"
+			placeholder="Entrez un mot de passe"
 			autoComplete="new-password"
 			value={inputsStates.password}
 			onChange={e => setInputsStates({...inputsStates, password: e.target.value})}
@@ -116,8 +112,8 @@ export default function PasswordInput({inputsStates, setInputsStates, showValida
 				)}
 			</button>
 		</div>
-		{showValidation.password && (
-			<p className=" text-red-600 text-sm ">{contentError}</p>
+		{showValidation.password != "" && (
+			<p className=" text-red-600 text-sm ">{showValidation.password}</p>
 		)}
 	</>
 	)
