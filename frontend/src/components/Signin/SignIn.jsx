@@ -7,6 +7,7 @@ import UsernameInput from "./UsernameInput"
 import PasswordInput from "./PasswordInput"
 import ForgotPassword from "./Forgot/ForgotPassword"
 import ForgotUsername from "./Forgot/ForgotUsername"
+import { useAuth } from "../AuthContext";
 
 export default function SignIn() {
 	const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function SignIn() {
 	const [isForgotPassword, setIsForgotPassword] = useState(false);
 	const [isForgotUsername, setIsForgotUsername] = useState(false);
 	const [isSignIn, setIsSignIn] = useState(true);
+	const { login } = useAuth();
 
 	function handleSubmit(e) {
 		e.preventDefault()
@@ -40,7 +42,10 @@ export default function SignIn() {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
 				else
-					navigate('/');
+				{
+					login();
+					navigate('/dashboard');
+				}
 			})
 			.catch((err) => {
 				if (err.response.data.message == "Invalid password")

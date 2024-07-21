@@ -1,4 +1,4 @@
-import { APP_ROUTES } from "../utils/constants"
+import { APP_ROUTES } from "../../utils/constants"
 import { Link } from "react-router-dom"
 
 export default function Welcome() {

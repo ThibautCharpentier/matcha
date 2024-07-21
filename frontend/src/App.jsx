@@ -2,13 +2,13 @@ import './style/App.css'
 import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
-import Welcome from "./components/Welcome"
+import Welcome from "./components/Welcome/Welcome"
 import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
 import SignUp from "./components/Signup/SignUp"
 import TokenMail from "./components/Token/TokenMail"
 import TokenPassword from "./components/Token/TokenPassword"
-import ProtectedRoute from "./components/ProtectedRoute"
+import NoAuthRoute from './components/NoAuthRoute'
 import Dashboard from "./components/Dashboard"
 import Navbar from "./components/Navbar/Navbar"
 import { AuthProvider } from "./components/AuthContext"
@@ -44,15 +44,13 @@ export default function App() {
 					<AnimationBackground />
 					<Layout>
 						<Routes>
-							<Route exact path={ APP_ROUTES.WELCOME } element={<Welcome />} />
-							<Route exact path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
-							<Route exact path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
+							<Route exact path={ APP_ROUTES.WELCOME } element={<NoAuthRoute element={<Welcome />} />} />
+							<Route exact path={ APP_ROUTES.SIGN_IN } element={<NoAuthRoute element={<SignIn />} />} />
+							<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
-							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
-							{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
-					</Routes>
+						</Routes>
 					</Layout>
 				</BrowserRouter>
 			</AuthProvider>

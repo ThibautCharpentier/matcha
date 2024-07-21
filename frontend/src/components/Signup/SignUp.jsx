@@ -46,14 +46,12 @@ export default function SignUp() {
 				withCredentials: true,
 			})
 			.then((res) => {
-				console.log(res)
 				if (res.status != 201)
 					throw new Error('une erreur est survenue')
 				else
-					navigate('/')
+					navigate('/signin')
 			})
 			.catch((err) => {
-				console.log(err)
 				if (err.response.data.message == "Username already exists")
 					setShowValidation(state => ({...state, username: true}))
 				else if (err.response.data.message == "Email already exists")
@@ -113,7 +111,6 @@ export default function SignUp() {
 			areValid.confirmPassword = true
 			setShowValidation(state => ({...state, confirmPassword: false}))
 		}
-		console.log(areValid)
 
 		if (Object.values(areValid).every(value => value)) {
 			return true
