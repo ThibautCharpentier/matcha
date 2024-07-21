@@ -1,10 +1,5 @@
 export default function LastnameInput({inputsStates, setInputsStates, showValidation}) {
 
-	let contentError = ""
-
-	if (inputsStates.lastname.length === 0)
-		contentError = "Ce champ ne peut pas être vide"
-
 	return (
 	<>
 		<label className="mt-3 font-poppins-medium" htmlFor="lastname">Nom</label>
@@ -18,8 +13,8 @@ export default function LastnameInput({inputsStates, setInputsStates, showValida
 		value={inputsStates.lastname}
 				onChange={e => setInputsStates({...inputsStates, lastname: e.target.value})}
 		/>
-		{showValidation.lastname && (
-			<p className=" text-red-600 text-sm ">{contentError}</p>
+		{showValidation.lastname != "" && (
+			<p className=" text-red-600 text-sm ">{showValidation.lastname}</p>
 		)}
 	</>
 	)
