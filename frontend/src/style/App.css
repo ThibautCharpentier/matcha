@@ -1,36 +1,36 @@
 @font-face {
-    font-family: PoppinsBlack;
-    src: url(../assets/fonts/Poppins-Black.ttf);
+	font-family: PoppinsBlack;
+	src: url(../assets/fonts/Poppins-Black.ttf);
 }
 
 @font-face {
-    font-family: PoppinsBold;
-    src: url(../assets/fonts/Poppins-Bold.ttf);
+	font-family: PoppinsBold;
+	src: url(../assets/fonts/Poppins-Bold.ttf);
 }
 
 @font-face {
-    font-family: PoppinsLight;
-    src: url(../assets/fonts/Poppins-Light.ttf);
+	font-family: PoppinsLight;
+	src: url(../assets/fonts/Poppins-Light.ttf);
 }
 
 @font-face {
-    font-family: PoppinsMedium;
-    src: url(../assets/fonts/Poppins-Medium.ttf);
+	font-family: PoppinsMedium;
+	src: url(../assets/fonts/Poppins-Medium.ttf);
 }
 
 @font-face {
-    font-family: PoppinsRegular;
-    src: url(../assets/fonts/Poppins-Regular.ttf);
+	font-family: PoppinsRegular;
+	src: url(../assets/fonts/Poppins-Regular.ttf);
 }
 
 @font-face {
-    font-family: PoppinsSemiBold;
-    src: url(../assets/fonts/Poppins-SemiBold.ttf);
+	font-family: PoppinsSemiBold;
+	src: url(../assets/fonts/Poppins-SemiBold.ttf);
 }
 
 @font-face {
-    font-family: PoppinsThin;
-    src: url(../assets/fonts/Poppins-Thin.ttf);
+	font-family: PoppinsThin;
+	src: url(../assets/fonts/Poppins-Thin.ttf);
 }
 
 :root {
@@ -39,11 +39,11 @@
 }
 
 * {
-    font-family: PoppinsRegular;
+	font-family: PoppinsRegular;
 }
 
 .font-poppins-semibold {
-    font-family: PoppinsSemiBold;
+	font-family: PoppinsSemiBold;
 }
 
 .font-poppins-thin {
@@ -80,7 +80,7 @@
   cursor: pointer;
   display: inline-block;
   font-family: PoppinsLight;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1;
   padding: 1rem 1.6rem;
@@ -99,9 +99,41 @@
   color: #fff;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .btn {
-    font-size: 1.125rem;
-    padding: 1rem 2rem;
+	font-size: 1.125rem;
+	padding: 1rem 2rem;
   }
+} */
+
+.strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap; 
+}
+
+.strike > span {
+    position: relative;
+    display: inline-block;
+}
+
+.strike > span:before,
+.strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: rgb(0, 0, 0);
+}
+
+.strike > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.strike > span:after {
+    left: 100%;
+    margin-left: 15px;
 }
