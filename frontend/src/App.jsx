@@ -3,7 +3,7 @@ import './style/BackgroundPattern.css'
 import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
-import Welcome from "./components/Welcome"
+import Welcome from "./components/Welcome/Welcome"
 import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
 import SignUp from "./components/Signup/SignUp"
