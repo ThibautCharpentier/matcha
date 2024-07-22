@@ -1,4 +1,5 @@
 import './style/App.css'
+import './style/BackgroundPattern.css'
 import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
@@ -11,6 +12,7 @@ import TokenPassword from "./components/Token/TokenPassword"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Dashboard from "./components/Dashboard"
 import Navbar from "./components/Navbar/Navbar"
+import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
 
 const Layout = ({ children }) => {
@@ -51,6 +53,8 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
+							<Route exact path="/complete-profile" element={<CompleteProfil />} />
+                        
 							{/* <ProtectedRoute path={ APP_ROUTES.MENU } element={<Menu />} /> */}
 					</Routes>
 					</Layout>
