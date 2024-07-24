@@ -1,14 +1,14 @@
 export default function GenderStep({nextStep, infosUser}) {
     function handleClik(e) {
-        e.preventDefault()
-
-        console.log(e)
-        if (e.target.innerHTML === "homme")
-            infosUser.gender = "men"
-        else if (e.target.innerHTML === "femme")
-            infosUser.gender = "women"
-        
-        nextStep()
+            e.preventDefault()
+    
+            console.log(e)
+            if (e.target.innerHTML === "homme")
+                infosUser.gender = "men"
+            else if (e.target.innerHTML === "femme")
+                infosUser.gender = "women"
+            
+            nextStep()
     }
 
     return (
