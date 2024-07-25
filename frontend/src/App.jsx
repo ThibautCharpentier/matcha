@@ -1,5 +1,4 @@
 import './style/App.css'
-import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Welcome from "./components/Welcome/Welcome"

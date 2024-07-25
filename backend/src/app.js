@@ -1,9 +1,15 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cookie = require('cookie');
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const http = require('http');
+const WebSocket = require('ws');
 const db = require('./db/db');
 const authRouter = require('./routes/auth')
+const user = require('./db/user');
+const { handleWebSocketMessage } = require('./sockets/handlewebsocketmessage');
 
 dotenv.config();
 
@@ -29,8 +35,48 @@ db.createTables().catch(err => {
 	exitServer();
 });
 
-const server = app.listen(back_port, '0.0.0.0', () => {
+const server = http.createServer(app);
+const websocket = new WebSocket.Server({ server: server });
+server.listen(back_port, '0.0.0.0', () => {
 	console.log(`Server is running on http://${url1}:${back_port}, http://${url2}:${back_port} and http://${url3}:${back_port}`);
+});
+
+websocket.on('connection', async (ws, req) => {
+	const cookies = cookie.parse(req.headers.cookie);
+    const accessToken = cookies.accessToken;
+
+    if (!accessToken)
+	{
+		ws.close(4001);
+		return ;
+	}
+	try
+	{
+		const decoded = jwt.verify(accessToken, process.env.SECRET_TOKEN_KEY);
+		ws.user_id = decoded.id;
+		ws.access_token = accessToken;
+		const res_query = await user.selectById(ws.user_id);
+		if (res_query.status == 'offline')
+			await user.connect(ws.user_id, true);
+	}
+	catch (err)
+	{
+		console.log(err);
+		ws.close(4001);
+	}
+    ws.on('message', async (message) => {
+        await handleWebSocketMessage(ws, message);
+    });
+
+    ws.on('close', async (code) => {
+        if (code == 4001 || code == 4002)
+			return ;
+		await user.connect(ws.user_id, false);
+    });
+
+    ws.on('error', async (error) => {
+        console.log(error);
+    });
 });
 
 const exitServer = () => {
@@ -40,3 +86,5 @@ const exitServer = () => {
 		process.exit(1);
 	})
 }
+
+module.exports = { websocket }

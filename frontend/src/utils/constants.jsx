@@ -1,4 +1,5 @@
 const API_URL = "http://" + window.location.hostname + ":8000";
+const WS_URL = "ws://" + window.location.hostname + ":8000";
 
 export const API_ROUTES = {
 	SIGN_UP: 					`${API_URL}/auth/signup`,
@@ -31,6 +32,10 @@ export const API_ROUTES = {
 	GET_MY_CONVERSATIONS: 		`${API_URL}/interaction/getmyconversations`,
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
 };
+
+export const WS_ROUTES = {
+	TOKEN:	`${WS_URL}/ws/token`,
+}
 
 export const APP_ROUTES = {
     WELCOME: "/",

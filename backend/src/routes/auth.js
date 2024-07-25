@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const { validateDto } = require('../dto/validateDto');
+const { validateDto } = require('../dto/validatedto');
 const { SignupDto } = require('../dto/signup.dto');
 const { SigninDto } = require('../dto/signin.dto');
 const { ForgotPasswordDto } = require('../dto/forgotpassword.dto');
@@ -24,7 +24,7 @@ router.get('/isconnected', jwtrequired(), async (req, res) => {
 	}
 	catch (err)
 	{
-		console.log(err);
+		return res.status(403).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
 });
@@ -97,8 +97,8 @@ router.post('/signin', validateDto(SigninDto), async (req, res) => {
 		}
 		const accessToken = jwt.sign({ id: res_query.id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_ACCESSTOKEN_EXPIRATION });
 		const refreshToken = jwt.sign({ id: res_query.id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_REFRESHTOKEN_EXPIRATION });
-		res.cookie('accessToken', accessToken, { httpOnly: true });
-        res.cookie('refreshToken', refreshToken, { httpOnly: true });
+		res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_ACCESSTOKEN_EXPIRATION, 10) });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_REFRESHTOKEN_EXPIRATION, 10) });
 		await user.connect(res_query.id, true);
 	}
 	catch (err)
@@ -181,8 +181,8 @@ router.get('/refresh', async (req, res) => {
 			return res.status(400).json({message: 'User not found'});
 		const accessToken = jwt.sign({ id: req.user_id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_ACCESSTOKEN_EXPIRATION });
 		const refreshToken = jwt.sign({ id: req.user_id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_REFRESHTOKEN_EXPIRATION });
-		res.cookie('accessToken', accessToken, { httpOnly: true });
-        res.cookie('refreshToken', refreshToken, { httpOnly: true });
+		res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_ACCESSTOKEN_EXPIRATION, 10) });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_REFRESHTOKEN_EXPIRATION, 10) });
 	}
 	catch (err)
 	{
