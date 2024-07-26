@@ -1,4 +1,5 @@
 import './style/App.css'
+import './style/BackgroundPattern.css'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Welcome from "./components/Welcome"
@@ -10,6 +11,7 @@ import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
 import Dashboard from "./components/Dashboard"
 import Navbar from "./components/Navbar/Navbar"
+import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
 
 const Layout = ({ children }) => {
@@ -49,7 +51,8 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
-						</Routes>
+							<Route exact path="/complete-profile" element={<CompleteProfil />} />
+					</Routes>
 					</Layout>
 				</BrowserRouter>
 			</AuthProvider>
