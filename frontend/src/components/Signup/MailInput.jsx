@@ -8,7 +8,7 @@ export default function MailInput({inputsStates, setInputsStates, showValidation
 				type="text"
 				name="mail"
 				id="mail"
-				placeholder="exemple@gmail.com"
+				placeholder="Entrez une adresse mail"
 				autoComplete="email"
 				value={inputsStates.mail}
 				onChange={e => setInputsStates({...inputsStates, mail: e.target.value})}

@@ -10,6 +10,7 @@ import TokenMail from "./components/Token/TokenMail"
 import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
 import Dashboard from "./components/Dashboard"
+import Parameters from "./components/Parameters/Parameters"
 import Navbar from "./components/Navbar/Navbar"
 import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
@@ -28,11 +29,18 @@ const Layout = ({ children }) => {
 	const showNavbar = navbarRoutes.includes(location.pathname)
 
 	return (
-		<div className="">
-			{showNavbar && <Navbar />}
-			{children}
+		<>
+			{showNavbar ? 
+			<div className="flex">
+				<Navbar />
+				{children}
+			</div>
+			:
+			<div>
+				{children}
+			</div>}
 			<footer></footer>
-		</div>
+		</>
 	);
 }
 
@@ -52,6 +60,7 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
+							<Route exact path={ APP_ROUTES.PARAMETERS } element={<Parameters />} />
 					</Routes>
 					</Layout>
 				</BrowserRouter>

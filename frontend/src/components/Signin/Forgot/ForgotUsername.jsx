@@ -64,7 +64,7 @@ export default function ForgotUsername({changeState}) {
 		<div className="w-80 flex flex-col p-2 mt-6">
 			<p className="font-poppins-regular mt-4 text-sm">Veuillez indiquer votre adresse mail afin de vous envoyer l'intitulé de votre nom d'utilisateur</p>
 			<form action="" className="flex flex-col mt-6">
-				<label className="font-poppins-medium" htmlFor="email">Mail</label>
+				<label className="font-poppins-medium" htmlFor="email">Adresse e-mail</label>
 				<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 				placeholder="Entrez une adresse mail"
 				type="text"
