@@ -25,7 +25,7 @@ export const API_ROUTES = {
 	UPDATE_EMAIL:         		`${API_URL}/profile/updateemail`,
 	UPDATE_USERNAME:      		`${API_URL}/profile/updateusername`,
 	UPDATE_GPS:					`${API_URL}/profile/updategps`,
-	UPDATE_CITY:				`${API_URL}/profile/updatecity`,
+	UPDATE_LOCATION:			`${API_URL}/profile/updatelocation`,
 	LIKE:                 		`${API_URL}/interaction/like`,
 	DISLIKE:              		`${API_URL}/interaction/dislike`,
 	BLOCK:                		`${API_URL}/interaction/block`,

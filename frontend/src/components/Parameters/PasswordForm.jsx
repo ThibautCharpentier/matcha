@@ -24,7 +24,7 @@ export default function PasswordForm() {
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
 
-			axios.post(API_ROUTES.UPDATE_PASSWORD, obj, {
+			axios.patch(API_ROUTES.UPDATE_PASSWORD, obj, {
 				withCredentials: true,
 			})
 			.then((res) => {

@@ -15,7 +15,7 @@ export default function EmailForm() {
 				username: DOMPurify.sanitize(inputState),
 			}
 
-			axios.post(API_ROUTES.UPDATE_USERNAME, obj, {
+			axios.patch(API_ROUTES.UPDATE_USERNAME, obj, {
 				withCredentials: true,
 			})
 			.then((res) => {

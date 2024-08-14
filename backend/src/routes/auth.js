@@ -153,10 +153,9 @@ router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) 
 
 router.post('/forgotusername', validateDto(ForgotUsernameDto), async (req, res) => {
 	const { email } = req.body;
-	let res_query;
 	try
 	{
-		res_query = await user.selectByEmail(email);
+		let res_query = await user.selectByEmail(email);
 		if (!res_query)
 			return res.status(400).json({message: 'Invalid email'});
 		await mail.sendForgotUsername(res_query.email, res_query.username);

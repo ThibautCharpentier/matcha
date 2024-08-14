@@ -8,6 +8,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const db = require('./db/db');
 const authRouter = require('./routes/auth')
+const profileRouter = require('./routes/profile')
 const user = require('./db/user');
 const { handleWebSocketMessage } = require('./sockets/handlewebsocketmessage');
 
@@ -22,13 +23,14 @@ const url3 = process.env.HOST_IP;
 
 app.use(cors({
 	origin: [`http://${url1}:${front_port}`, `http://${url2}:${front_port}`, `http://${url3}:${front_port}`],
-	methods: ['GET', 'POST'],
+	methods: ['GET', 'POST', 'PATCH'],
 	credentials: true
 }));
 app.use(cookieParser());
 app.use(express.json());
 
 app.use('/auth', authRouter);
+app.use('/profile', profileRouter);
 
 db.createTables().catch(err => {
 	console.log('Error creating tables: ', err);

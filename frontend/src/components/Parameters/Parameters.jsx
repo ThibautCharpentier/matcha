@@ -7,7 +7,7 @@ import GpsForm from "./GpsForm"
 import LocationForm from "./LocationForm";
 
 export default function Parameters() {
-	const [isGpsVisible, setIsGpsVisible] = useState(true);
+	const [isGpsVisible, setIsGpsVisible] = useState(false);
 
 	function toggleGpsVisibility()
 	{

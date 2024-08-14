@@ -14,6 +14,36 @@ const validateEmail = async (id) => {
 	client.release();
 }
 
+const changeUsername = async (id, username) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET username = $1 WHERE id = $2`, [username, id]);
+	client.release();
+}
+
+const changeEmail = async (id, email) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET email = $1 WHERE id = $2`, [email, id]);
+	client.release();
+}
+
+const changePreferences = async (id, preferences) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET preferences = $1 WHERE id = $2`, [preferences, id]);
+	client.release();
+}
+
+const changeGps = async (id, gps) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET gps = $1 WHERE id = $2`, [gps, id]);
+	client.release();
+}
+
+const changeLocation = async (id, { lat, lng, city }) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET latitude = $1, longitude = $2, city = $3 WHERE id = $4`, [lat, lng, city, id]);
+	client.release();
+}
+
 const changePassword = async (id, password) => {
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const client = await pool.connect();
@@ -57,4 +87,4 @@ const selectById = async (id) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, changePassword, connect, selectByUsername, selectByEmail, selectById };
+module.exports = { insert, validateEmail, changeUsername, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById };

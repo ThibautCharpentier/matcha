@@ -47,18 +47,19 @@ export default function LocationForm() {
 			setErrState("Formulaire invalide");
 			return
 		}
-
+		setErrState("");
+		
 		const city = await getCityName(position.lat, position.lng)
 		if (!city)
 			return
 
 		const obj = {
-			lat: position.lat,
-			lng: position.lng,
+			lat: parseFloat(position.lat.toFixed(6)),
+			lng: parseFloat(position.lng.toFixed(6)),
 			city: city
 		}
 
-		axios.post(API_ROUTES.UPDATE_CITY, obj, {
+		axios.patch(API_ROUTES.UPDATE_LOCATION, obj, {
 			withCredentials: true,
 		})
 		.then((res) => {

@@ -14,11 +14,18 @@ export default function EmailForm() {
 	function handleSubmit(e) {
 		e.preventDefault()
 
+		if (inputState == "")
+		{
+			setErrState("Veuillez sélectionner un champ");
+			return ;
+		}
+		setErrState("")
+
 		const obj = {
 			preferences: DOMPurify.sanitize(inputState),
 		}
 
-		axios.post(API_ROUTES.UPDATE_PREFERENCES, obj, {
+		axios.patch(API_ROUTES.UPDATE_PREFERENCES, obj, {
 			withCredentials: true,
 		})
 		.then((res) => {

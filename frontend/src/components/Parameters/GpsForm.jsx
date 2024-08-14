@@ -6,18 +6,24 @@ export default function GpsForm({changeState}) {
 	const [inputState, setInputState] = useState(false);
 	const [errState, setErrState] = useState("");
 
+	function toggleInputState()
+	{
+		setInputState((prevState) => !prevState);
+	}
+
 	function handleSubmit(e) {
 		const obj = {
 			gps: e.target.checked,
 		}
 
-		axios.post(API_ROUTES.UPDATE_GPS, obj, {
+		setErrState("");
+		axios.patch(API_ROUTES.UPDATE_GPS, obj, {
 			withCredentials: true,
 		})
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-			setInputState(e.target.checked);
+			toggleInputState();
 			changeState();
 		})
 		.catch((err) => {
