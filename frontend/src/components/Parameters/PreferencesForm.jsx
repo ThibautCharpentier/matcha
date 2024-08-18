@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function EmailForm() {
-	const [inputState, setInputState] = useState("");
+export default function PreferencesForm({ data }) {
+	const [inputState, setInputState] = useState(data.preferences);
 	const [errState, setErrState] = useState("");
+
+	useEffect(() => {
+		setInputState(data.preferences)
+    }, [data]);
 
 	function handleInputChange(e) {
 		setInputState(e.target.value);
@@ -52,7 +56,7 @@ export default function EmailForm() {
 							name="preferences"
 							id="men"
 							value="hommes"
-							checked={inputState == "hommes"}
+							checked={inputState === "hommes"}
 							onChange={handleInputChange}
 							/>
 						</div>
@@ -65,7 +69,7 @@ export default function EmailForm() {
 							name="preferences"
 							id="women"
 							value="femmes"
-							checked={inputState == "femmes"}
+							checked={inputState === "femmes"}
 							onChange={handleInputChange}
 							/>
 						</div>
@@ -78,7 +82,7 @@ export default function EmailForm() {
 							name="preferences"
 							id="bi"
 							value="bi"
-							checked={inputState == "bi"}
+							checked={inputState === "bi"}
 							onChange={handleInputChange}
 							/>
 						</div>

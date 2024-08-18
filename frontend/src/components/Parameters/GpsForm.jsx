@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function GpsForm({changeState}) {
-	const [inputState, setInputState] = useState(false);
+export default function GpsForm({ data }) {
+	const [inputState, setInputState] = useState(data.gps);
 	const [errState, setErrState] = useState("");
+
+	useEffect(() => {
+		setInputState(data.gps)
+    }, [data]);
 
 	function toggleInputState()
 	{
@@ -24,7 +28,6 @@ export default function GpsForm({changeState}) {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
 			toggleInputState();
-			changeState();
 		})
 		.catch((err) => {
 			setErrState("Formulaire invalide");

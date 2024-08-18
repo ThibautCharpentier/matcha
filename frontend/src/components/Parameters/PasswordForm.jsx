@@ -30,6 +30,10 @@ export default function PasswordForm() {
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
+				setInputsStates({
+					password: "",
+					confirmPassword: "",
+				})
 			})
 			.catch((err) => {
 				setErrState("Formulaire invalide");

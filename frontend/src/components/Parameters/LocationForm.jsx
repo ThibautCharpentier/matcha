@@ -25,8 +25,10 @@ function LocationMarker({position, setPosition}) {
     );
 }
 
-export default function LocationForm() {
-	const [position, setPosition] = useState(null);
+export default function LocationForm({ data }) {
+	const [position, setPosition] = useState(
+        data.latitude && data.longitude ? { lat: data.latitude, lng: data.longitude } : null
+    );
 	const [errState, setErrState] = useState("");
 
 	async function getCityName(lat, lng) {
@@ -74,7 +76,7 @@ export default function LocationForm() {
     return (
 		<>
 			<form action="" className="flex flex-col mt-6">
-				<MapContainer center={[46.6 , 1.9]} zoom={13} scrollWheelZoom={false} style={{ height: "300px", width: "100%" }}>
+				<MapContainer center={data.latitude && data.longitude ? [data.latitude, data.longitude] : [46.6, 1.9]} zoom={13} scrollWheelZoom={false} style={{ height: "300px", width: "100%" }}>
 					<TileLayer
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

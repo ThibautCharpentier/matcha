@@ -59,9 +59,9 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
-							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={<Dashboard />} />} />
+							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
-							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={<Parameters />} />} />
+							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />
 						</Routes>
 					</Layout>
 				</BrowserRouter>

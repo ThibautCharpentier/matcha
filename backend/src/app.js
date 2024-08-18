@@ -57,7 +57,10 @@ websocket.on('connection', async (ws, req) => {
 		const decoded = jwt.verify(accessToken, process.env.SECRET_TOKEN_KEY);
 		ws.user_id = decoded.id;
 		ws.access_token = accessToken;
+		ws.data = null;
 		const res_query = await user.selectById(ws.user_id);
+		if (!res_query)
+			ws.close(4001);
 		if (res_query.status == 'offline')
 			await user.connect(ws.user_id, true);
 	}
@@ -73,7 +76,16 @@ websocket.on('connection', async (ws, req) => {
     ws.on('close', async (code) => {
         if (code == 4001 || code == 4002)
 			return ;
-		await user.connect(ws.user_id, false);
+		try
+		{
+			const res_query = await user.selectById(ws.user_id);
+			if (res_query.status == 'online')
+				await user.connect(ws.user_id, false);
+		}
+		catch (err)
+		{
+			console.log(err);
+		}
     });
 
     ws.on('error', async (error) => {

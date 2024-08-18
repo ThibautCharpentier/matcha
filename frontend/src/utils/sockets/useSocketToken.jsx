@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { WS_ROUTES, API_ROUTES } from '../constants';
+import { WS_URL, API_ROUTES } from '../constants';
 import axios from 'axios';
 
 export const useSocketToken = (isAuthenticated, logout) => {
@@ -10,11 +10,12 @@ export const useSocketToken = (isAuthenticated, logout) => {
 	useEffect(() => {
 		if (isAuthenticated && socketTokenRef.current == null)
 		{
-			socketTokenRef.current = new WebSocket(WS_ROUTES.TOKEN);
+			socketTokenRef.current = new WebSocket(WS_URL);
 
 			socketTokenRef.current.onopen = () => {
 				repeat.current = setInterval(() => {
-					socketTokenRef.current.send("TOKEN");
+					if (socketTokenRef.current.readyState === WebSocket.OPEN)
+						socketTokenRef.current.send("TOKEN");
 				}, 50000);
 			}
 
@@ -37,8 +38,7 @@ export const useSocketToken = (isAuthenticated, logout) => {
 			socketTokenRef.current.onclose = (event) => {
 				clearInterval(repeat.current);
 				socketTokenRef.current = null;
-				if (event.code === 4002)
-					setCloseState(!closeState);
+				setCloseState(!closeState);
 			}
 
 			socketTokenRef.current.onerror = () => {
@@ -48,7 +48,7 @@ export const useSocketToken = (isAuthenticated, logout) => {
 		}
 
 		return () => {
-            if (socketTokenRef.current)
+            if (socketTokenRef.current && (socketTokenRef.current.readyState === WebSocket.OPEN || socketTokenRef.current.readyState === WebSocket.CLOSING))
                 socketTokenRef.current.close();
         };
 	}, [isAuthenticated, closeState])

@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function EmailForm() {
+export default function UsernameForm({ data }) {
 	const [inputState, setInputState] = useState("");
 	const [errState, setErrState] = useState("");
 
@@ -21,6 +21,7 @@ export default function EmailForm() {
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
+				setInputState("");
 			})
 			.catch((err) => {
 				if (err.response.data.message == "Username already exists")
@@ -48,7 +49,7 @@ export default function EmailForm() {
 				<label className="font-poppins-medium" htmlFor="username">Nom d'utilisateur</label>
 				<div className="flex items-center space-x-2">
 					<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
-					placeholder="Entrez un nom d'utilisateur"
+					placeholder={data.username === "" ? "Entrez un nom d'utilisateur" : data.username}
 					type="text"
 					name="username"
 					id="username"
