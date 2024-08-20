@@ -5,6 +5,7 @@ import { API_ROUTES } from "../../utils/constants";
 
 export default function UsernameForm({ data }) {
 	const [inputState, setInputState] = useState("");
+	const [verified, setVerified] = useState(false);
 	const [errState, setErrState] = useState("");
 
 	function handleSubmit(e) {
@@ -21,6 +22,7 @@ export default function UsernameForm({ data }) {
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
+				setVerified(true);
 				setInputState("");
 			})
 			.catch((err) => {
@@ -56,8 +58,21 @@ export default function UsernameForm({ data }) {
 					autoComplete="username"
 					value={inputState}
 					onChange={e => setInputState(e.target.value)}
+					onFocus={() => setVerified(false)}
 					/>
-					<button className="btn" onClick={handleSubmit}>Envoyer</button>
+					{verified ? 
+					<button className="btn flex justify-center items-center bg-[--color-pink] w-40 h-12 p-2" disabled>
+						<svg height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+							<g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g>
+						</svg>
+					</button>
+					:
+					<button className="btn flex justify-center items-center w-40 h-12 p-2" onClick={handleSubmit}>
+						Envoyer
+					</button>
+					}
 				</div>
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>

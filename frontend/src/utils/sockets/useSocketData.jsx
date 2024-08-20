@@ -28,6 +28,7 @@ export const useSocketData = (isAuthenticated, setData) => {
 					email: res.email,
 					preferences: res.preferences,
 					bio: res.bio,
+					picture_profile: res.picture_profile,
 					pictures: res.pictures,
 					gps: res.gps,
 					latitude: res.latitude,

@@ -8,6 +8,8 @@ const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const user = require('../db/user');
+const mail = require('../config/mail');
+const jwt = require('jsonwebtoken');
 const { jwtrequired } = require('../config/jwt');
 const router = express.Router();
 
@@ -37,12 +39,37 @@ router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (
 		let res_query = await user.selectByEmail(email);
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Email already exists'});
-		await user.changeEmail(req.user_id, email);
+		await mail.sendValidateEmail(req.user_id, email);
 	}
 	catch (err)
 	{
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
+router.get('/verifyemail', async (req, res) => {
+	let userId;
+	let	userEmail;
+	try
+	{
+		const { token } = req.query
+		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
+        userId = decoded.id;
+		userEmail = decoded.mail;
+	}
+	catch (err)
+	{
+		return res.status(403).json({message: err});
+	}
+	try
+	{
+		await user.changeEmail(userId, userEmail);
+	}
+	catch (err)
+	{
+		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
 });

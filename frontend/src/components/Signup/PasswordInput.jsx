@@ -1,11 +1,6 @@
 import { useState } from "react";
 
-export default function PasswordInput({inputsStates, setInputsStates, showValidation}) {
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-	function togglePasswordVisibility() {
-		setIsPasswordVisible((prevState) => !prevState);
-	}
+export default function PasswordInput({inputsStates, setInputsStates, showValidation, isPasswordVisible, togglePasswordVisibility}) {
 
 	return (
 	<>

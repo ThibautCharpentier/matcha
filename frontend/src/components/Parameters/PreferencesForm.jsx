@@ -5,6 +5,7 @@ import { API_ROUTES } from "../../utils/constants";
 
 export default function PreferencesForm({ data }) {
 	const [inputState, setInputState] = useState(data.preferences);
+	const [verified, setVerified] = useState(false);
 	const [errState, setErrState] = useState("");
 
 	useEffect(() => {
@@ -35,6 +36,7 @@ export default function PreferencesForm({ data }) {
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
+			setVerified(true);
 		})
 		.catch((err) => {
 			setErrState("Formulaire invalide");
@@ -58,6 +60,7 @@ export default function PreferencesForm({ data }) {
 							value="hommes"
 							checked={inputState === "hommes"}
 							onChange={handleInputChange}
+							onFocus={() => setVerified(false)}
 							/>
 						</div>
 						<div className="flex">
@@ -71,6 +74,7 @@ export default function PreferencesForm({ data }) {
 							value="femmes"
 							checked={inputState === "femmes"}
 							onChange={handleInputChange}
+							onFocus={() => setVerified(false)}
 							/>
 						</div>
 						<div className="flex">
@@ -84,10 +88,23 @@ export default function PreferencesForm({ data }) {
 							value="bi"
 							checked={inputState === "bi"}
 							onChange={handleInputChange}
+							onFocus={() => setVerified(false)}
 							/>
 						</div>
 					</div>
-					<button className="btn" onClick={handleSubmit}>Envoyer</button>
+					{verified ? 
+					<button className="btn flex justify-center items-center bg-[--color-pink] w-40 h-12 p-2" disabled>
+						<svg height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+							<g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g>
+						</svg>
+					</button>
+					:
+					<button className="btn flex justify-center items-center w-40 h-12 p-2" onClick={handleSubmit}>
+						Envoyer
+					</button>
+					}
 				</div>
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>

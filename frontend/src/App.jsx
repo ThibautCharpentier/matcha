@@ -7,6 +7,7 @@ import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
 import SignUp from "./components/Signup/SignUp"
 import TokenMail from "./components/Token/TokenMail"
+import TokenNewMail from "./components/Token/TokenNewMail"
 import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
 import AuthRoute from './components/AuthRoute'
@@ -59,6 +60,7 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
+							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
 							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />

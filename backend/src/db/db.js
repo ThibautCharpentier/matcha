@@ -33,6 +33,7 @@ const createTables = async () => {
 				preferences VARCHAR DEFAULT 'bi',
 				bio TEXT,
 				age DATE,
+				picture_profile VARCHAR,
 				pictures VARCHAR[],
 				famerating FLOAT DEFAULT 1,
 				gps BOOLEAN DEFAULT false,

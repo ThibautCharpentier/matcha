@@ -8,6 +8,7 @@ export default function PasswordForm() {
 		password: "",
 		confirmPassword: "",
 	});
+	const [verified, setVerified] = useState(false);
 	const [errState, setErrState] = useState("");
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -30,6 +31,7 @@ export default function PasswordForm() {
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
+				setVerified(true);
 				setInputsStates({
 					password: "",
 					confirmPassword: "",
@@ -84,6 +86,7 @@ export default function PasswordForm() {
 							autoComplete="new-password"
 							value={inputsStates.password}
 							onChange={e => setInputsStates({...inputsStates, password: e.target.value})}
+							onFocus={() => setVerified(false)}
 							/>
 							<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
 								{isPasswordVisible ? (
@@ -104,6 +107,7 @@ export default function PasswordForm() {
 							autoComplete="new-password"
 							value={inputsStates.confirmPassword}
 							onChange={e => setInputsStates({...inputsStates, confirmPassword: e.target.value})}
+							onFocus={() => setVerified(false)}
 							/>
 							<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
 								{isPasswordVisible ? (
@@ -114,7 +118,19 @@ export default function PasswordForm() {
 							</button>
 						</div>
 					</div>
-					<button className="btn" onClick={handleSubmit}>Envoyer</button>
+					{verified ? 
+					<button className="btn flex justify-center items-center bg-[--color-pink] w-40 h-12 p-2" disabled>
+						<svg height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+							<g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g>
+						</svg>
+					</button>
+					:
+					<button className="btn flex justify-center items-center w-40 h-12 p-2" onClick={handleSubmit}>
+						Envoyer
+					</button>
+					}
 				</div>
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>

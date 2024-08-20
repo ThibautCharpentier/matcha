@@ -16,6 +16,7 @@ const AuthRoute = ({ element: Element, ...rest }) => {
 		email: "",
 		preferences: "",
 		bio: "",
+		picture_profile: null,
 		pictures: [],
 		gps: false,
 		latitude: null,
