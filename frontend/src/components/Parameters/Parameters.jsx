@@ -14,8 +14,8 @@ export default function Parameters({ data }) {
     }, [data]);
 
 	return (
-		<div className="flex flex-grow justify-center">
-			<div className="w-96 flex flex-col p-2 mt-6">
+		<div className="flex flex-grow justify-center mb-[4em] sm:mb-0">
+			<div className="max-w-96 flex flex-col p-2 mt-6">
 				<h1 className="text-5xl text-center font-poppins-bold ">Paramètres</h1>
 				<UsernameForm data={data} />
 				<EmailForm data={data}/>

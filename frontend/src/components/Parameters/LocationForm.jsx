@@ -81,7 +81,7 @@ export default function LocationForm({ data }) {
     return (
 		<>
 			<form action="" className="flex flex-col mt-6">
-				<MapContainer center={data.latitude && data.longitude ? [data.latitude, data.longitude] : [46.6, 1.9]} zoom={13} scrollWheelZoom={true} style={{ height: "300px", width: "100%" }}>
+				<MapContainer className="z-0" center={data.latitude && data.longitude ? [data.latitude, data.longitude] : [46.6, 1.9]} zoom={13} scrollWheelZoom={true} style={{ height: "300px", width: "100%" }}>
 					<TileLayer
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
