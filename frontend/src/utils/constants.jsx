@@ -41,6 +41,7 @@ export const APP_ROUTES = {
     WELCOME: "/",
     SIGN_UP: "/signup",
     SIGN_IN: "/signin",
+	SIGN_OUT: "/signout",
     TOKEN_MAIL: "/token_mail",
 	TOKEN_NEWMAIL: "/token_newmail",
     TOKEN_PASSWORD: "/token_password",

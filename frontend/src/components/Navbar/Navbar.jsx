@@ -1,10 +1,31 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-import { APP_ROUTES } from "../../utils/constants"
+import axios from 'axios';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { APP_ROUTES, API_ROUTES } from "../../utils/constants"
 import ParametersButton from "./ParametersButton"
+import { useAuth } from "../AuthContext";
 
 const Navbar = () => {
+	const navigate = useNavigate();
+	const { logout } = useAuth();
     const activeClass = "text-pink-600"
+
+	function handleDeconnexion(e) {
+		e.preventDefault()
+
+		axios.post(API_ROUTES.SIGN_OUT, null, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			else
+			{
+				logout();
+				navigate('/signin');
+			}
+		});
+	}
 
 	return (
 		<div className="z-10 flex-none bottom-0 w-full h-16 sm:h-screen sm:w-24 lg:w-56 bg-gray-50 text-gray-700 fixed sm:relative">
@@ -104,7 +125,7 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                         <li className='h-full  sm:mb-6 sm:h-auto sm:bottom-0 sm:mt-6 sm:w-full hover:text-gray-900 group flex items-center' >
-                            <button className='w-full sm:py-2.5 sm:px-4 flex justify-center lg:justify-start'
+                            <button onClick={handleDeconnexion} className='w-full sm:py-2.5 sm:px-4 flex justify-center lg:justify-start'
                             >
                                 <svg className="sm:mr-2 lg:ml-4 group-hover:text-pink-600" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" strokeWidth="0"/>
