@@ -130,4 +130,17 @@ router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), a
 	return res.status(200).json({message: 'OK'});
 });
 
+router.get('/getgps', jwtrequired(), async(req, res) => {
+	let res_query;
+	try
+	{
+		res_query = await user.getGps(req.user_id);
+	}
+	catch (err)
+	{
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+})
+
 module.exports = router;

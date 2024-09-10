@@ -12,6 +12,42 @@ export const AuthProvider = ({ children }) => {
 
     const login = () => {
         setIsAuthenticated(true);
+		axios.get(`${API_ROUTES.GET_GPS}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			if (res.data.message.gps == false)
+			{
+				axios.get('https://ipapi.co/json/')
+				.then((res) => {
+					if (res.status != 200)
+						throw new Error('Une erreur est survenue');
+					const obj = {
+						lat: parseFloat(res.data.latitude.toFixed(6)),
+						lng: parseFloat(res.data.longitude.toFixed(6)),
+						city: res.data.city
+					}
+					axios.patch(API_ROUTES.UPDATE_LOCATION, obj, {
+						withCredentials: true,
+					})
+					.then((res) => {
+						if (res.status != 200)
+							throw new Error('Une erreur est survenue');
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+		});
     };
 
     const logout = () => {
