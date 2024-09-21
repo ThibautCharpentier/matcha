@@ -103,7 +103,7 @@ const Navbar = () => {
 						</NavLink>
 					</li>
                     <li className='flex sm:hidden h-full sm:mt-6 hover:text-gray-900 group justify-center items-center'>
-                        <ParametersButton />
+                        <ParametersButton handleDeconnexion={handleDeconnexion} />
                     </li>
 				</ul>
                 <div className="hidden sm:h-1/4 sm:flex sm:flex-col sm:justify-end">

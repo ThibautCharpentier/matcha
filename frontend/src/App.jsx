@@ -12,6 +12,7 @@ import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
 import AuthRoute from './components/AuthRoute'
 import Dashboard from "./components/Dashboard"
+import Match from "./components/Match/Match"
 import Parameters from "./components/Parameters/Parameters"
 import Navbar from "./components/Navbar/Navbar"
 import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
@@ -62,6 +63,7 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
+							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={Match} />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
 							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />
 						</Routes>
