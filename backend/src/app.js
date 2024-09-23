@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./db/db');
 const authRouter = require('./routes/auth')
+const dataRouter = require('./routes/data')
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/auth', authRouter);
+app.use('/data', dataRouter);
 
 db.createTables().catch(err => {
 	console.log('Error creating tables: ', err);

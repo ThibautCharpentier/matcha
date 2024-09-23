@@ -30,6 +30,7 @@ export const API_ROUTES = {
 	REPORT:               		`${API_URL}/interaction/report`,
 	GET_MY_CONVERSATIONS: 		`${API_URL}/interaction/getmyconversations`,
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
+    GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
 };
 
 export const APP_ROUTES = {
