@@ -1,11 +1,6 @@
 import { useState } from "react";
 
-export default function ConfirmPasswordInput({inputsStates, setInputsStates, showValidation}) {
-	const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-	
-	function toggleConfirmPasswordVisibility() {
-		setIsConfirmPasswordVisible((prevState) => !prevState);
-	}
+export default function ConfirmPasswordInput({inputsStates, setInputsStates, showValidation, isPasswordVisible, togglePasswordVisibility}) {
 
 	return (
 	<>
@@ -14,7 +9,7 @@ export default function ConfirmPasswordInput({inputsStates, setInputsStates, sho
 		</label>
 		<div className="relative">
 			<input
-			type={isConfirmPasswordVisible ? "text" : "password"}
+			type={isPasswordVisible ? "text" : "password"}
 			className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 			name="confirmPassword"
 			id="confirmPassword"
@@ -24,10 +19,10 @@ export default function ConfirmPasswordInput({inputsStates, setInputsStates, sho
 			/>
 			<button
 			type="button"
-			onClick={toggleConfirmPasswordVisibility}
+			onClick={togglePasswordVisibility}
 			className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700"
 			>
-				{isConfirmPasswordVisible ? (
+				{isPasswordVisible ? (
 					<svg
 					width="24"
 					height="24"

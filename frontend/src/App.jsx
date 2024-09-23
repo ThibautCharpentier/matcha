@@ -1,6 +1,5 @@
 import './style/App.css'
 import './style/BackgroundPattern.css'
-import { useState } from 'react'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Welcome from "./components/Welcome/Welcome"
@@ -8,9 +7,13 @@ import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
 import SignUp from "./components/Signup/SignUp"
 import TokenMail from "./components/Token/TokenMail"
+import TokenNewMail from "./components/Token/TokenNewMail"
 import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
+import AuthRoute from './components/AuthRoute'
 import Dashboard from "./components/Dashboard"
+import Match from "./components/Match/Match"
+import Parameters from "./components/Parameters/Parameters"
 import Navbar from "./components/Navbar/Navbar"
 import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
@@ -29,11 +32,18 @@ const Layout = ({ children }) => {
 	const showNavbar = navbarRoutes.includes(location.pathname)
 
 	return (
-		<div className="">
-			{showNavbar && <Navbar />}
-			{children}
+		<>
+			{showNavbar ? 
+			<div className="flex">
+				<Navbar />
+				{children}
+			</div>
+			:
+			<div>
+				{children}
+			</div>}
 			<footer></footer>
-		</div>
+		</>
 	);
 }
 
@@ -51,9 +61,12 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
-							<Route exact path={ APP_ROUTES.DASHBOARD } element={<Dashboard />} />
+							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
+							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
+							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={Match} />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
-					</Routes>
+							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />
+						</Routes>
 					</Layout>
 				</BrowserRouter>
 			</AuthProvider>

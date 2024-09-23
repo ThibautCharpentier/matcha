@@ -14,6 +14,36 @@ const validateEmail = async (id) => {
 	client.release();
 }
 
+const changeUsername = async (id, username) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET username = $1 WHERE id = $2`, [username, id]);
+	client.release();
+}
+
+const changeEmail = async (id, email) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET email = $1 WHERE id = $2`, [email, id]);
+	client.release();
+}
+
+const changePreferences = async (id, preferences) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET preferences = $1 WHERE id = $2`, [preferences, id]);
+	client.release();
+}
+
+const changeGps = async (id, gps) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET gps = $1 WHERE id = $2`, [gps, id]);
+	client.release();
+}
+
+const changeLocation = async (id, { lat, lng, city }) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET latitude = $1, longitude = $2, city = $3 WHERE id = $4`, [lat, lng, city, id]);
+	client.release();
+}
+
 const changePassword = async (id, password) => {
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const client = await pool.connect();
@@ -57,4 +87,31 @@ const selectById = async (id) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, changePassword, connect, selectByUsername, selectByEmail, selectById };
+const getData = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT username, firstname, lastname, email, preferences, bio, gps, latitude, longitude FROM public.user WHERE id = $1`, [id]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
+const getInterests = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT i.name FROM public.user_interest ui JOIN public.interest i ON ui.interest = i.id WHERE ui.user_id = $1`, [id]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows;
+}
+
+const getGps = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT gps FROM public.user WHERE id = $1`, [id]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
+module.exports = { insert, validateEmail, changeUsername, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps };
