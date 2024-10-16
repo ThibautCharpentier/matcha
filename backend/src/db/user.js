@@ -114,4 +114,13 @@ const getGps = async (id) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps };
+const getInterestsId = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT ARRAY_AGG(interest) FROM public.user_interest WHERE public.user_interest.user_id = $1`, [id])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
+module.exports = { insert, validateEmail, changeUsername, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId };

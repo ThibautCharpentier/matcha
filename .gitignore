@@ -5,9 +5,11 @@ ignore
 
 /backend/node_modules
 /backend/dist
+/backend/images
 /backend/package-lock.json
 /backend/package.json
 /backend/babel.config.json
+/backend/users.csv
 
 /frontend/logs
 /frontend/*.log

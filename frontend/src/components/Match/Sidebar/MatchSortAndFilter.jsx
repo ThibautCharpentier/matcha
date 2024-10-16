@@ -1,13 +1,15 @@
 import { useState } from "react";
+import axios from 'axios';
+import { API_ROUTES } from "../../../utils/constants";
 
-export default function MatchSortAndFilter({closeSidebarSortAndFilter}) {
+export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchState, setMatchIndexState}) {
 	const [filterAge, setFilterAge] = useState("");
 	const [filterLocation, setFilterLocation] = useState("");
 	const [filterFameRating, setFameRating] = useState("");
 	const [filterCommonTags, setCommonTags] = useState("");
 	const [sortState, setSortState] = useState({
 		age: false,
-		location: true,
+		location: false,
 		fameRating: false,
 		commonTags: false
 	})
@@ -19,6 +21,79 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter}) {
 		  [name]: checked,
 		}));
 	};
+
+	function sortParameters() {
+		let sort = ""
+		let plus = false;
+		if (sortState.age) {
+			sort += "age"
+			plus = true
+		}
+		if (sortState.location) {
+			if (plus == true)
+				sort += "+"
+			sort += "location"
+			plus = true
+		}
+		if (sortState.fameRating) {
+			if (plus == true)
+				sort += "+"
+			sort += "fame"
+			plus = true
+		}
+		if (sortState.commonTags) {
+			if (plus == true)
+				sort += "+"
+			sort += "tags"
+		}
+		return (sort)
+	}
+
+	function filterParameters() {
+		let filter = ""
+		let plus = false;
+		if (filterAge != "") {
+			filter += filterAge
+			plus = true
+		}
+		if (filterLocation != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterLocation
+			plus = true
+		}
+		if (filterFameRating != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterFameRating
+			plus = true
+		}
+		if (filterCommonTags != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterCommonTags
+		}
+		return (filter)
+	}
+
+	function handleSubmit(e) {
+		e.preventDefault()
+
+		axios.get(`${API_ROUTES.GET_MATCHS}?sort=${sortParameters()}&filter=${filterParameters()}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			console.log(res.data.message)
+			closeSidebarSortAndFilter()
+			setMatchState(res.data.message);
+			setMatchIndexState(0);
+		})
+		.catch((err) => {
+			console.log(err)
+		});
+	}
 
 	return (
 		<div className="p-4">
@@ -150,7 +225,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter}) {
 				</select>
 			</div>
 			<div className="mt-6 justify-center items-center flex">
-				<button className="btn-secondary flex justify-center items-center w-36 h-11 p-2">
+				<button className="btn-secondary flex justify-center items-center w-36 h-11 p-2" onClick={handleSubmit}>
 					Valider
 				</button>
 			</div>

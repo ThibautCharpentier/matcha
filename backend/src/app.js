@@ -9,6 +9,7 @@ const WebSocket = require('ws');
 const db = require('./db/db');
 const authRouter = require('./routes/auth')
 const profileRouter = require('./routes/profile')
+const interactionRouter = require('./routes/interaction')
 const user = require('./db/user');
 const { handleWebSocketMessage } = require('./sockets/handlewebsocketmessage');
 
@@ -31,6 +32,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
+app.use('/interaction', interactionRouter);
 
 db.createTables().catch(err => {
 	console.log('Error creating tables: ', err);

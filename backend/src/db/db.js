@@ -32,7 +32,7 @@ const createTables = async () => {
 				gender VARCHAR,
 				preferences VARCHAR DEFAULT 'bi',
 				bio TEXT,
-				age DATE,
+				birthdate DATE DEFAULT CURRENT_DATE,
 				picture_profile VARCHAR,
 				pictures VARCHAR[],
 				famerating FLOAT DEFAULT 1,
@@ -73,7 +73,6 @@ const createTables = async () => {
 				name VARCHAR UNIQUE NOT NULL
 			)
 		`);
-		await client.query(`DELETE FROM public.interest`);
 		const file = createInterface({
 			input: createReadStream("interests.csv")
 		});
