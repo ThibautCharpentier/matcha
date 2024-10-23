@@ -61,7 +61,10 @@ router.post('/dislike', jwtrequired(), validateDto(targetDto), async (req, res) 
 	{
 		let res = await matchs.getDislikeProfile(req.user_id, target);
 		if (!res)
+		{
 			await matchs.addDislikeProfile(req.user_id, target);
+			await user.changeFamerating(target)
+		}
 	}
 	catch (err)
 	{
@@ -77,7 +80,10 @@ router.post('/like', jwtrequired(), validateDto(targetDto), async (req, res) => 
 	{
 		let res = await matchs.getLikeProfile(req.user_id, target);
 		if (!res)
+		{
 			await matchs.addLikeProfile(req.user_id, target);
+			await user.changeFamerating(target)
+		}
 	}
 	catch (err)
 	{

@@ -20,6 +20,19 @@ const changeUsername = async (id, username) => {
 	client.release();
 }
 
+const changeFamerating = async (id) => {
+	const client = await pool.connect();
+	const all_interactions = await client.query(`SELECT count(*)::INTEGER FROM public.interaction where target = $1`, [id])
+	const like_interactions = await client.query(`SELECT count(*)::INTEGER FROM public.interaction where target = $1 and action = 'like'`, [id])
+	let famerating
+	if (all_interactions.rows[0].count == 0)
+		famerating = 1
+	else
+		famerating = like_interactions.rows[0].count / all_interactions.rows[0].count
+	await client.query(`UPDATE public.user SET famerating = $1 WHERE id = $2`, [famerating, id]);
+	client.release();
+}
+
 const changeEmail = async (id, email) => {
 	const client = await pool.connect();
 	await client.query(`UPDATE public.user SET email = $1 WHERE id = $2`, [email, id]);
@@ -123,4 +136,4 @@ const getInterestsId = async (id) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId };

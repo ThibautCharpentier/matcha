@@ -15,6 +15,8 @@ function getInitialQueryMatchs(res_user) {
 			id,
 			firstname,
 			lastname,
+			status,
+			last_connection,
 			bio,
 			EXTRACT(YEAR FROM AGE(birthdate)) AS age,
 			famerating,
@@ -43,6 +45,14 @@ function getInitialQueryMatchs(res_user) {
 			public.user
 		WHERE
 			id != $4
+			AND
+			city IS NOT NULL
+			AND
+			latitude IS NOT NULL
+			AND
+			longitude IS NOT NULL
+			AND
+			verified != false
 			AND
 			`
 	if (res_user.gender == "man")

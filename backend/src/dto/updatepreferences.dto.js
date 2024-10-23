@@ -2,7 +2,7 @@ const { IsString, IsIn } = require('class-validator');
 
 class UpdatePreferencesDto {
 	@IsString()
-	@IsIn(['hommes', 'femmes', 'bi'])
+	@IsIn(['men', 'women', 'bi'])
 	preferences;
 
 	validateFields() {

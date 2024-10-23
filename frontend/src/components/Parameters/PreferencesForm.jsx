@@ -57,8 +57,8 @@ export default function PreferencesForm({ data }) {
 							type="radio"
 							name="preferences"
 							id="men"
-							value="hommes"
-							checked={inputState === "hommes"}
+							value="men"
+							checked={inputState === "men"}
 							onChange={handleInputChange}
 							onFocus={() => setVerified(false)}
 							/>
@@ -71,8 +71,8 @@ export default function PreferencesForm({ data }) {
 							type="radio"
 							name="preferences"
 							id="women"
-							value="femmes"
-							checked={inputState === "femmes"}
+							value="women"
+							checked={inputState === "women"}
 							onChange={handleInputChange}
 							onFocus={() => setVerified(false)}
 							/>

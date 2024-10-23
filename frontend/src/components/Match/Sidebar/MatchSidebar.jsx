@@ -21,6 +21,8 @@ export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResea
 				{(isSidebarResearchOpen &&
 					<MatchResearch
 						closeSidebarResearch={closeSidebarResearch}
+						setMatchState={setMatchState}
+						setMatchIndexState={setMatchIndexState}
 					/>
 				)}
       		</div>
