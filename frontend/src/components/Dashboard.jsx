@@ -1,6 +1,6 @@
 
 
-export default function Dashboard() {
+export default function Dashboard({ data }) {
     return (
         <div>
         

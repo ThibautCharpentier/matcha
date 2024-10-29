@@ -37,6 +37,15 @@ Veuillez cliquer sur ce lien pour vérifier votre adresse email : ${verification
 Attention ce lien expirera au bout de 10 minutes.`);
 }
 
+const sendValidateEmail = async (id, email) => {
+	const verificationToken = jwt.sign({ id: id, mail: email }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.MAIL_TOKEN_EXPIRATION });
+	const verificationLink = `http://${process.env.HOST_IP}:${process.env.FRONT_PORT}/token_newmail?token=${verificationToken}`;
+	await sendMail(email, 'changement de votre adresse mail', `SMACK
+Veuillez cliquer sur ce lien pour valider la modification de votre adresse email : ${verificationLink}
+
+Attention ce lien expirera au bout de 10 minutes.`);
+}
+
 const sendForgotPassword = async (email) => {
 	let query_user = await user.selectByEmail(email);
 	const verificationToken = jwt.sign({ id: query_user.id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.MAIL_TOKEN_EXPIRATION });
@@ -54,4 +63,4 @@ Voici l'intitulé de votre nom d'utilisateur : '${username}'.
 A bientôt sur SMACK ;)`);
 }
 
-module.exports = { sendMail, sendVerifyEmail, sendForgotPassword, sendForgotUsername };
+module.exports = { sendMail, sendVerifyEmail, sendValidateEmail, sendForgotPassword, sendForgotUsername };

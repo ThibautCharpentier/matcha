@@ -1,5 +1,7 @@
 const API_URL = "http://" + window.location.hostname + ":8000";
 
+export const WS_URL = "ws://" + window.location.hostname + ":8000";
+
 export const API_ROUTES = {
     SIGN_UP: 					`${API_URL}/auth/signup`,
 	VERIFY_EMAIL: 				`${API_URL}/auth/verifyemail`,
@@ -13,17 +15,21 @@ export const API_ROUTES = {
     COMPLETE_PROFIL:            `${API_URL}/profile/completeprofil`,
 	GET_MY_PROFILE: 			`${API_URL}/profile/getmyprofile`,
 	GET_OTHER_PROFILE: 			`${API_URL}/profile/getotherprofile`,
-	UPDATE_FIRSTNAME:			`${API_URL}/profile/updatefirstname`,
-	UPDATE_LASTNAME: 			`${API_URL}/profile/updatelastname`,
-	UPDATE_GENDER:            	`${API_URL}/profile/updategender`,
-	UPDATE_SEXUALPREFERENCES:	`${API_URL}/profile/updatesexualpreferences`,
+	//UPDATE_FIRSTNAME:			`${API_URL}/profile/updatefirstname`,
+	//UPDATE_LASTNAME: 			`${API_URL}/profile/updatelastname`,
+	//UPDATE_GENDER:            	`${API_URL}/profile/updategender`,
+	UPDATE_PREFERENCES:			`${API_URL}/profile/updatepreferences`,
 	UPDATE_BIO:           		`${API_URL}/profile/updatebio`,
-	UPDATE_AGE:           		`${API_URL}/profile/updateage`,
+	//UPDATE_AGE:           		`${API_URL}/profile/updateage`,
 	UPDATE_PICTURES:      		`${API_URL}/profile/updatepictures`,
 	UPDATE_INTEREST:      		`${API_URL}/profile/updateinterest`,
 	UPDATE_PASSWORD:      		`${API_URL}/profile/updatepassword`,
 	UPDATE_EMAIL:         		`${API_URL}/profile/updateemail`,
+	VERIFY_NEW_EMAIL: 			`${API_URL}/profile/verifyemail`,
 	UPDATE_USERNAME:      		`${API_URL}/profile/updateusername`,
+	UPDATE_GPS:					`${API_URL}/profile/updategps`,
+	UPDATE_LOCATION:			`${API_URL}/profile/updatelocation`,
+	GET_GPS:					`${API_URL}/profile/getgps`,
 	LIKE:                 		`${API_URL}/interaction/like`,
 	DISLIKE:              		`${API_URL}/interaction/dislike`,
 	BLOCK:                		`${API_URL}/interaction/block`,
@@ -32,6 +38,7 @@ export const API_ROUTES = {
 	GET_MY_CONVERSATIONS: 		`${API_URL}/interaction/getmyconversations`,
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
     GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
+	GET_MATCHS:         		`${API_URL}/interaction/getmatchs`,
 };
 
 export const APP_ROUTES = {
@@ -39,6 +46,7 @@ export const APP_ROUTES = {
     SIGN_UP: "/signup",
     SIGN_IN: "/signin",
     TOKEN_MAIL: "/token_mail",
+	TOKEN_NEWMAIL: "/token_newmail",
     TOKEN_PASSWORD: "/token_password",
     PARAMETERS: "/parameters",
     DASHBOARD: "/dashboard",

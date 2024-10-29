@@ -32,6 +32,12 @@ export default function SignUp() {
 		confirmPassword: "",
 		server: ""
 	});
+
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+	function togglePasswordVisibility() {
+		setIsPasswordVisible((prevState) => !prevState);
+	}
 	
 	function handleSubmit(e) {
 		e.preventDefault()
@@ -169,11 +175,15 @@ export default function SignUp() {
 					inputsStates={inputsStates}
 					setInputsStates={setInputsStates}
 					showValidation={showValidation}
+					isPasswordVisible={isPasswordVisible}
+					togglePasswordVisibility={togglePasswordVisibility}
 					/>
 					<ConfirmPasswordInput 
 					inputsStates={inputsStates}
 					setInputsStates={setInputsStates}
 					showValidation={showValidation}
+					isPasswordVisible={isPasswordVisible}
+					togglePasswordVisibility={togglePasswordVisibility}
 					/>
 					{showValidation.server != "" && (
 					<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
