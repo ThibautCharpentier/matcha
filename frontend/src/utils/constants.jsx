@@ -1,7 +1,7 @@
 const API_URL = "http://" + window.location.hostname + ":8000";
 
 export const API_ROUTES = {
-	SIGN_UP: 					`${API_URL}/auth/signup`,
+    SIGN_UP: 					`${API_URL}/auth/signup`,
 	VERIFY_EMAIL: 				`${API_URL}/auth/verifyemail`,
 	SIGN_IN: 					`${API_URL}/auth/signin`,
 	FORGOT_PASSWORD: 			`${API_URL}/auth/forgotpassword`,
@@ -10,6 +10,7 @@ export const API_ROUTES = {
 	SIGN_OUT: 					`${API_URL}/auth/signout`,
 	REFRESH: 					`${API_URL}/auth/refresh`,
 	IS_CONNECTED: 				`${API_URL}/auth/isconnected`,
+    COMPLETE_PROFIL:            `${API_URL}/profile/completeprofil`,
 	GET_MY_PROFILE: 			`${API_URL}/profile/getmyprofile`,
 	GET_OTHER_PROFILE: 			`${API_URL}/profile/getotherprofile`,
 	UPDATE_FIRSTNAME:			`${API_URL}/profile/updatefirstname`,

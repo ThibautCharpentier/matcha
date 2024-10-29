@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ModalHobbies from "./ModalHobbies"
 
-export default function HobbiesStep({nextStep, infoUser}) {
+export default function HobbiesStep({nextStep, infosUser}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [passions, setPassions] = useState([]);
 
@@ -11,7 +11,7 @@ export default function HobbiesStep({nextStep, infoUser}) {
     };
 
     function handleSubmit() { 
-        infoUser.interest = [...passions];
+        infosUser.interest = [...passions];
         nextStep();
     }
 

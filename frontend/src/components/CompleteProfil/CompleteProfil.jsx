@@ -1,19 +1,20 @@
 import GenderStep from "./GenderStep"
-import SexualPreferencesStep from "./SexualPreferencesStep"
+import PreferencesStep from "./PreferencesStep"
 import AgeStep from "./AgeStep"
 import HobbiesStep from "./HobbiesStep"
 import PicturesStep from "./PicturesStep"
 import React, { useState, useRef } from 'react';
-
+import { Link, useNavigate } from "react-router-dom";
+import { API_ROUTES, APP_ROUTES } from "../../utils/constants";
 
 export default function CompleteProfil() {
+    const navigate = useNavigate();
     let infosUser = useRef({
         gender: "",
-        sexual_preferences: "",
+        preferences: "",
         age: "",
         interest: [],
-        otherPictures: [],
-        profilPicture: ""
+        pictures: [],
     })
 
     const [step, setStep] = useState(1);
@@ -29,16 +30,15 @@ export default function CompleteProfil() {
     const renderStep = () => {
         switch (step) {
             case 1:
-                return <PicturesStep nextStep={nextStep} infosUser={infosUser}/>;
-                //return <GenderStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <GenderStep nextStep={nextStep} infosUser={infosUser}/>;
             case 2:
-                return <SexualPreferencesStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <PreferencesStep nextStep={nextStep} infosUser={infosUser}/>;
             case 3:
                 return <AgeStep nextStep={nextStep} infosUser={infosUser}/>;
             case 4:
                 return <HobbiesStep nextStep={nextStep} infosUser={infosUser}/>;
             case 5:
-                return <PicturesStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <PicturesStep validateProfil={validateProfil} infosUser={infosUser}/>;
             
           // Ajoutez d'autres cas pour les étapes supplémentaires
             default:
@@ -46,6 +46,22 @@ export default function CompleteProfil() {
         }
     };
 
+    const validateProfil = () => {
+        axios.post(API_ROUTES.SIGN_UP, infosUser, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 201)
+                throw new Error('une erreur est survenue')
+            else
+                navigate('/dashboard');
+        })
+        .catch((err) => {
+            console.log(err)
+            if (err.response.data.message == "")
+                console.log("error")
+        })
+    }
     console.log(infosUser)
 
     return (

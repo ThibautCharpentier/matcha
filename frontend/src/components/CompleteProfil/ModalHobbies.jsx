@@ -9,21 +9,17 @@ export default function ModalHobbies({ isOpen, onClose, onSave }) {
 	const [selectedPassions, setSelectedPassions] = useState([]);
 
 	useEffect(() => {
-		console.log("allllo")
 
 		async function fetchInterest() {
-			console.log("fetch")
 			axios.get(API_ROUTES.GET_ALL_INTERESTS, {
 				withCredentials: true,
 				timeout: 5000,
 			})
 			.then((res) => {
-				console.log("tu passes")
 				if (res.status != 200)
 					throw new Error('une erreur est survenue')
 				const names = res.data.data.map(interest => interest.name);
 				setInterestNames(names);
-				console.log(interestNames);
 			})
 			.catch((err) => {
 				console.log(err)

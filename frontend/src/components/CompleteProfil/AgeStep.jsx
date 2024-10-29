@@ -26,7 +26,6 @@ export default function AgeStep({nextStep, infosUser}) {
 
     const validateDate = (d, m, y) => {
         if (!d || !m || !y) return false;
-        console.log(d, m, y)
         const date = new Date(y, m - 1, d); // Les mois en JavaScript sont indexés à partir de 0
         return date.getFullYear() == y && date.getMonth() == m - 1 && date.getDate() == d;
     };
@@ -53,7 +52,7 @@ export default function AgeStep({nextStep, infosUser}) {
             <div className="strike mb-10"> 
                 <span>{titleSection}</span>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 justify-center">
                 <select 
                 value={day} 
                 onChange={(e) => setDay(e.target.value)} 
@@ -83,7 +82,7 @@ export default function AgeStep({nextStep, infosUser}) {
                 ))}
                 </select>
             </div>
-            {error && <div className="text-red-500 mt-2">{error}</div>}
+            {error && <div className="text-red-500 mt-2 text-center">{error}</div>}
             {day && month && year && !error && (
             <div className="flex justify-center mt-4">
                 <button className="btn" onClick={handleSubmit}>Valider</button>

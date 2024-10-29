@@ -9,13 +9,12 @@ export default function SexualPreferencesStep({nextStep, infosUser}) {
     function handleClik(e) {
         e.preventDefault()
 
-        console.log(e)
         if (e.target.innerHTML === "homme")
-            infosUser.sexual_preferences = "men"
+            infosUser.preferences = "men"
         else if (e.target.innerHTML === "femme")
-            infosUser.sexual_preferences = "women"
+            infosUser.preferences = "women"
         else if (e.target.innerHTML === "tout le monde")
-            infosUser.sexual_preferences = "bi"
+            infosUser.preferences = "all"
         
         nextStep()
     }
