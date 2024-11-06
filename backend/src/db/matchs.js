@@ -17,6 +17,20 @@ const getMatchs = async (res_user, sort, filter) => {
 	return (res.rows)
 }
 
+const checkMatch = async (user1, user2) => {
+	const client = await pool.connect()
+	let res = await client.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND action = 'like'`, [user1, user2])
+	client.release();
+	if (res.rows.length == 0)
+		return null
+	const client2 = await pool.connect()
+	res = await client2.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND action = 'like'`, [user2, user1])
+	client2.release();
+	if (res.rows.length == 0)
+		return null
+	return res.rows;
+}
+
 const addViewProfile = async (id, target) => {
 	const client = await pool.connect();
 	const values = [id, target]
@@ -96,4 +110,4 @@ const getBlockProfile = async (id, target) => {
 	return res.rows[0];
 }
 
-module.exports = { getMatchs, addViewProfile, getViewProfile, addDislikeProfile, getDislikeProfile, addLikeProfile, getLikeProfile, addBlockProfile, getBlockProfile }
+module.exports = { getMatchs, checkMatch, addViewProfile, getViewProfile, addDislikeProfile, getDislikeProfile, addLikeProfile, getLikeProfile, addBlockProfile, getBlockProfile }

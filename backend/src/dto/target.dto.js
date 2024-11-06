@@ -1,6 +1,6 @@
 const { IsInt } = require('class-validator');
 
-class targetDto {
+class TargetDto {
 	@IsInt()
 	target;
 
@@ -13,4 +13,4 @@ class targetDto {
     }
 }
 
-module.exports = { targetDto };
+module.exports = { TargetDto };

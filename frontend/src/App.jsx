@@ -1,7 +1,7 @@
 import './style/App.css'
 import './style/BackgroundPattern.css'
 import { APP_ROUTES } from "./utils/constants"
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Welcome from "./components/Welcome/Welcome"
 import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
@@ -13,39 +13,11 @@ import NoAuthRoute from './components/NoAuthRoute'
 import AuthRoute from './components/AuthRoute'
 import Dashboard from "./components/Dashboard"
 import Match from "./components/Match/Match"
+import Layout from "./components/Layout"
+import Notification from "./components/Notification/Notification"
 import Parameters from "./components/Parameters/Parameters"
-import Navbar from "./components/Navbar/Navbar"
 import CompleteProfil from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
-
-const Layout = ({ children }) => {
-	const location = useLocation();
-
-	const navbarRoutes = [
-		APP_ROUTES.DASHBOARD,
-		APP_ROUTES.MATCH,
-		APP_ROUTES.CONVERSATION,
-		APP_ROUTES.NOTIFICATION,
-		APP_ROUTES.PARAMETERS
-	];
-
-	const showNavbar = navbarRoutes.includes(location.pathname)
-
-	return (
-		<>
-			{showNavbar ? 
-			<div className="flex">
-				<Navbar />
-				{children}
-			</div>
-			:
-			<div>
-				{children}
-			</div>}
-			<footer></footer>
-		</>
-	);
-}
 
 export default function App() {
 
@@ -64,6 +36,7 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
 							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={Match} />} />
+							<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={Notification} />} />
 							<Route exact path="/complete-profile" element={<CompleteProfil />} />
 							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />
 						</Routes>

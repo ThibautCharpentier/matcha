@@ -8,6 +8,7 @@ const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const user = require('../db/user');
+const notif = require('../db/notifications');
 const mail = require('../config/mail');
 const jwt = require('jsonwebtoken');
 const { jwtrequired } = require('../config/jwt');
@@ -142,5 +143,18 @@ router.get('/getgps', jwtrequired(), async(req, res) => {
 	}
 	return res.status(200).json({message: res_query});
 })
+
+router.patch('/notifverified', jwtrequired(), async (req, res) => {
+	try
+	{
+		await notif.verifiedNotifs(req.user_id);
+	}
+	catch (err)
+	{
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
 
 module.exports = router;

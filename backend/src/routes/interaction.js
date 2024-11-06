@@ -2,9 +2,10 @@ const express = require('express');
 const dotenv = require('dotenv');
 const user = require('../db/user');
 const matchs = require('../db/matchs');
+const notif = require('../db/notifications');
 const utils = require('../utils/utils');
 const { validateDto } = require('../dto/validatedto');
-const { targetDto } = require('../dto/target.dto.js');
+const { TargetDto } = require('../dto/target.dto.js');
 const { jwtrequired } = require('../config/jwt');
 const router = express.Router();
 
@@ -39,13 +40,16 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 	return res.status(200).json({message: res_query});
 });
 
-router.post('/view', jwtrequired(), validateDto(targetDto), async (req, res) => {
+router.post('/view', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try
 	{
 		let res = await matchs.getViewProfile(req.user_id, target);
 		if (!res)
+		{
 			await matchs.addViewProfile(req.user_id, target);
+			await notif.addNotif(req.user_id, target, "view")
+		}
 	}
 	catch (err)
 	{
@@ -55,7 +59,7 @@ router.post('/view', jwtrequired(), validateDto(targetDto), async (req, res) => 
 	return res.status(200).json({message: 'OK'});
 });
 
-router.post('/dislike', jwtrequired(), validateDto(targetDto), async (req, res) => {
+router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try
 	{
@@ -74,7 +78,7 @@ router.post('/dislike', jwtrequired(), validateDto(targetDto), async (req, res) 
 	return res.status(200).json({message: 'OK'});
 });
 
-router.post('/like', jwtrequired(), validateDto(targetDto), async (req, res) => {
+router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try
 	{
@@ -83,6 +87,13 @@ router.post('/like', jwtrequired(), validateDto(targetDto), async (req, res) => 
 		{
 			await matchs.addLikeProfile(req.user_id, target);
 			await user.changeFamerating(target)
+			await notif.addNotif(req.user_id, target, "like")
+			res = await matchs.checkMatch(target, req.user_id)
+			if (res)
+			{
+				await notif.addNotif(req.user_id, target, "match")
+				await notif.addNotif(target, req.user_id, "match")
+			}
 		}
 	}
 	catch (err)
