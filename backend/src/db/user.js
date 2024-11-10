@@ -64,6 +64,30 @@ const changePassword = async (id, password) => {
 	client.release();
 }
 
+const changeGender = async (id, gender) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET gender = $1 WHERE id = $2`, [gender, id]);
+	client.release();
+}
+
+const changeBirthdate = async (id, birthdate) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET birthdate = $1 WHERE id = $2`, [birthdate, id]);
+	client.release();
+}
+
+const addPicture = async (id, picturePath) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET pictures = array_append(pictures, $1) WHERE id = $2`, [picturePath, id]);
+	client.release();
+}
+
+const addProfilPicture = async (id, profilPicturePath) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.user SET picture_profile = $1 WHERE id = $2`, [profilPicturePath, id]);
+	client.release();
+}
+
 const connect = async (id, connected) => {
 	const client = await pool.connect();
 	if (connected)
@@ -136,4 +160,20 @@ const getInterestsId = async (id) => {
 	return res.rows[0];
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId };
+const getInterestIdbyInterestName = async (interestName) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT id FROM public.interest WHERE name = $1`, [interestName])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0].id;
+}
+
+const addUserInterest = async (userId, interestId) => {
+    const client = await pool.connect();
+	await client.query(`INSERT INTO public.user_interest (user_id, interest) VALUES ($1, $2) ON CONFLICT (user_id, interest) DO NOTHING`, [userId, interestId])
+	client.release();
+}
+
+
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest };

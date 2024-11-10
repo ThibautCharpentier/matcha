@@ -1,3 +1,4 @@
+require('reflect-metadata');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cookie = require('cookie');
@@ -8,10 +9,19 @@ const http = require('http');
 const WebSocket = require('ws');
 const db = require('./db/db');
 const authRouter = require('./routes/auth')
+const dataRouter = require('./routes/data')
 const profileRouter = require('./routes/profile')
 const interactionRouter = require('./routes/interaction')
 const user = require('./db/user');
 const { handleWebSocketMessage } = require('./sockets/handlewebsocketmessage');
+const fs = require('fs');
+const path = require('path');
+
+const uploadDir = path.join(__dirname, '..', 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 dotenv.config();
 
@@ -31,6 +41,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/auth', authRouter);
+app.use('/data', dataRouter);
 app.use('/profile', profileRouter);
 app.use('/interaction', interactionRouter);
 
