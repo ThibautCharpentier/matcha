@@ -22,7 +22,6 @@ export default function ModalHobbies({ isOpen, onClose, onSave }) {
 				setInterestNames(names);
 			})
 			.catch((err) => {
-				console.log(err)
 				if (err.response.data.message == "Error executing query")
 					console.log(err)
 				else

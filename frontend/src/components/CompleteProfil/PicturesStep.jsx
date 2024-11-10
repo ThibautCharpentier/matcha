@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ImageUploader from "../ImageUploader";
 import InputPicture from "./InputPicture";
 
 

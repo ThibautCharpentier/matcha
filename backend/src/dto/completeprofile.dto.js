@@ -1,3 +1,5 @@
+import { Type } from 'class-transformer';
+
 const { IsIn, IsDate, ArrayNotEmpty, ArrayMinSize, ArrayMaxSize } = require('class-validator');
 
 class CompleteProfileDto {
@@ -7,18 +9,15 @@ class CompleteProfileDto {
     @IsIn(['men', 'women', 'all'])
     preferences;
 
+    @Type(() => Date)
     @IsDate()
-    age;
+    birthdate;
 
     @ArrayNotEmpty() 
     interest;
 
-    @ArrayMinSize(4)
-    @ArrayMaxSize(6)
-    pictures;
-
 	validateFields() {
-        const allowedFields = ['gender', 'preferences', 'age', 'interest', 'pictures'];
+        const allowedFields = ['gender', 'preferences', 'birthdate', 'interest', 'pictures'];
         const receivedFields = Object.keys(this);
         const unauthorizedFields = receivedFields.filter(field => !allowedFields.includes(field));
         if (unauthorizedFields.length > 0)

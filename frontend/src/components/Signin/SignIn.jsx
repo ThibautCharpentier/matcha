@@ -26,7 +26,19 @@ export default function SignIn() {
 	const [isSignIn, setIsSignIn] = useState(true);
 	const { login } = useAuth();
 
-	function handleSubmit(e) {
+    async function profileIsComplete() {
+        try {
+            const res = await axios.get(API_ROUTES.IS_COMPLETE_PROFILE, { withCredentials: true });
+            if (res.status !== 200) throw new Error('Une erreur est survenue');
+            
+            return res.data.message === true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    }
+
+	async function handleSubmit(e) {
 		e.preventDefault()
 
 		if (validationCheck()) {
@@ -35,30 +47,30 @@ export default function SignIn() {
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
 
-			axios.post(API_ROUTES.SIGN_IN, obj, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-				else
-				{
-					login();
-					navigate('/dashboard');
-				}
-			})
-			.catch((err) => {
-				if (err.response.data.message == "Invalid password")
-					setShowValidation(state => ({...state, password: "Mot de passe invalide"}))
-				else if (err.response.data.message == "Invalid username")
-					setShowValidation(state => ({...state, username: "Nom d'utilisateur invalide"}))
-				else if (err.response.data.message == "Email not verified")
-					setShowValidation(state => ({...state, server: "Veuillez d'abord vérifier votre adresse mail. Un lien de vérification vous a été envoyé."}))
-				else
-					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
-			});
-		}
-	}
+            try {
+                const res = await axios.post(API_ROUTES.SIGN_IN, obj, { withCredentials: true });
+    
+                if (res.status !== 200) throw new Error('Une erreur est survenue');
+                
+                login();
+                const isProfileComplete = await profileIsComplete();
+                if (isProfileComplete) {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/complete-profile');
+                }
+            } catch (err) {
+                if (err.response?.data?.message === "Invalid password")
+                    setShowValidation(state => ({ ...state, password: "Mot de passe invalide" }));
+                else if (err.response?.data?.message === "Invalid username")
+                    setShowValidation(state => ({ ...state, username: "Nom d'utilisateur invalide" }));
+                else if (err.response?.data?.message === "Email not verified")
+                    setShowValidation(state => ({ ...state, server: "Veuillez d'abord vérifier votre adresse mail. Un lien de vérification vous a été envoyé." }));
+                else
+                    setShowValidation(state => ({ ...state, server: "Formulaire invalide" }));
+            }
+        }
+    }
 
 	function validationCheck() {
 		const areValid = {

@@ -1,12 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AgeStep({nextStep, infosUser}) {
 
     const titleSection = infosUser.gender === "men" ? "Je suis né" : "Je suis née";
 
-    // Utiliser useMemo pour mémoriser les valeurs calculées
     const days = useMemo(() => Array.from({ length: 31 }, (_, i) => i + 1), []);
     const months = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), []);
     const years = useMemo(() => {
@@ -18,7 +16,6 @@ export default function AgeStep({nextStep, infosUser}) {
     return years;
     }, []);
 
-    // État pour les sélections d'utilisateur
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
@@ -26,7 +23,7 @@ export default function AgeStep({nextStep, infosUser}) {
 
     const validateDate = (d, m, y) => {
         if (!d || !m || !y) return false;
-        const date = new Date(y, m - 1, d); // Les mois en JavaScript sont indexés à partir de 0
+        const date = new Date(y, m - 1, d);
         return date.getFullYear() == y && date.getMonth() == m - 1 && date.getDate() == d;
     };
     
@@ -42,7 +39,7 @@ export default function AgeStep({nextStep, infosUser}) {
     
     function handleSubmit() {
         const date = new Date(year, month - 1, day);
-        infosUser.age = date; 
+        infosUser.birthdate = date.toISOString();
     
         nextStep()
     }

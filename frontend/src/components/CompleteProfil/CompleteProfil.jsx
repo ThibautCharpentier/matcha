@@ -6,13 +6,14 @@ import PicturesStep from "./PicturesStep"
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { API_ROUTES, APP_ROUTES } from "../../utils/constants";
+import axios from 'axios';
 
 export default function CompleteProfil() {
     const navigate = useNavigate();
     let infosUser = useRef({
         gender: "",
         preferences: "",
-        age: "",
+        birthdate: "",
         interest: [],
         pictures: [],
     })
@@ -30,39 +31,53 @@ export default function CompleteProfil() {
     const renderStep = () => {
         switch (step) {
             case 1:
-                return <GenderStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <GenderStep nextStep={nextStep} infosUser={infosUser.current}/>;
             case 2:
-                return <PreferencesStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <PreferencesStep nextStep={nextStep} infosUser={infosUser.current}/>;
             case 3:
-                return <AgeStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <AgeStep nextStep={nextStep} infosUser={infosUser.current}/>;
             case 4:
-                return <HobbiesStep nextStep={nextStep} infosUser={infosUser}/>;
+                return <HobbiesStep nextStep={nextStep} infosUser={infosUser.current}/>;
             case 5:
-                return <PicturesStep validateProfil={validateProfil} infosUser={infosUser}/>;
-            
-          // Ajoutez d'autres cas pour les étapes supplémentaires
+                return <PicturesStep validateProfil={validateProfil} infosUser={infosUser.current}/>;
             default:
                 return <div>Profile Completion Finished</div>;
         }
     };
 
     const validateProfil = () => {
-        axios.post(API_ROUTES.SIGN_UP, infosUser, {
+        
+        const formData = new FormData();
+
+        formData.append('gender', infosUser.current.gender);
+        formData.append('preferences', infosUser.current.preferences);
+        formData.append('birthdate', infosUser.current.birthdate);
+
+        infosUser.current.interest.forEach((interest) => {
+            formData.append('interest[]', interest);
+        });
+
+        infosUser.current.pictures.forEach((picture) => {
+            formData.append('pictures', picture);
+        });
+
+        axios.patch(API_ROUTES.COMPLETE_PROFILE, formData, {
             withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         })
         .then((res) => {
-            if (res.status != 201)
+            if (res.status != 200)
                 throw new Error('une erreur est survenue')
             else
                 navigate('/dashboard');
         })
         .catch((err) => {
             console.log(err)
-            if (err.response.data.message == "")
-                console.log("error")
+            navigate('/complete-profile');
         })
     }
-    console.log(infosUser)
 
     return (
         <div className="flex flex-col items-center">
