@@ -7,8 +7,11 @@ import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { API_ROUTES, APP_ROUTES } from "../../utils/constants";
 import axios from 'axios';
+import { useAuth } from "../AuthContext";
+import { useAuthentified } from "../AuthentifiedContext"
 
 export default function CompleteProfil() {
+    const { profileComplete } = useAuthentified();
     const navigate = useNavigate();
     let infosUser = useRef({
         gender: "",
@@ -70,8 +73,10 @@ export default function CompleteProfil() {
         .then((res) => {
             if (res.status != 200)
                 throw new Error('une erreur est survenue')
-            else
+            else {
+                profileComplete()
                 navigate('/dashboard');
+            }
         })
         .catch((err) => {
             console.log(err)

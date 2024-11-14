@@ -53,12 +53,12 @@ export default function SignIn() {
                 if (res.status !== 200) throw new Error('Une erreur est survenue');
                 
                 login();
-                const isProfileComplete = await profileIsComplete();
-                if (isProfileComplete) {
-                    navigate('/dashboard');
-                } else {
-                    navigate('/complete-profile');
-                }
+                // const isProfileComplete = await profileIsComplete();
+                // if (isProfileComplete) {
+                //     navigate('/dashboard');
+                // } else {
+                //     navigate('/complete-profile');
+                // }
             } catch (err) {
                 if (err.response?.data?.message === "Invalid password")
                     setShowValidation(state => ({ ...state, password: "Mot de passe invalide" }));

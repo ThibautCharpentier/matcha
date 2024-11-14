@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const AuthRoute = ({ element: Element, ...rest }) => {
     const { isAuthenticated } = useAuth();
-	const { data, notifs, hasNewNotif, setHasNewNotif } = useAuthentified()
+	const { data, notifs, hasNewNotif, setHasNewNotif, isCompleteProfile } = useAuthentified()
 	const location = useLocation();
 	const hasFetched = useRef(false);
 
@@ -15,7 +15,7 @@ const AuthRoute = ({ element: Element, ...rest }) => {
 		if (hasNewNotif && location.pathname == APP_ROUTES.NOTIFICATION)
 		{
 			hasFetched.current = true
-        	axios.patch(API_ROUTES.NOTIF_VERIFIED, null, {
+            axios.patch(API_ROUTES.NOTIF_VERIFIED, null, {
 				withCredentials: true,
 			})
 			.then((res) => {
@@ -29,7 +29,9 @@ const AuthRoute = ({ element: Element, ...rest }) => {
 		}
     }, [location, hasNewNotif]);
 
+
+    if (isAuthenticated && isCompleteProfile === false)
+        return <Navigate to={APP_ROUTES.COMPLETE_PROFILE} />
     return isAuthenticated ? <Element data={data} notifs={notifs} {...rest} /> : <Navigate to={APP_ROUTES.WELCOME} />;
 };
-
 export default AuthRoute;

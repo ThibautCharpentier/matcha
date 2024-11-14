@@ -10,11 +10,12 @@ export default function Layout({ children }) {
 		APP_ROUTES.MATCH,
 		APP_ROUTES.CONVERSATION,
 		APP_ROUTES.NOTIFICATION,
-		APP_ROUTES.PARAMETERS
+		APP_ROUTES.PARAMETERS,
+        APP_ROUTES.COMPLETE_PROFILE
 	];
 
 	const showNavbar = navbarRoutes.includes(location.pathname)
-
+    
 	return (
 		<>
 			{showNavbar ? 

@@ -14,6 +14,7 @@ export default function AuthentifiedProvider({ children }) {
 	const location = useLocation();
 	const hasFetched = useRef(location.pathname);
 	const [hasNewNotif, setHasNewNotif] = useState(false)
+    const [isCompleteProfile, setIsCompleteProfile] = useState(null);
 	const [notifs, setNotifs] = useState([])
 	const [data, setData] = useState({
 		username: "",
@@ -30,10 +31,31 @@ export default function AuthentifiedProvider({ children }) {
 		interest: []
 	})
 
+    function profileIsCompleteOrNot() {
+        axios.get(`${API_ROUTES.IS_COMPLETE_PROFILE}`, {
+			withCredentials: true,
+		})
+        .then((res) => {
+            if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+            if (res.data.message == true)
+                setIsCompleteProfile(true);
+            else
+                setIsCompleteProfile(false);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const profileComplete = () => {
+        setIsCompleteProfile(true);
+    }
+
 	useEffect(() => {
-		if (hasFetched.current != location.pathname)
-		{
-        	axios.get(`${API_ROUTES.IS_CONNECTED}`, {
+        if (hasFetched.current != location.pathname)
+        {
+            axios.get(`${API_ROUTES.IS_CONNECTED}`, {
 				withCredentials: true,
 			})
 			.then((res) => {
@@ -56,22 +78,23 @@ export default function AuthentifiedProvider({ children }) {
 			});
 			hasFetched.current = location.pathname
 		}
+        profileIsCompleteOrNot();
     }, [location]);
 
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 
 	return (
-		<div className="flex">
-			<Navbar 
+		<div className={`${isCompleteProfile && 'flex'}`}>
+			{isCompleteProfile && <Navbar 
 				hasNewNotif={hasNewNotif}
-			/>
-			<AuthentifiedContext.Provider value={{data, notifs, hasNewNotif, setHasNewNotif}}>
+			/>}
+			<AuthentifiedContext.Provider value={{data, notifs, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
 				{children}
 			</AuthentifiedContext.Provider>
 		</div>
-	)
-}
+	);
+};
 
 export const useAuthentified = () => {
     return useContext(AuthentifiedContext);

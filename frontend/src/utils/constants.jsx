@@ -55,4 +55,5 @@ export const APP_ROUTES = {
     MATCH: "/match",
     CONVERSATION: "/conversation",
     NOTIFICATION: "/notification",
+    COMPLETE_PROFILE: "/complete-profile"
 };
