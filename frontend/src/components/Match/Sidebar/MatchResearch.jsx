@@ -4,19 +4,28 @@ import { API_ROUTES } from "../../../utils/constants";
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-function LocationMarker({position, setPosition, setVerified}) {
+function LocationMarker({position, setPosition}) {
 	const map = useMapEvents({
         click(e) {
             setPosition(e.latlng);
-        }
+        },
+		locationfound(e) {
+			map.flyTo(e.latlng, map.getZoom())
+			setPosition(e.latlng);
+		}
     });
+
+	useEffect(() => {
+        if (position === null)
+			map.locate()
+    }, []);
 
     return position === null ? null : (
         <Marker position={position}></Marker>
     );
 }
 
-export default function MatchResearch({closeSidebarResearch, setMatchState, setMatchIndexState}) {
+export default function MatchResearch({closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch}) {
 	const [filterAge, setFilterAge] = useState("");
 	const [filterLocation, setFilterLocation] = useState("");
 	const [filterFameRating, setFameRating] = useState("");
@@ -63,19 +72,98 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 	useEffect(() => {
         if (hasFetched.current == false)
 		{
-			/*axios.get(`${API_ROUTES.IS_CONNECTED}`, {
+			axios.get(API_ROUTES.GET_ALL_INTERESTS, {
 				withCredentials: true,
+				timeout: 5000,
 			})
 			.then((res) => {
 				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
+					throw new Error('une erreur est survenue')
+				let tab = []
+				for (let i = 0; i < res.data.data.length; i++)
+					tab.push(res.data.data[i].name)
+				setListTags(tab)
 			})
 			.catch((err) => {
-				console.log(err);
-			});*/
+				console.log(err)
+			})
 		}
         hasFetched.current = true;
     }, []);
+
+	function filterParameters() {
+		let filter = ""
+		let plus = false;
+		if (filterAge != "") {
+			filter += filterAge
+			plus = true
+		}
+		if (filterLocation != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterLocation
+			plus = true
+		}
+		if (filterFameRating != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterFameRating
+			plus = true
+		}
+		if (filterCommonTags != "") {
+			if (plus == true)
+				filter += "+"
+			filter += filterCommonTags
+		}
+		return (filter)
+	}
+
+	function sortParameters() {
+		let sort = ""
+		let plus = false;
+		if (sortState.age) {
+			sort += "age"
+			plus = true
+		}
+		if (sortState.location) {
+			if (plus == true)
+				sort += "+"
+			sort += "location"
+			plus = true
+		}
+		if (sortState.fameRating) {
+			if (plus == true)
+				sort += "+"
+			sort += "fame"
+			plus = true
+		}
+		if (sortState.commonTags) {
+			if (plus == true)
+				sort += "+"
+			sort += "tags"
+		}
+		return (sort)
+	}
+
+	function handleSubmit(e) {
+		e.preventDefault()
+
+		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${parseFloat(position.lat.toFixed(6))}&lng=${parseFloat(position.lng.toFixed(6))}&tags=${selectTags}&sort=${sortParameters()}&filter=${filterParameters()}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			console.log(res.data.message)
+			closeSidebarResearch()
+			setIsResearch(true)
+			setMatchState(res.data.message);
+			setMatchIndexState(0);
+		})
+		.catch((err) => {
+			console.log(err)
+		});
+	}
 
 	return (
 		<div className="p-4">
@@ -153,7 +241,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				</div>
 				<div className="flex">
 					<div className="w-3/4 sm:w-1/2">
-						<label className="font-poppins-regular text-sm">Tags en commun</label>
+						<label className="font-poppins-regular text-sm">Tags</label>
 					</div>
 					<input className=""
 					type="checkbox"
@@ -222,7 +310,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				</select>
 			</div>
 			<div className="mt-2">
-				<label className="font-poppins-medium" htmlFor="filterCommonTags">Filtrer par tags en commun</label>
+				<label className="font-poppins-medium" htmlFor="filterCommonTags">Filtrer par tags</label>
 				<select
 					id="filterCommonTags"
 					value={filterCommonTags}
@@ -239,7 +327,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				</select>
 			</div>
 			<div className="mt-4 justify-center items-center flex">
-				<button className="btn-secondary flex justify-center items-center w-36 h-11 p-2">
+				<button className="btn-secondary flex justify-center items-center w-36 h-11 p-2" onClick={handleSubmit}>
 					Valider
 				</button>
 			</div>

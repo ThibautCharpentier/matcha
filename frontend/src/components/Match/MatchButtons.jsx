@@ -1,26 +1,31 @@
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function MatchButtons({toggleProfile, switchToggleProfile, matchState, matchIndexState, setMatchIndexState}) {
+export default function MatchButtons({toggleProfile, switchToggleProfile, matchState, matchIndexState, setMatchIndexState, isResearch}) {
 	function ignoreMatch(e) {
 		e.preventDefault()
 
-		const obj = {
-			target: matchState[matchIndexState].id
-		}
-		axios.post(API_ROUTES.DISLIKE, obj, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-			if (toggleProfile)
-				switchToggleProfile()
+		if (isResearch)
 			setMatchIndexState(matchIndexState + 1)
-		})
-		.catch((err) => {
-			console.log(err)
-		});
+		else
+		{
+			const obj = {
+				target: matchState[matchIndexState].id
+			}
+			axios.post(API_ROUTES.DISLIKE, obj, {
+				withCredentials: true,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('Une erreur est survenue');
+				if (toggleProfile)
+					switchToggleProfile()
+				setMatchIndexState(matchIndexState + 1)
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+		}
 	}
 
 	function likeMatch(e) {

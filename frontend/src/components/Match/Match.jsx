@@ -14,6 +14,7 @@ export default function Match() {
 	const [toggleProfile, setToggleProfile] = useState(false);
 	const [matchState, setMatchState] = useState(null);
 	const [matchIndexState, setMatchIndexState] = useState(0);
+	const [isResearch, setIsResearch] = useState(false);
 	const hasFetched = useRef(false);
 
 	const openSidebarSortAndFilter = () => {
@@ -64,7 +65,8 @@ export default function Match() {
 						openSidebarSortAndFilter={openSidebarSortAndFilter}
 						openSidebarResearch={openSidebarResearch}
 					/>
-					{(matchState && !matchState[matchIndexState] && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
+					{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
+					{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
 					{(matchState && matchState[matchIndexState] && <div className="relative max-w-[400px] max-h-[550px]">
 						{(toggleProfile ? <MatchProfil
 							matchState={matchState}
@@ -79,6 +81,7 @@ export default function Match() {
 							matchState={matchState}
 							matchIndexState={matchIndexState}
 							setMatchIndexState={setMatchIndexState}
+							isResearch={isResearch}
 						/>
 					</div>)}
 				</div>
@@ -96,6 +99,7 @@ export default function Match() {
 				closeSidebarResearch={closeSidebarResearch}
 				setMatchState={setMatchState}
 				setMatchIndexState={setMatchIndexState}
+				setIsResearch={setIsResearch}
 			/>
 		</>
 	)
