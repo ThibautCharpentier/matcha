@@ -34,6 +34,44 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 	}
 	catch (err)
 	{
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+});
+
+router.get('/getresearch', jwtrequired(), async (req, res) => {
+	let res_query
+	try
+	{
+		const { lat, lng, tags, sort, filter } = req.query
+		let sortValues;
+		let filterValues;
+		let tagsTab;
+		let tagsIdTab = [];
+		if (sort)
+			sortValues = sort.split(' ')
+		else
+			sortValues = []
+		if (filter)
+			filterValues = filter.split(' ')
+		else
+			filterValues = []
+		if (tags)
+			tagsTab = tags.split(',')
+		else
+			tagsTab = []
+
+		for (let i = 0; i < tagsTab.length; i++)
+		{
+			let tmp = await user.getInterestIdbyInterestName(tagsTab[i])
+			tagsIdTab.push(tmp)
+		}
+		let res_user = await user.selectById(req.user_id);
+		res_user.age = await utils.calculateAge(res_user.birthdate);
+		res_query = await matchs.getResearch(res_user, sortValues, filterValues, tagsIdTab, {lat, lng});
+	}
+	catch (err)
+	{
 		console.log(err)
 		return res.status(400).json({message: err});
 	}

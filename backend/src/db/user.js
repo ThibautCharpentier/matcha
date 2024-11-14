@@ -169,6 +169,15 @@ const getInterestIdbyInterestName = async (interestName) => {
 	return res.rows[0].id;
 }
 
+const getAllInterests = async () => {
+	const client = await pool.connect();
+	const res = await client.query('SELECT name FROM public.interest');
+    client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows;
+}
+
 const addUserInterest = async (userId, interestId) => {
     const client = await pool.connect();
 	await client.query(`INSERT INTO public.user_interest (user_id, interest) VALUES ($1, $2) ON CONFLICT (user_id, interest) DO NOTHING`, [userId, interestId])
@@ -176,4 +185,4 @@ const addUserInterest = async (userId, interestId) => {
 }
 
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest, getAllInterests };

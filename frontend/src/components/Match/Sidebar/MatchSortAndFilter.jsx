@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../../utils/constants";
 
-export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchState, setMatchIndexState}) {
+export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchState, setMatchIndexState, setIsResearch}) {
 	const [filterAge, setFilterAge] = useState("");
 	const [filterLocation, setFilterLocation] = useState("");
 	const [filterFameRating, setFameRating] = useState("");
@@ -85,8 +85,8 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-			console.log(res.data.message)
 			closeSidebarSortAndFilter()
+			setIsResearch(false)
 			setMatchState(res.data.message);
 			setMatchIndexState(0);
 		})
