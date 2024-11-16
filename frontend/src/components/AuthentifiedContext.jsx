@@ -85,7 +85,7 @@ export default function AuthentifiedProvider({ children }) {
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 
 	return (
-		<div className={`${isCompleteProfile && 'flex'}`}>
+		<div className={`${isCompleteProfile && 'flex flex-row'}`}>
 			{isCompleteProfile && <Navbar 
 				hasNewNotif={hasNewNotif}
 			/>}

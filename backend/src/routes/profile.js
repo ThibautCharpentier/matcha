@@ -10,6 +10,7 @@ const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const user = require('../db/user');
+const utils = require('../utils/utils');
 const notif = require('../db/notifications');
 const mail = require('../config/mail');
 const jwt = require('jsonwebtoken');
@@ -206,7 +207,21 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
         return res.status(200).json({message: false});
     }
 	return res.status(200).json({message: true});
-})
+});
 
+router.get('/getprofileuser', jwtrequired(), async(req, res) => {
+    console.log("allo")
+	let res_query;
+	try
+	{
+		res_query = await user.selectById(req.user_id);
+        res_query.age = await utils.calculateAge(res_query.birthdate);
+	}
+	catch (err)
+	{
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+});
 
 module.exports = router;
