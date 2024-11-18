@@ -57,7 +57,7 @@ export default function Match() {
 
 	return (
 		<>
-			<div className="w-full">
+			<div className="w-full py-4 sm-py-8">
 				<div className="flex flex-col items-center w-full mt-6 p-2 mb-0">
 					<MatchParameters 
 						openSidebarSortAndFilter={openSidebarSortAndFilter}
@@ -73,14 +73,14 @@ export default function Match() {
 							matchIndexState={matchIndexState}
 						/>)}
 					</div>)}
+					<MatchButtons
+						toggleProfile={toggleProfile}
+						switchToggleProfile={switchToggleProfile}
+						matchState={matchState}
+						matchIndexState={matchIndexState}
+						setMatchIndexState={setMatchIndexState}
+					/>
 				</div>
-						<MatchButtons
-							toggleProfile={toggleProfile}
-							switchToggleProfile={switchToggleProfile}
-							matchState={matchState}
-							matchIndexState={matchIndexState}
-							setMatchIndexState={setMatchIndexState}
-						/>
 			</div>
 			<MatchOverlays
 				isSidebarSortAndFilterOpen={isSidebarSortAndFilterOpen}
