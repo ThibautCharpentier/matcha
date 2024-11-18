@@ -39,7 +39,7 @@ export default function Match() {
 	useEffect(() => {
 		if (hasFetched.current != true)
 		{
-        	axios.get(`${API_ROUTES.GET_MATCHS}`, {
+            axios.get(`${API_ROUTES.GET_MATCHS}`, {
 				withCredentials: true,
 			})
 			.then((res) => {
@@ -58,14 +58,13 @@ export default function Match() {
 	return (
 		<>
 			<div className="w-full">
-				<div className="flex flex-col items-center w-full mt-6 p-2 mb-[6em] sm:mb-0">
-					<h1 className="text-5xl text-center font-poppins-bold">Matchs</h1>
+				<div className="flex flex-col items-center w-full mt-6 p-2 mb-0">
 					<MatchParameters 
 						openSidebarSortAndFilter={openSidebarSortAndFilter}
 						openSidebarResearch={openSidebarResearch}
 					/>
 					{(matchState && !matchState[matchIndexState] && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
-					{(matchState && matchState[matchIndexState] && <div className="relative max-w-[400px] max-h-[550px]">
+					{(matchState && matchState[matchIndexState] && <div className="relative mt-6 mb-6 max-w-[400px] max-h-[550px]">
 						{(toggleProfile ? <MatchProfil
 							matchState={matchState}
 							matchIndexState={matchIndexState}
@@ -73,6 +72,8 @@ export default function Match() {
 							matchState={matchState}
 							matchIndexState={matchIndexState}
 						/>)}
+					</div>)}
+				</div>
 						<MatchButtons
 							toggleProfile={toggleProfile}
 							switchToggleProfile={switchToggleProfile}
@@ -80,8 +81,6 @@ export default function Match() {
 							matchIndexState={matchIndexState}
 							setMatchIndexState={setMatchIndexState}
 						/>
-					</div>)}
-				</div>
 			</div>
 			<MatchOverlays
 				isSidebarSortAndFilterOpen={isSidebarSortAndFilterOpen}

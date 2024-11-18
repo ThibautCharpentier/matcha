@@ -8,7 +8,7 @@ export default function MatchSlider({matchState, matchIndexState}) {
     const pictures = matchState[matchIndexState]?.pictures || [];
     console.log(matchState[matchIndexState])
 	return (
-		<div className="slider-container w-full h-auto mt-6 rounded-3xl">
+		<div className="slider-container w-full h-auto rounded-3xl">
 			<Carousel className="rounded-3xl"
 				showThumbs={false}
 				showStatus={false}
@@ -27,7 +27,7 @@ export default function MatchSlider({matchState, matchIndexState}) {
                     </div>
                 ))}
 			</Carousel>
-			<div className="absolute flex bottom-24 translate-x-7 text-white flex-col items-start justify-center">
+			<div className="absolute flex bottom-0 h-20 w-full bg-gray-800 bg-opacity-50 rounded-b-3xl text-white flex-col items-start justify-center px-6">
 				<div className="font-bold text-lg sm:text-xl">{matchState[matchIndexState].firstname} {matchState[matchIndexState].lastname}, {matchState[matchIndexState].age} ans</div>
 				<div className="text-base sm:text-lg">{matchState[matchIndexState].city}, {matchState[matchIndexState].distance} km</div>
 			</div>
