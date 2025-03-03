@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const AuthRoute = ({ element: Element, ...rest }) => {
     const { isAuthenticated } = useAuth();
-	const { data, notifs, hasNewNotif, setHasNewNotif, isCompleteProfile } = useAuthentified()
+	const { data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile } = useAuthentified()
 	const location = useLocation();
 	const hasFetched = useRef(false);
 
@@ -32,6 +32,6 @@ const AuthRoute = ({ element: Element, ...rest }) => {
 
     if (isAuthenticated && isCompleteProfile === false)
         return <Navigate to={APP_ROUTES.COMPLETE_PROFILE} />
-    return isAuthenticated ? <Element data={data} notifs={notifs} {...rest} /> : <Navigate to={APP_ROUTES.WELCOME} />;
+    return isAuthenticated ? <Element data={data} notifs={notifs} contacts={contacts} {...rest} /> : <Navigate to={APP_ROUTES.WELCOME} />;
 };
 export default AuthRoute;

@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const user = require('../db/user');
 const matchs = require('../db/matchs');
 const notif = require('../db/notifications');
+const chat = require('../db/chat')
 const utils = require('../utils/utils');
 const { validateDto } = require('../dto/validatedto');
 const { TargetDto } = require('../dto/target.dto.js');
@@ -72,7 +73,6 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 	}
 	catch (err)
 	{
-		console.log(err)
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
@@ -131,6 +131,7 @@ router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 			{
 				await notif.addNotif(req.user_id, target, "match")
 				await notif.addNotif(target, req.user_id, "match")
+				await chat.addChat(req.user_id, target)
 			}
 		}
 	}

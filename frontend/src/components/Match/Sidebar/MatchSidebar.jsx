@@ -7,7 +7,7 @@ export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResea
 		<>
 			<div
 				style={{ overflowY: "auto"}}
-				className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white z-30 transition-transform duration-300 ${
+				className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-gray-50 z-30 transition-transform duration-300 ${
 				(isSidebarSortAndFilterOpen || isSidebarResearchOpen) ? "translate-x-0" : "translate-x-full"
 				}`}
 			>

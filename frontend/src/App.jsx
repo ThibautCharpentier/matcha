@@ -16,6 +16,7 @@ import Dashboard from "./components/Dashboard"
 import Match from "./components/Match/Match"
 import Layout from "./components/Layout"
 import Notification from "./components/Notification/Notification"
+import Conversation from "./components/Conversation/Conversation"
 import Parameters from "./components/Parameters/Parameters"
 import CompleteProfile from "./components/CompleteProfil/CompleteProfil"
 import { AuthProvider } from "./components/AuthContext"
@@ -37,6 +38,7 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
 							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
 							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={Match} />} />
+							<Route exact path={ APP_ROUTES.CONVERSATION } element={<AuthRoute element={Conversation} />} />
 							<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={Notification} />} />
 							<Route exact path={APP_ROUTES.COMPLETE_PROFILE} element={<CompleteProfileRoute element={<CompleteProfile />} />} />
 							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />

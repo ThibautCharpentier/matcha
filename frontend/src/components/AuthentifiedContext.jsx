@@ -6,6 +6,7 @@ import axios from 'axios';
 import { API_ROUTES } from '../utils/constants';
 import { useSocketData } from "../utils/sockets/useSocketData";
 import { useSocketNotifs } from "../utils/sockets/useSocketNotifs";
+import { useSocketContacts } from "../utils/sockets/useSocketContacts";
 
 const AuthentifiedContext = createContext();
 
@@ -30,6 +31,7 @@ export default function AuthentifiedProvider({ children }) {
 		longitude: null,
 		interest: []
 	})
+	const [contacts, setContacts] = useState([])
 
     function profileIsCompleteOrNot() {
         axios.get(`${API_ROUTES.IS_COMPLETE_PROFILE}`, {
@@ -83,13 +85,14 @@ export default function AuthentifiedProvider({ children }) {
 
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
+	useSocketContacts(isAuthenticated, setContacts)
 
 	return (
 		<div className={`${isCompleteProfile && 'flex'}`}>
 			{isCompleteProfile && <Navbar 
 				hasNewNotif={hasNewNotif}
 			/>}
-			<AuthentifiedContext.Provider value={{data, notifs, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
+			<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
 				{children}
 			</AuthentifiedContext.Provider>
 		</div>

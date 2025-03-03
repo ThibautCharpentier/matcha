@@ -154,7 +154,6 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-			console.log(res.data.message)
 			closeSidebarResearch()
 			setIsResearch(true)
 			setMatchState(res.data.message);
@@ -184,7 +183,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 			</div>
 			<div className="mt-2">
 				<p className="font-poppins-medium">#Tags</p>
-				<div className="border-solid border-gray-300 border-[1px] rounded-xl p-1 h-20" style={{overflowY: 'auto'}}>
+				<div className="border-solid border-gray-300 bg-white border-[1px] rounded-xl p-1 h-20" style={{overflowY: 'auto'}}>
 					<div className="text-xs flex flex-wrap gap-1">
 						{selectTags && selectTags.map((tag, index) => (
 							<div style={{cursor: "pointer"}}  onClick={() => handleRemoveTags(tag)} key={index} className="bg-[#d81159] rounded-3xl p-1 text-white">#{tag}</div>

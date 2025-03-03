@@ -22,7 +22,7 @@ export default function NotificationDisplay({filterNotif, notifs}) {
 		<div className="mt-6">
 			{notifs && notifs.map((notif, index) => (
 				(filterNotif === "vues" || filterNotif === "tout") && notif.action == "view" && (
-					<div key={index} className="mt-1 flex flex-row bg-white w-full sm:w-[495px] rounded-full space-x-3">
+					<div key={index} className="mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
 						<img src={profile} className="w-[17%] h-auto m-2 border-2 border-gray-500 rounded-full" style={{userSelect: 'none'}}/>
 						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
 						<div className="w-[33%] self-center flex-grow flex justify-end">
@@ -31,7 +31,7 @@ export default function NotificationDisplay({filterNotif, notifs}) {
 					</div>
 				) ||
 				(filterNotif === "likes" || filterNotif === "tout") && notif.action == "like" && (
-					<div key={index} className="mt-1 flex flex-row bg-white w-full sm:w-[495px] rounded-full space-x-3">
+					<div key={index} className="mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
 						<img src={profile} className="w-[17%] h-auto m-2 border-2 border-gray-500 rounded-full" style={{userSelect: 'none'}}/>
 						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
 						<div className="w-[33%] self-center flex-grow flex justify-end">
@@ -40,7 +40,7 @@ export default function NotificationDisplay({filterNotif, notifs}) {
 					</div>
 				) ||
 				(filterNotif === "matchs" || filterNotif === "tout") && notif.action == "match" && (
-					<div key={index} className="mt-1 flex flex-row bg-white w-full sm:w-[495px] rounded-full space-x-3">
+					<div key={index} className="mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
 						<img src={profile} className="w-[17%] h-auto m-2 border-2 border-gray-500 rounded-full" style={{userSelect: 'none'}}/>
 						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> <b>match</b> avec vous</p>
 						<div className="w-[33%] self-center flex-grow flex justify-end">

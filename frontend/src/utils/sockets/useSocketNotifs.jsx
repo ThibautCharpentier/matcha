@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { WS_URL, API_ROUTES } from '../constants';
-import axios from 'axios';
+import { WS_URL } from '../constants';
 
 export const useSocketNotifs = (isAuthenticated, setNotifs, setHasNewNotif) => {
 	const socketNotifsRef = useRef(null);

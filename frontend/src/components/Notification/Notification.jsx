@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import NotificationFilterBar from "./NotificationFilterBar";
 import NotificationDisplay from "./NotificationDisplay";
 
