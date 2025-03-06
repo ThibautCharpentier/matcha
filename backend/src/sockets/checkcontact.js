@@ -1,15 +1,13 @@
 const chat = require('../db/chat');
 
 const firstSelect = async (ws) => {
-	try
-	{
+	try {
 		let res_query = await chat.getChats(ws.user_id);
 		if (!res_query)
 			ws.close(4001);
 		ws.chat = res_query
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		ws.close(4001);
 	}
@@ -17,18 +15,14 @@ const firstSelect = async (ws) => {
 
 const checkNewChat = async (ws) => {
 	let new_chat = []
-	
-	try
-	{
+	try {
 		let res_query = await chat.getChats(ws.user_id);
 		if (!res_query)
 			ws.close(4001);
 		res_query.forEach((element) => {
 			let add_to_new_chat = true
-			for (let i = 0; i < ws.chat.length; i++)
-			{
-				if (element.room_id == ws.chat[i].room_id)
-				{
+			for (let i = 0; i < ws.chat.length; i++) {
+				if (element.room_id == ws.chat[i].room_id) {
 					add_to_new_chat = false
 					break
 				}
@@ -40,16 +34,14 @@ const checkNewChat = async (ws) => {
 		if (new_chat.length > 0)
 			ws.send(JSON.stringify(new_chat));
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		ws.close(4001);
 	}
 }
 
 const checkContact = async (ws) => {
-	if (ws.chat == null)
-	{
+	if (ws.chat == null) {
 		ws.chat = [];
 		await firstSelect(ws);
 		ws.send(JSON.stringify(ws.chat));

@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const dotenv = require('dotenv');
 const { validateDto } = require('../dto/validatedto');
 const { UpdateUsernameDto } = require('../dto/updateusername.dto');
@@ -21,15 +20,13 @@ dotenv.config();
 
 router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), async (req, res) => {
 	const { username } = req.body;
-	try
-	{
+	try {
 		let res_query = await user.selectByUsername(username);
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Username already exists'});
 		await user.changeUsername(req.user_id, username);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -38,15 +35,13 @@ router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), a
 
 router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (req, res) => {
 	const { email } = req.body;
-	try
-	{
+	try {
 		let res_query = await user.selectByEmail(email);
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Email already exists'});
 		await mail.sendValidateEmail(req.user_id, email);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -56,23 +51,19 @@ router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (
 router.get('/verifyemail', async (req, res) => {
 	let userId;
 	let	userEmail;
-	try
-	{
+	try {
 		const { token } = req.query
 		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
         userId = decoded.id;
 		userEmail = decoded.mail;
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(403).json({message: err});
 	}
-	try
-	{
+	try {
 		await user.changeEmail(userId, userEmail);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
@@ -80,12 +71,10 @@ router.get('/verifyemail', async (req, res) => {
 
 router.patch('/updatepassword', jwtrequired(), validateDto(ChangePasswordDto), async (req, res) => {
 	const { password } = req.body;
-	try
-	{
+	try {
 		await user.changePassword(req.user_id, password);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -94,12 +83,10 @@ router.patch('/updatepassword', jwtrequired(), validateDto(ChangePasswordDto), a
 
 router.patch('/updatepreferences', jwtrequired(), validateDto(UpdatePreferencesDto), async (req, res) => {
 	const { preferences } = req.body;
-	try
-	{
+	try {
 		await user.changePreferences(req.user_id, preferences);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -108,12 +95,10 @@ router.patch('/updatepreferences', jwtrequired(), validateDto(UpdatePreferencesD
 
 router.patch('/updategps', jwtrequired(), validateDto(UpdateGpsDto), async (req, res) => {
 	const { gps } = req.body;
-	try
-	{
+	try {
 		await user.changeGps(req.user_id, gps);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -122,12 +107,10 @@ router.patch('/updategps', jwtrequired(), validateDto(UpdateGpsDto), async (req,
 
 router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), async (req, res) => {
 	const { lat, lng, city } = req.body;
-	try
-	{
+	try {
 		await user.changeLocation(req.user_id, { lat, lng, city });
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -136,24 +119,20 @@ router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), a
 
 router.get('/getgps', jwtrequired(), async(req, res) => {
 	let res_query;
-	try
-	{
+	try {
 		res_query = await user.getGps(req.user_id);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
 })
 
 router.patch('/notifverified', jwtrequired(), async (req, res) => {
-	try
-	{
+	try {
 		await notif.verifiedNotifs(req.user_id);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -167,21 +146,15 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
         await user.changeGender(req.user_id, gender);
         await user.changePreferences(req.user_id, preferences);
         await user.changeBirthdate(req.user_id, birthdate);
-
-        if (files && files.length > 0) {
+        if (files && files.length > 0)
             await user.addProfilPicture(req.user_id, files[0].path);
-        }
-
-        for (let i = 1; i < files.length; i++) {
+        for (let i = 1; i < files.length; i++)
             await user.addPicture(req.user_id, files[i].path);
-        }
-
         if (Array.isArray(interest)) {
             for (let i = 0; i < interest.length; i++) {
                 let interestId = await user.getInterestIdbyInterestName(interest[i]);
-                if (interestId) {
+                if (interestId)
                     await user.addUserInterest(req.user_id, interestId);
-                }
             }
         }
     } catch (err) {
@@ -194,19 +167,15 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
 
 router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	let res_query;
-	try
-	{
+	try {
 		res_query = await user.selectById(req.user_id);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
-    if (res_query.gender == null || res_query.birthdate == null) {
+    if (res_query.gender == null || res_query.birthdate == null)
         return res.status(200).json({message: false});
-    }
 	return res.status(200).json({message: true});
 })
-
 
 module.exports = router;

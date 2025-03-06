@@ -8,8 +8,7 @@ const getChats = async (id) => {
 	if (res.rows.length == 0)
 		return [];
 	let chats = []
-	for (let i = 0; i < res.rows.length; i++)
-	{
+	for (let i = 0; i < res.rows.length; i++) {
 		let target_id
 		if (res.rows[i].user1 == id)
 			target_id = res.rows[i].user2

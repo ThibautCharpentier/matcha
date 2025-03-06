@@ -14,8 +14,7 @@ dotenv.config();
 
 router.get('/getmatchs', jwtrequired(), async (req, res) => {
 	let res_query
-	try
-	{
+	try {
 		const { sort, filter } = req.query
 		let sortValues;
 		let filterValues;
@@ -33,8 +32,7 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 		res_user.age = await utils.calculateAge(res_user.birthdate);
 		res_query = await matchs.getMatchs(res_user, sortValues, filterValues);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
@@ -42,8 +40,7 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 
 router.get('/getresearch', jwtrequired(), async (req, res) => {
 	let res_query
-	try
-	{
+	try {
 		const { lat, lng, tags, sort, filter } = req.query
 		let sortValues;
 		let filterValues;
@@ -62,8 +59,7 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 		else
 			tagsTab = []
 
-		for (let i = 0; i < tagsTab.length; i++)
-		{
+		for (let i = 0; i < tagsTab.length; i++) {
 			let tmp = await user.getInterestIdbyInterestName(tagsTab[i])
 			tagsIdTab.push(tmp)
 		}
@@ -71,8 +67,7 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 		res_user.age = await utils.calculateAge(res_user.birthdate);
 		res_query = await matchs.getResearch(res_user, sortValues, filterValues, tagsIdTab, {lat, lng});
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
@@ -80,17 +75,14 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 
 router.post('/view', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
-	try
-	{
+	try {
 		let res = await matchs.getViewProfile(req.user_id, target);
-		if (!res)
-		{
+		if (!res) {
 			await matchs.addViewProfile(req.user_id, target);
 			await notif.addNotif(req.user_id, target, "view")
 		}
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -99,17 +91,14 @@ router.post('/view', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 
 router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
-	try
-	{
+	try {
 		let res = await matchs.getDislikeProfile(req.user_id, target);
-		if (!res)
-		{
+		if (!res) {
 			await matchs.addDislikeProfile(req.user_id, target);
 			await user.changeFamerating(target)
 		}
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -118,25 +107,21 @@ router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) 
 
 router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
-	try
-	{
+	try {
 		let res = await matchs.getLikeProfile(req.user_id, target);
-		if (!res)
-		{
+		if (!res) {
 			await matchs.addLikeProfile(req.user_id, target);
 			await user.changeFamerating(target)
 			await notif.addNotif(req.user_id, target, "like")
 			res = await matchs.checkMatch(target, req.user_id)
-			if (res)
-			{
+			if (res) {
 				await notif.addNotif(req.user_id, target, "match")
 				await notif.addNotif(target, req.user_id, "match")
 				await chat.addChat(req.user_id, target)
 			}
 		}
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}

@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 
-const { IsIn, IsDate, ArrayNotEmpty, ArrayMinSize, ArrayMaxSize } = require('class-validator');
+const { IsIn, IsDate, ArrayNotEmpty } = require('class-validator');
 
 class CompleteProfileDto {
     @IsIn(['man', 'woman'])

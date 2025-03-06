@@ -16,14 +16,12 @@ const router = express.Router();
 dotenv.config();
 
 router.get('/isconnected', jwtrequired(), async (req, res) => {
-	try
-	{
+	try {
 		let res_query = await user.selectById(req.user_id);
 		if (!res_query)
 			return res.status(400).json({message: 'User not found'});
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(403).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
@@ -31,8 +29,7 @@ router.get('/isconnected', jwtrequired(), async (req, res) => {
 
 router.post('/signup', validateDto(SignupDto), async (req, res) => {
 	const { username, firstname, lastname, email, password } = req.body;
-	try
-	{
+	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
 		let res_query = await user.selectByUsername(username);
 		if (res_query)
@@ -42,17 +39,14 @@ router.post('/signup', validateDto(SignupDto), async (req, res) => {
 			return res.status(400).json({message: 'Email already exists'});
 		await user.insert(username, firstname, lastname, email, hashedPassword);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
-	try
-	{
+	try {
 		await mail.sendVerifyEmail(email);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 	}
 	return res.status(201).json({message: 'OK'});
@@ -60,22 +54,18 @@ router.post('/signup', validateDto(SignupDto), async (req, res) => {
 
 router.get('/verifyemail', async (req, res) => {
 	let userId;
-	try
-	{
+	try {
 		const { token } = req.query
 		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
         userId = decoded.id;
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(403).json({message: err});
 	}
-	try
-	{
+	try {
 		await user.validateEmail(userId);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
@@ -83,15 +73,13 @@ router.get('/verifyemail', async (req, res) => {
 
 router.post('/signin', validateDto(SigninDto), async (req, res) => {
 	const { username, password } = req.body;
-	try
-	{
+	try {
 		let res_query = await user.selectByUsername(username);
 		if (!res_query)
 			return res.status(400).json({message: 'Invalid username'});
 		if (!bcrypt.compareSync(password, res_query.password))
 			return res.status(400).json({message: 'Invalid password'});
-		if (!res_query.verified)
-		{
+		if (!res_query.verified) {
 			await mail.sendVerifyEmail(res_query.email);
 			return res.status(403).json({message: 'Email not verified'});
 		}
@@ -101,8 +89,7 @@ router.post('/signin', validateDto(SigninDto), async (req, res) => {
         res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_REFRESHTOKEN_EXPIRATION, 10) });
 		await user.connect(res_query.id, true);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -112,15 +99,13 @@ router.post('/signin', validateDto(SigninDto), async (req, res) => {
 router.post('/forgotpassword', validateDto(ForgotPasswordDto), async (req, res) => {
 	const { username } = req.body;
 	let res_query;
-	try
-	{
+	try {
 		res_query = await user.selectByUsername(username);
 		if (!res_query)
 			return res.status(400).json({message: 'Invalid username'});
 		await mail.sendForgotPassword(res_query.email);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -130,22 +115,18 @@ router.post('/forgotpassword', validateDto(ForgotPasswordDto), async (req, res) 
 router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) => {
 	const { password } = req.body;
 	let userId;
-	try
-	{
+	try {
 		const { token } = req.query
 		const decoded = await jwt.verify(token, process.env.SECRET_TOKEN_KEY);
         userId = decoded.id;
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(403).json({message: err});
 	}
-	try
-	{
+	try {
 		await user.changePassword(userId, password);
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
@@ -153,15 +134,13 @@ router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) 
 
 router.post('/forgotusername', validateDto(ForgotUsernameDto), async (req, res) => {
 	const { email } = req.body;
-	try
-	{
+	try {
 		let res_query = await user.selectByEmail(email);
 		if (!res_query)
 			return res.status(400).json({message: 'Invalid email'});
 		await mail.sendForgotUsername(res_query.email, res_query.username);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
@@ -169,10 +148,9 @@ router.post('/forgotusername', validateDto(ForgotUsernameDto), async (req, res) 
 })
 
 router.get('/refresh', async (req, res) => {
-	if (!req.cookies.refreshToken)
+	if (!req.cookies?.refreshToken)
 		return res.status(401).json({ message: 'Token not found' });
-	try
-	{
+	try {
 		const decoded = jwt.verify(req.cookies.refreshToken, process.env.SECRET_TOKEN_KEY);
 		req.user_id = decoded.id;
 		let res_query = await user.selectById(req.user_id);
@@ -183,16 +161,14 @@ router.get('/refresh', async (req, res) => {
 		res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_ACCESSTOKEN_EXPIRATION, 10) });
         res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.COOKIE_REFRESHTOKEN_EXPIRATION, 10) });
 	}
-	catch (err)
-	{
+	catch (err) {
 		return res.status(403).json({message: err});
 	}
 	return res.status(200).json({message: 'OK'});
 });
 
 router.post('/signout', jwtrequired(), async (req, res) => {
-	try
-	{
+	try {
 		let res_query = await user.selectById(req.user_id);
 		if (!res_query)
 			return res.status(400).json({message: 'User not found'});
@@ -200,8 +176,7 @@ router.post('/signout', jwtrequired(), async (req, res) => {
 		res.clearCookie('refreshToken');
 		await user.connect(res_query.id, false);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 	}
 	return res.status(200).json({message: 'OK'});

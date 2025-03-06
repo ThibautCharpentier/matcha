@@ -5,8 +5,7 @@ const { checkContact } = require('./checkcontact')
 
 const handleWebSocketMessage = async (ws, message) => {
 	message = message.toString();
-    switch (message)
-	{
+    switch (message) {
         case 'TOKEN':
             await checkToken(ws);
             break ;

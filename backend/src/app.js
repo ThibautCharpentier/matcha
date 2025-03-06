@@ -57,16 +57,14 @@ server.listen(back_port, '0.0.0.0', () => {
 });
 
 websocket.on('connection', async (ws, req) => {
-	const cookies = cookie.parse(req.headers.cookie);
-    const accessToken = cookies.accessToken;
+	const cookies = cookie.parse(req.headers?.cookie);
+    const accessToken = cookies?.accessToken;
 
-    if (!accessToken)
-	{
+    if (!accessToken) {
 		ws.close(4001);
 		return ;
 	}
-	try
-	{
+	try {
 		const decoded = jwt.verify(accessToken, process.env.SECRET_TOKEN_KEY);
 		ws.user_id = decoded.id;
 		ws.access_token = accessToken;
@@ -77,8 +75,7 @@ websocket.on('connection', async (ws, req) => {
 		if (res_query.status == 'offline')
 			await user.connect(ws.user_id, true);
 	}
-	catch (err)
-	{
+	catch (err) {
 		console.log(err);
 		ws.close(4001);
 	}
@@ -89,14 +86,12 @@ websocket.on('connection', async (ws, req) => {
     ws.on('close', async (code) => {
         if (code == 4001 || code == 4002)
 			return ;
-		try
-		{
+		try {
 			const res_query = await user.selectById(ws.user_id);
 			if (res_query.status == 'online')
 				await user.connect(ws.user_id, false);
 		}
-		catch (err)
-		{
+		catch (err) {
 			console.log(err);
 		}
     });
