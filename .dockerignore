@@ -17,9 +17,10 @@
 **/*.njsproj
 **/*.sln
 **/*.sw?
+**/.dockerignore
+**/Dockerfile
 
 ignore
 .env
-
-/backend/uploads
-/backend/users.csv
+.gitignore
+docker-compose.yml

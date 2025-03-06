@@ -25,13 +25,13 @@ function getInitialQueryMatchs(res_user) {
 				SELECT ARRAY_AGG(public.interest.name)
 				FROM public.user_interest
 				JOIN public.interest ON public.user_interest.interest = public.interest.id
-				WHERE public.user_interest.user_id = public.user.id
+				WHERE public.user_interest.user_id = public.users.id
 			) AS tags,
 			(
 				SELECT count(public.interest.name)::INTEGER
 				FROM public.user_interest
 				JOIN public.interest ON public.user_interest.interest = public.interest.id
-				WHERE public.user_interest.user_id = public.user.id
+				WHERE public.user_interest.user_id = public.users.id
 				AND public.interest.id = ANY($1)
 			) AS common_tags,
 			(
@@ -42,7 +42,7 @@ function getInitialQueryMatchs(res_user) {
 				))
 			) AS distance
 		FROM
-			public.user
+			public.users
 		WHERE
 			id != $4
 			AND
@@ -78,7 +78,7 @@ function getInitialQueryMatchs(res_user) {
 				(
 					SELECT count(*)
 					FROM public.interaction
-					WHERE public.interaction.target = public.user.id AND public.interaction.user_id = $4
+					WHERE public.interaction.target = public.users.id AND public.interaction.user_id = $4
 				) = 0`
 	return (query)
 }
@@ -97,7 +97,7 @@ function getFilterQueryMatchs(filter) {
 				SELECT count(public.interest.name)::INTEGER
 				FROM public.user_interest
 				JOIN public.interest ON public.user_interest.interest = public.interest.id
-				WHERE public.user_interest.user_id = public.user.id
+				WHERE public.user_interest.user_id = public.users.id
 				AND public.interest.id = ANY($1)
 			)`
 	if (filter.includes("age18_20"))

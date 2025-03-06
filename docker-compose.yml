@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16
+    container_name: matcha_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PORT: ${DB_PORT}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    restart: always
+  
+  back:
+    build: ./backend
+    container_name: matcha_back
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/backend
+      - uploads_data:/backend/uploads
+    restart: always
+  
+  front:
+    build: ./frontend
+    container_name: matcha_front
+    ports:
+      - 5173:5173
+    depends_on:
+      - back
+    volumes:
+      - ./frontend:/frontend
+    restart: always
+
+volumes:
+  postgresql_data:
+  uploads_data:

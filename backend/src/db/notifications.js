@@ -5,15 +5,15 @@ const getNotifications = async (id) => {
 	let query = `
 		SELECT
 			public.notification.id AS id,
-			public.user.firstname AS firstname,
-			public.user.lastname AS lastname,
+			public.users.firstname AS firstname,
+			public.users.lastname AS lastname,
 			action,
 			public.notification.verified AS verified,
 			created
 		FROM
 			public.notification
 		JOIN
-			public.user ON public.notification.from_id = public.user.id
+			public.users ON public.notification.from_id = public.users.id
 		WHERE
 			user_id = $1
 			AND created >= CURRENT_DATE - INTERVAL '1 month'
