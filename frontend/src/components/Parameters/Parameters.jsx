@@ -5,8 +5,10 @@ import PasswordForm from "./PasswordForm"
 import PreferencesForm from "./PreferencesForm"
 import GpsForm from "./GpsForm"
 import LocationForm from "./LocationForm";
+import { useAuthentified } from "../AuthentifiedContext"
 
-export default function Parameters({ data }) {
+export default function Parameters() {
+	const { data } = useAuthentified();
 	const [isGpsVisible, setIsGpsVisible] = useState(data.gps);
 
 	useEffect(() => {

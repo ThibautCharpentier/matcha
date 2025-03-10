@@ -1,14 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_ROUTES } from "../utils/constants";
-import { useSocketToken } from "../utils/sockets/useSocketToken";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [isReady, setIsReady] = useState(false);
-	const hasFetched = useRef(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     const login = () => {
         setIsAuthenticated(true);
@@ -18,8 +15,7 @@ export const AuthProvider = ({ children }) => {
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-			if (res.data.message.gps == false)
-			{
+			if (res.data.message.gps == false) {
 				axios.get('https://ipapi.co/json/')
 				.then((res) => {
 					if (res.status != 200)
@@ -55,43 +51,32 @@ export const AuthProvider = ({ children }) => {
     };
 
 	useEffect(() => {
-        if (hasFetched.current == false)
-		{
-			axios.get(`${API_ROUTES.IS_CONNECTED}`, {
+		axios.get(`${API_ROUTES.IS_CONNECTED}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			login();
+		})
+		.catch(() => {
+			axios.get(API_ROUTES.REFRESH, {
 				withCredentials: true,
 			})
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
 				login();
-				setIsReady(true);
 			})
-			.catch((err) => {
-				console.log(err);
-				axios.get(API_ROUTES.REFRESH, {
-					withCredentials: true,
-				})
-				.then((res) => {
-					if (res.status != 200)
-						throw new Error('Une erreur est survenue');
-					login();
-					setIsReady(true);
-				})
-				.catch((err) => {
-					console.log(err);
-					logout();
-					setIsReady(true);
-				});
+			.catch(() => {
+				logout();
 			});
-		}
-        hasFetched.current = true;
+		});
     }, []);
-
-	useSocketToken(isAuthenticated, logout);
 
     return (
 		<>
-			{isReady && (
+			{isAuthenticated != null && (
 				<AuthContext.Provider value={{ isAuthenticated, login, logout }}>
 					{children}
 				</AuthContext.Provider>

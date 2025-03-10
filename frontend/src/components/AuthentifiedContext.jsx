@@ -1,9 +1,9 @@
-import { createContext, useContext, useState, useRef, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from "./AuthContext";
 import Navbar from "./Navbar/Navbar"
 import axios from 'axios';
 import { API_ROUTES } from '../utils/constants';
+import { useSocketToken } from "../utils/sockets/useSocketToken";
 import { useSocketData } from "../utils/sockets/useSocketData";
 import { useSocketNotifs } from "../utils/sockets/useSocketNotifs";
 import { useSocketContacts } from "../utils/sockets/useSocketContacts";
@@ -12,8 +12,6 @@ const AuthentifiedContext = createContext();
 
 export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
-	const location = useLocation();
-	const hasFetched = useRef(location.pathname);
 	const [hasNewNotif, setHasNewNotif] = useState(false)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
 	const [notifs, setNotifs] = useState([])
@@ -33,8 +31,12 @@ export default function AuthentifiedProvider({ children }) {
 	})
 	const [contacts, setContacts] = useState([])
 
-    function profileIsCompleteOrNot() {
-        axios.get(`${API_ROUTES.IS_COMPLETE_PROFILE}`, {
+    const profileComplete = () => {
+        setIsCompleteProfile(true);
+    }
+
+	useEffect(() => {
+		axios.get(`${API_ROUTES.IS_COMPLETE_PROFILE}`, {
 			withCredentials: true,
 		})
         .then((res) => {
@@ -46,56 +48,29 @@ export default function AuthentifiedProvider({ children }) {
                 setIsCompleteProfile(false);
         })
         .catch((err) => {
-            console.log(err)
+			console.log(err)
+            logout()
         })
-    }
+	}, [])
 
-    const profileComplete = () => {
-        setIsCompleteProfile(true);
-    }
-
-	useEffect(() => {
-        if (hasFetched.current != location.pathname)
-        {
-            axios.get(`${API_ROUTES.IS_CONNECTED}`, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-			})
-			.catch((err) => {
-				console.log(err);
-				axios.get(API_ROUTES.REFRESH, {
-					withCredentials: true,
-				})
-				.then((res) => {
-					if (res.status != 200)
-						throw new Error('Une erreur est survenue');
-				})
-				.catch((err) => {
-					console.log(err);
-					logout();
-				});
-			});
-			hasFetched.current = location.pathname
-		}
-        profileIsCompleteOrNot();
-    }, [location]);
-
+	useSocketToken(isAuthenticated, logout);
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 	useSocketContacts(isAuthenticated, setContacts)
 
 	return (
-		<div className={`${isCompleteProfile && 'flex'}`}>
-			{isCompleteProfile && <Navbar 
-				hasNewNotif={hasNewNotif}
-			/>}
-			<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
-				{children}
-			</AuthentifiedContext.Provider>
-		</div>
+		<>
+			{isCompleteProfile != null &&
+				<div className={`${isCompleteProfile && 'flex'}`}>
+					{isCompleteProfile && <Navbar 
+						hasNewNotif={hasNewNotif}
+					/>}
+					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
+						{children}
+					</AuthentifiedContext.Provider>
+				</div>
+			}
+		</>
 	);
 };
 

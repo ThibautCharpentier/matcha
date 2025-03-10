@@ -1,9 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotificationFilterBar from "./NotificationFilterBar";
 import NotificationDisplay from "./NotificationDisplay";
+import { useAuthentified } from "../AuthentifiedContext"
+import axios from 'axios';
+import { API_ROUTES } from '../../utils/constants';
 
-export default function Notification({ notifs }) {
+export default function Notification() {
+	const { notifs, hasNewNotif, setHasNewNotif } = useAuthentified();
 	const [filterNotif, setFilterNotif] = useState("tout");
+
+	useEffect(() => {
+		if (hasNewNotif) {
+			axios.patch(API_ROUTES.NOTIF_VERIFIED, null, {
+				withCredentials: true,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('Une erreur est survenue');
+				setHasNewNotif(false)
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		}
+	}, [hasNewNotif]);
 
 	return (
 		<>

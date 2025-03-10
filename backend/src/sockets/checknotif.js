@@ -28,6 +28,7 @@ const checkNewNotif = async (ws) => {
 				if (ws.notif[i].id != res_query[i].id) {
 					new_notif = true
 					ws.notif = res_query
+					break
 				}
 			}
 		}

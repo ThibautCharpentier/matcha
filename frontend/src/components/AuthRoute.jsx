@@ -1,37 +1,19 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useEffect, useRef } from 'react';
+import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useAuthentified } from "./AuthentifiedContext";
-import { APP_ROUTES, API_ROUTES } from '../utils/constants';
-import axios from 'axios';
+import { APP_ROUTES } from '../utils/constants';
 
-const AuthRoute = ({ element: Element, ...rest }) => {
+const AuthRoute = ({ element, ...rest }) => {
     const { isAuthenticated } = useAuth();
-	const { data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile } = useAuthentified()
-	const location = useLocation();
-	const hasFetched = useRef(false);
 
-	useEffect(() => {
-		if (hasNewNotif && location.pathname == APP_ROUTES.NOTIFICATION)
-		{
-			hasFetched.current = true
-            axios.patch(API_ROUTES.NOTIF_VERIFIED, null, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-				setHasNewNotif(false)
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		}
-    }, [location, hasNewNotif]);
+    if (!isAuthenticated)
+        return <Navigate to={APP_ROUTES.WELCOME} />
 
+	const { isCompleteProfile } = useAuthentified()
 
-    if (isAuthenticated && isCompleteProfile === false)
+    if (!isCompleteProfile)
         return <Navigate to={APP_ROUTES.COMPLETE_PROFILE} />
-    return isAuthenticated ? <Element data={data} notifs={notifs} contacts={contacts} {...rest} /> : <Navigate to={APP_ROUTES.WELCOME} />;
+    return element;
 };
+
 export default AuthRoute;

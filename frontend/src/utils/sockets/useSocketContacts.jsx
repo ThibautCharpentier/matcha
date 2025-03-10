@@ -7,8 +7,7 @@ export const useSocketContacts = (isAuthenticated, setContacts) => {
 	const [closeState, setCloseState] = useState(false);
 
 	useEffect(() => {
-		if (isAuthenticated && socketContactsRef.current == null)
-		{
+		if (isAuthenticated && socketContactsRef.current == null) {
 			socketContactsRef.current = new WebSocket(WS_URL);
 
 			socketContactsRef.current.onopen = () => {

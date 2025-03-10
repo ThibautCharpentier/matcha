@@ -7,8 +7,7 @@ export const useSocketData = (isAuthenticated, setData) => {
 	const [closeState, setCloseState] = useState(false);
 
 	useEffect(() => {
-		if (isAuthenticated && socketDataRef.current == null)
-		{
+		if (isAuthenticated && socketDataRef.current == null) {
 			socketDataRef.current = new WebSocket(WS_URL);
 
 			socketDataRef.current.onopen = () => {
@@ -20,7 +19,6 @@ export const useSocketData = (isAuthenticated, setData) => {
 
 			socketDataRef.current.onmessage = (event) => {
 				let res = JSON.parse(event.data);
-
 				setData({
 					username: res.username,
 					firstname: res.firstname,

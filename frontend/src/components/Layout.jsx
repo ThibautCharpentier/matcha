@@ -1,24 +1,12 @@
-import { useLocation } from "react-router-dom"
-import { APP_ROUTES } from "../utils/constants"
 import AuthentifiedProvider from "./AuthentifiedContext"
+import { useAuth } from "./AuthContext";
 
 export default function Layout({ children }) {
-	const location = useLocation();
+	const { isAuthenticated } = useAuth();
 
-	const navbarRoutes = [
-		APP_ROUTES.DASHBOARD,
-		APP_ROUTES.MATCH,
-		APP_ROUTES.CONVERSATION,
-		APP_ROUTES.NOTIFICATION,
-		APP_ROUTES.PARAMETERS,
-        APP_ROUTES.COMPLETE_PROFILE
-	];
-
-	const showNavbar = navbarRoutes.includes(location.pathname)
-    
 	return (
 		<>
-			{showNavbar ? 
+			{isAuthenticated ? 
 			<AuthentifiedProvider
 				children={children}
 			/>

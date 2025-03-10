@@ -36,12 +36,12 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
-							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={Dashboard} />} />
-							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={Match} />} />
-							<Route exact path={ APP_ROUTES.CONVERSATION } element={<AuthRoute element={Conversation} />} />
-							<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={Notification} />} />
+							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={<Dashboard />} />} />
+							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={<Match />} />} />
+							<Route exact path={ APP_ROUTES.CONVERSATION } element={<AuthRoute element={<Conversation />} />} />
+							<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={<Notification />} />} />
 							<Route exact path={APP_ROUTES.COMPLETE_PROFILE} element={<CompleteProfileRoute element={<CompleteProfile />} />} />
-							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={Parameters} />} />
+							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={<Parameters />} />} />
 						</Routes>
 					</Layout>
 				</BrowserRouter>
@@ -49,13 +49,3 @@ export default function App() {
 		</>
 	)
 }
-
-/* <Route path={ APP_ROUTES.SIGN_IN } element={<SignIn />} />
-   <Route path={ APP_ROUTES.SIGN_UP } element={<SignUp />} />
-   <Route path={ APP_ROUTES.MENU } element={<Menu />} />
-   <Route path={ APP_ROUTES.PARAMETERS } element={<Parameters />} />
-   <Route path={ APP_ROUTES.MATCH } element={<Match />} />
-   <Route path={ APP_ROUTES.RESEARCH } element={<Research />} />
-   <Route path={ APP_ROUTES.CONVERSATION } element={<Conversation />} />
-   <Route path={ APP_ROUTES.NOTIFICATION } element={<Notification />} />
-   <Route path="*" element={<NotFound />} /> */

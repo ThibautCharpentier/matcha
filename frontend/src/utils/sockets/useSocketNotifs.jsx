@@ -7,8 +7,7 @@ export const useSocketNotifs = (isAuthenticated, setNotifs, setHasNewNotif) => {
 	const [closeState, setCloseState] = useState(false);
 
 	useEffect(() => {
-		if (isAuthenticated && socketNotifsRef.current == null)
-		{
+		if (isAuthenticated && socketNotifsRef.current == null) {
 			socketNotifsRef.current = new WebSocket(WS_URL);
 
 			socketNotifsRef.current.onopen = () => {
@@ -21,10 +20,8 @@ export const useSocketNotifs = (isAuthenticated, setNotifs, setHasNewNotif) => {
 			socketNotifsRef.current.onmessage = (event) => {
 				let res = JSON.parse(event.data);
 				setNotifs(res)
-				for (let i = 0; i < res.length; i++)
-				{
-					if (res[i].verified == false)
-					{
+				for (let i = 0; i < res.length; i++) {
+					if (res[i].verified == false) {
 						setHasNewNotif(true)
 						break ;
 					}

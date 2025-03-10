@@ -8,8 +8,7 @@ export const useSocketToken = (isAuthenticated, logout) => {
 	const [closeState, setCloseState] = useState(false);
 
 	useEffect(() => {
-		if (isAuthenticated && socketTokenRef.current == null)
-		{
+		if (isAuthenticated && socketTokenRef.current == null) {
 			socketTokenRef.current = new WebSocket(WS_URL);
 
 			socketTokenRef.current.onopen = () => {
@@ -28,8 +27,7 @@ export const useSocketToken = (isAuthenticated, logout) => {
 						throw new Error('Une erreur est survenue');
 					socketTokenRef.current.close(4002);
 				})
-				.catch((err) => {
-					console.log(err);
+				.catch(() => {
 					logout();
 					socketTokenRef.current.close();
 				});
