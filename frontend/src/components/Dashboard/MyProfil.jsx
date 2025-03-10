@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import profile from '../../assets/images/img_profile.png';
 import MatchButtons from "../Match/MatchButtons";
 import MatchSlider from "../Match/MatchSlider";
-import MatchProfil from "../Match/MatchProfil";
+import ProfileDash from "./ProfileDash";
+import ModifyProfile from "./ModifyProfile";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
@@ -46,7 +46,7 @@ export default function MyProfil() {
         
 		<div className="relative max-w-[400px] max-h-[550px]">
             {(matchState && matchState[matchIndexState] && <div>
-				{(toggleProfile ? <MatchProfil
+				{(toggleProfile ? <ModifyProfile
 					matchState={matchState}
 					matchIndexState={matchIndexState}
 				/> : <MatchSlider
@@ -61,22 +61,6 @@ export default function MyProfil() {
 					setMatchIndexState={setMatchIndexState}
 				/>
 			</div>)}
-            {/* {(matchState[0] && 
-                {(toggleProfile ? <MatchProfil
-                    matchState={matchState}
-                    matchIndexState={matchIndexState}
-                /> : <MatchSlider
-                    matchState={matchState}
-                    matchIndexState={matchIndexState}
-                />)}
-                <MatchButtons
-                    toggleProfile={toggleProfile}
-                    switchToggleProfile={switchToggleProfile}
-                    matchState={matchState}
-                    matchIndexState={matchIndexState}
-                    setMatchIndexState={setMatchIndexState}
-                />
-            )} */}
         </div>
 	)
 }

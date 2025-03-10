@@ -210,12 +210,13 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 });
 
 router.get('/getprofileuser', jwtrequired(), async(req, res) => {
-    console.log("allo")
 	let res_query;
+    let tag
 	try
 	{
 		res_query = await user.selectById(req.user_id);
         res_query.age = await utils.calculateAge(res_query.birthdate);
+        res_query.tags = await user.getInterests(res_query.id);
 	}
 	catch (err)
 	{

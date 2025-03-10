@@ -53,7 +53,13 @@ export default function MatchProfil({matchState, matchIndexState}) {
 						<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
 					))}
 				</div>
-				<div className="mt-3">{matchState[matchIndexState].bio}</div>
+                <div>
+                    <h3 className="text-gray-600 mt-5">A propos de moi</h3>
+                    <div className="mt-2">
+                        <p className="text-sm ">Je m'appelle Ismérie bonjour à tous {matchState[matchIndexState].bio}</p>
+                    </div>
+
+                </div>
 			</div>
 		</div>
 	)
