@@ -1,4 +1,4 @@
-const API_URL = "http://" + window.location.hostname + ":8000";
+export const API_URL = "http://" + window.location.hostname + ":8000";
 
 export const WS_URL = "ws://" + window.location.hostname + ":8000";
 
@@ -31,6 +31,7 @@ export const API_ROUTES = {
 	UPDATE_GPS:					`${API_URL}/profile/updategps`,
 	UPDATE_LOCATION:			`${API_URL}/profile/updatelocation`,
 	GET_GPS:					`${API_URL}/profile/getgps`,
+    GET_PROFILE_USER:           `${API_URL}/profile/getprofileuser`,
 	NOTIF_VERIFIED:				`${API_URL}/profile/notifverified`,
 	LIKE:                 		`${API_URL}/interaction/like`,
 	DISLIKE:              		`${API_URL}/interaction/dislike`,

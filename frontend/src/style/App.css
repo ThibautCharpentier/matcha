@@ -36,6 +36,8 @@
 :root {
   --color-pastelpink: #F1B5CB;
   --color-pink:  #d81159;
+  --color-light-green: #99d98c;
+  --color-dark-green: #81b976;
 }
 
 * {

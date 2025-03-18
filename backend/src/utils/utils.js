@@ -18,6 +18,8 @@ function getInitialQueryMatchs(res_user) {
 			status,
 			last_connection,
 			bio,
+            picture_profile,
+            pictures,
 			EXTRACT(YEAR FROM AGE(birthdate)) AS age,
 			famerating,
 			city,

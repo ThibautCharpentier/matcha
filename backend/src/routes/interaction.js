@@ -28,7 +28,7 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 			filterValues = []
 
 		let res_user = await user.selectById(req.user_id);
-		res_user.tags = await user.getInterestsId(res_user.id)
+		res_user.tags = await user.getInterestsId(res_user.id);
 		res_user.age = await utils.calculateAge(res_user.birthdate);
 		res_query = await matchs.getMatchs(res_user, sortValues, filterValues);
 	}

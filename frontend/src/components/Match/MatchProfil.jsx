@@ -1,6 +1,7 @@
-import profile from '../../assets/images/img_profile.png';
+import { API_URL} from "../../utils/constants";
 
 export default function MatchProfil({matchState, matchIndexState}) {
+    const pathPicture = API_URL + "/" + matchState[matchIndexState].picture_profile;
 	function findLastConnection() {
 		const last_connection = new Date(matchState[matchIndexState].last_connection)
 		const now = new Date()
@@ -8,6 +9,7 @@ export default function MatchProfil({matchState, matchIndexState}) {
 		const diff_in_hours = Math.floor((now - last_connection) / (1000 * 60 * 60))
 		const diff_in_minutes = Math.floor((now - last_connection) / (1000 * 60))
 		const diff_in_seconds = Math.floor((now - last_connection) / 1000)
+
 
 		if (diff_in_days < 1 && diff_in_hours < 1 && diff_in_minutes < 1)
 			return (diff_in_seconds + " sec")
@@ -19,10 +21,10 @@ export default function MatchProfil({matchState, matchIndexState}) {
 	}
 
 	return (
-		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] mt-6 bg-gray-700 flex flex-col rounded-3xl">
+		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
 				<div className="flex flex-row space-x-3">
-					<img src={profile} className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
+					<img src={pathPicture} className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
 					<div className="flex flex-col items-start justify-center text-white text-sm">
 						<div>{matchState[matchIndexState].firstname} {matchState[matchIndexState].lastname}</div>
 						<div>{matchState[matchIndexState].age} ans</div>
@@ -51,7 +53,13 @@ export default function MatchProfil({matchState, matchIndexState}) {
 						<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
 					))}
 				</div>
-				<div className="mt-3">{matchState[matchIndexState].bio}</div>
+                <div>
+                    <h3 className="text-gray-600 mt-5">A propos de moi</h3>
+                    <div className="mt-2">
+                        <p className="text-sm ">Je m'appelle Ismérie bonjour à tous {matchState[matchIndexState].bio}</p>
+                    </div>
+
+                </div>
 			</div>
 		</div>
 	)

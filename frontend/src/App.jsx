@@ -12,7 +12,7 @@ import TokenPassword from "./components/Token/TokenPassword"
 import NoAuthRoute from './components/NoAuthRoute'
 import AuthRoute from './components/AuthRoute'
 import CompleteProfileRoute from './components/CompleteProfileRoute'
-import Dashboard from "./components/Dashboard"
+import Dashboard from "./components/Dashboard/Dashboard"
 import Match from "./components/Match/Match"
 import Layout from "./components/Layout"
 import Notification from "./components/Notification/Notification"

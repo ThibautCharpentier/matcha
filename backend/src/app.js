@@ -44,6 +44,7 @@ app.use('/auth', authRouter);
 app.use('/data', dataRouter);
 app.use('/profile', profileRouter);
 app.use('/interaction', interactionRouter);
+app.use('/uploads', express.static(uploadDir));
 
 db.createTables().catch(err => {
 	console.log('Error creating tables: ', err);
