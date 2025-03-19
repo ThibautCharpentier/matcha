@@ -24,7 +24,7 @@ import { AuthProvider } from "./components/AuthContext"
 export default function App() {
 
 	return (
-		<>
+		<div className="h-full w-full fixed">
 			<AuthProvider>
 				<BrowserRouter>
 					<AnimationBackground />
@@ -46,6 +46,6 @@ export default function App() {
 					</Layout>
 				</BrowserRouter>
 			</AuthProvider>
-		</>
+		</div>
 	)
 }

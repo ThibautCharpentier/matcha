@@ -39,12 +39,12 @@ export default function ModalHobbies({ isOpen, onClose, onSave }) {
 	return (
 		<div className={`fixed inset-0 flex items-center justify-center z-50 ${isOpen ? 'block' : 'hidden'}`}>
 			<div className="bg-gray-800 bg-opacity-50 absolute inset-0" onClick={onClose}></div>
-			<div className="bg-white rounded-xl shadow-lg relative h-5/6 z-10 max-w-lg w-full">
+			<div className="bg-white rounded-xl shadow-lg relative h-5/6 z-10 max-w-lg w-full flex flex-col overflow-hidden">
 				<div className="bg-gray-100 rounded-xl flex justify-between items-center p-8">
 					<h2 className="text-xl text-center">Sélectionnez vos passions</h2>
 					<button className="btn btn-primary" onClick={() => onSave(selectedPassions)}>Sauvegarder</button>
 				</div>
-				<div className="relative flex flex-wrap h-4/5 overflow-y-auto mt-2 ml-2">
+				<div className="relative flex flex-wrap flex-1 overflow-y-auto pt-2 ml-2">
 					{interestNames.map(passion => (
 					<button
 					key={passion}
@@ -55,7 +55,6 @@ export default function ModalHobbies({ isOpen, onClose, onSave }) {
 					</button>
 					))}
 				</div>
-
 			</div>
 		</div>
 	)
