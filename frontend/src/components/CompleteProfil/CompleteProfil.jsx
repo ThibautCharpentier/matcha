@@ -30,7 +30,7 @@ export default function CompleteProfil() {
     const previousStep = () => {
         setStep(prevStep => prevStep - 1);
     };
-
+    
     const renderStep = () => {
         switch (step) {
             case 1:
@@ -85,11 +85,19 @@ export default function CompleteProfil() {
     }
 
     return (
-        <div className="w-full min-h-screen flex flex-col items-center justify-center">
+        <div className="w-full min-h-screen flex flex-col items-center p-4">
+            <div className="absolute top-0 w-full">
+                <div className="bg-gray-300 h-1">
+                    <div
+                        className="bg-[--color-pink] h-1 rounded-full transition-all duration-500 ease-in-out"  // Ajout de la transition
+                        style={{ width: `${((step - 1) / 5) * 100}%` }}  // Dynamiser la largeur en fonction de la progression
+                    >
+                    </div>
+                </div>
+            </div>
             <h1 className="text-3xl text-center font-poppins-bold mt-20">Compléter le profil</h1>
-            <div className="w-96 h-80 mt-14 p-2">
+            <div className="mt-14 p-2">
                 {renderStep()}
-                <p className=" text-gray-500 text-xs text-center mt-10">Etape <span>{step}</span>/5</p>
             </div>
         </div>
     )
