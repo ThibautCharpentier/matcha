@@ -11,15 +11,10 @@ export default function MyProfil() {
 	const hasFetched = useRef(false);
 	const [toggleProfile, setToggleProfile] = useState(false);
 	const [toggleEditProfil, setToggleEditProfil] = useState(false)
-	const [matchIndexState, setMatchIndexState] = useState(0);
-	const [matchState, setMatchState] = useState([]);
+	const [userData, setUserData] = useState([]);
 
-	const switchToggleProfile = () => {
-		setToggleProfile((prevState) => !prevState);
-	}
-
-	if (matchState[0])
-		console.log(matchState[0])
+	if (userData[0])
+		console.log(userData[0])
 
 
 	useEffect(() => {
@@ -31,7 +26,7 @@ export default function MyProfil() {
 			.then((res) => {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
-				setMatchState(() => {
+				setUserData(() => {
 					let newState = [];
 					newState[0] = res.data.message; // Ajout à l'index 0
 					return newState;
@@ -55,14 +50,14 @@ export default function MyProfil() {
 					</button>
 				</div>
 			</div>		
-			{matchState && matchState[matchIndexState] && (
+			{userData && userData[0] && (
 			<div>
 			{toggleEditProfil ? (
-				<ModifyProfile matchState={matchState} matchIndexState={matchIndexState} />
+				<ModifyProfile myData={userData[0]}/>
 			) : toggleProfile ? (
-				<MatchProfil userData={matchState} userIndex={matchIndexState} />
+				<MatchProfil userData={userData} userIndex={0} />
 			) : (
-				<PicturesSlider userData={matchState} userIndex={matchIndexState} />
+				<PicturesSlider userData={userData} userIndex={0} />
 			)}
 			</div>
 			)}
