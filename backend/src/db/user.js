@@ -133,13 +133,13 @@ const getData = async (id) => {
 	return res.rows[0];
 }
 
-const getInterests = async (id) => {
+const getNameInterestsById = async (id) => {
 	const client = await pool.connect();
 	const res = await client.query(`SELECT i.name FROM public.user_interest ui JOIN public.interest i ON ui.interest = i.id WHERE ui.user_id = $1`, [id]);
 	client.release();
 	if (res.rows.length == 0)
 		return null;
-	return res.rows;
+	return res.rows.map(row => row.name);
 }
 
 const getGps = async (id) => {
@@ -185,4 +185,4 @@ const addUserInterest = async (userId, interestId) => {
 }
 
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest, getAllInterests };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest, getAllInterests };

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import MatchButtons from "./MatchButtons";
 import MatchParameters from "./MatchParameters";
-import MatchSlider from "./MatchSlider";
-import MatchProfil from "./MatchProfil";
+import PicturesSlider from "../Profile/PicturesSlider";
+import MatchProfil from "../Profile/UserProfile";
 import MatchOverlays from "./MatchOverlays";
 import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
@@ -68,11 +68,11 @@ export default function Match() {
 					{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
 					{(matchState && matchState[matchIndexState] && <div className="relative max-w-[400px] max-h-[550px]">
 						{(toggleProfile ? <MatchProfil
-							matchState={matchState}
-							matchIndexState={matchIndexState}
-						/> : <MatchSlider
-							matchState={matchState}
-							matchIndexState={matchIndexState}
+							userData={matchState}
+							userIndex={matchIndexState}
+						/> : <PicturesSlider
+							userData={matchState}
+							userIndex={matchIndexState}
 						/>)}
 						<MatchButtons
 							toggleProfile={toggleProfile}

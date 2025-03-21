@@ -8,9 +8,9 @@ const firstSelect = async (ws) => {
 		for (let item in res_query)
 			ws.data[item] = res_query[item];
 		ws.data["interest"] = [];
-		res_query = await user.getInterests(ws.user_id);
+		res_query = await user.getNameInterestsById(ws.user_id);
 		for (let i in res_query)
-			ws.data["interest"][i] = res_query[i].name;
+			ws.data["interest"][i] = res_query[i];
 	}
 	catch (err) {
 		console.log(err);
@@ -30,11 +30,11 @@ const checkNewData = async (ws) => {
 				ws.data[item] = res_query[item];
 			}
 		}
-		res_query = await user.getInterests(ws.user_id);
+		res_query = await user.getNameInterestsById(ws.user_id);
 		for (let i in res_query) {
-			if (ws.data["interest"][i] != res_query[i].name) {
+			if (ws.data["interest"][i] != res_query[i]) {
 				new_data = true;
-				ws.data["interest"][i] = res_query[i].name;
+				ws.data["interest"][i] = res_query[i];
 			}
 		}
 		if (new_data == true)

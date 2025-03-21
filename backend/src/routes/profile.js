@@ -186,7 +186,7 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	{
 		res_query = await user.selectById(req.user_id);
         res_query.age = await utils.calculateAge(res_query.birthdate);
-        res_query.tags = await user.getInterests(res_query.id);
+        res_query.tags = await user.getNameInterestsById(res_query.id);
 	}
 	catch (err)
 	{
