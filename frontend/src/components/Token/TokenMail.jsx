@@ -20,10 +20,10 @@ export default function TokenMail() {
 				if (res.status != 200)
 					throw new Error('Une erreur est survenue');
 				else
-					setDisplay("Votre adresse mail a été vérifiée avec succès ! Veuillez fermer cette page.");
+					setDisplay("Votre adresse mail a été vérifiée avec succès !");
 			})
 			.catch((err) => {
-				setDisplay("Le lien a expiré ! Veuillez fermer cette page.");
+				setDisplay("Le lien a expiré !");
 			});
 		}
         hasFetched.current = true;
@@ -31,7 +31,9 @@ export default function TokenMail() {
 
 	return (
 		<div className="flex justify-center">
-			<h1 className="text-5xl text-center font-poppins-bold mt-6">{display}</h1>
+			<div className="w-80 flex flex-col p-2 mt-6">
+				{display != "" && <p className="text-center text-xl mt-4">{display}<br /> <span className="font-poppins-semibold" >Veuillez fermer cette page.</span></p>}
+			</div>
 		</div>
 	)
 }
