@@ -8,9 +8,9 @@ import PasswordInput from "./PasswordInput"
 import ForgotPassword from "./Forgot/ForgotPassword"
 import ForgotUsername from "./Forgot/ForgotUsername"
 import { useAuth } from "../AuthContext";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function SignIn() {
-	const navigate = useNavigate();
 	const [inputsStates, setInputsStates] = useState({
 		username: "",
 		password: "",
@@ -24,24 +24,14 @@ export default function SignIn() {
 	const [isForgotPassword, setIsForgotPassword] = useState(false);
 	const [isForgotUsername, setIsForgotUsername] = useState(false);
 	const [isSignIn, setIsSignIn] = useState(true);
+	const [hasSubmit, setHasSumit] = useState(false);
 	const { login } = useAuth();
-
-    async function profileIsComplete() {
-        try {
-            const res = await axios.get(API_ROUTES.IS_COMPLETE_PROFILE, { withCredentials: true });
-            if (res.status !== 200) throw new Error('Une erreur est survenue');
-            
-            return res.data.message === true;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
-    }
 
 	async function handleSubmit(e) {
 		e.preventDefault()
 
 		if (validationCheck()) {
+			setHasSumit(true)
 			const obj = {
 				username: DOMPurify.sanitize(inputsStates.username),
 				password: DOMPurify.sanitize(inputsStates.password),
@@ -49,16 +39,9 @@ export default function SignIn() {
 
             try {
                 const res = await axios.post(API_ROUTES.SIGN_IN, obj, { withCredentials: true });
-    
-                if (res.status !== 200) throw new Error('Une erreur est survenue');
-                
+                if (res.status !== 200)
+					throw new Error('Une erreur est survenue');
                 login();
-                // const isProfileComplete = await profileIsComplete();
-                // if (isProfileComplete) {
-                //     navigate('/dashboard');
-                // } else {
-                //     navigate('/complete-profile');
-                // }
             } catch (err) {
                 if (err.response?.data?.message === "Invalid password")
                     setShowValidation(state => ({ ...state, password: "Mot de passe invalide" }));
@@ -68,7 +51,9 @@ export default function SignIn() {
                     setShowValidation(state => ({ ...state, server: "Veuillez d'abord vérifier votre adresse mail. Un lien de vérification vous a été envoyé." }));
                 else
                     setShowValidation(state => ({ ...state, server: "Formulaire invalide" }));
-            }
+            } finally {
+				setHasSumit(false)
+			}
         }
     }
 
@@ -93,9 +78,8 @@ export default function SignIn() {
 		}
 		
 		setShowValidation(state => ({...state, server: ""}))
-		if (Object.values(areValid).every(value => value)) {
+		if (Object.values(areValid).every(value => value))
 			return true
-		}
 		return false
 	}
 
@@ -124,7 +108,7 @@ export default function SignIn() {
 			<div className="w-80 flex flex-col p-2 mt-6">
 				<h1 className="text-5xl text-center font-poppins-bold ">Connexion</h1>
 				<p className="font-poppins-regular mt-4 text-sm">Vous n'avez pas de compte ? <Link className="underline hover:text-[--color-pink]" to={ APP_ROUTES.SIGN_UP } >S'inscrire</Link></p>
-				<form action="" className="flex flex-col mt-6">
+				<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
 					<UsernameInput 
 					inputsStates={inputsStates}
 					setInputsStates={setInputsStates}
@@ -137,13 +121,22 @@ export default function SignIn() {
 					isPasswordVisible={isPasswordVisible}
 					togglePasswordVisibility={togglePasswordVisibility}
 					/>
+					<p className="font-poppins-regular mt-4 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotUsername} >Nom d'utilisateur oublié</Link></p>
+					<p className="font-poppins-regular mt-2 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotPassword} >Mot de passe oublié</Link></p>
+					{showValidation.server != "" && (
+						<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
+					)}
+					{hasSubmit ?
+						<button className="btn mt-6 bg-[--color-pink]" disabled>
+							<BeatLoader
+								color="#fff"
+								size={9}
+							/>
+						</button>
+					:
+						<button className="btn mt-6">Se connecter</button>
+					}
 				</form>
-				<p className="font-poppins-regular mt-4 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotUsername} >Nom d'utilisateur oublié</Link></p>
-				<p className="font-poppins-regular mt-2 text-sm"><Link className="underline hover:text-[--color-pink]" onClick={toggleForgotPassword} >Mot de passe oublié</Link></p>
-				{showValidation.server != "" && (
-					<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
-				)}
-				<button className="btn mt-6" onClick={handleSubmit}>Se connecter</button>
 			</div>
 		)}
 		</div>

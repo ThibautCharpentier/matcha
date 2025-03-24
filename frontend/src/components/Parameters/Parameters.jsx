@@ -6,6 +6,7 @@ import PreferencesForm from "./PreferencesForm"
 import GpsForm from "./GpsForm"
 import LocationForm from "./LocationForm";
 import { useAuthentified } from "../AuthentifiedContext"
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Parameters() {
 	const { data } = useAuthentified();
@@ -16,16 +17,26 @@ export default function Parameters() {
     }, [data]);
 
 	return (
-		<div className="w-full flex justify-center mb-[4em] sm:mb-0">
-			<div className="max-w-96 flex flex-col p-2 mt-6">
-				<h1 className="text-5xl text-center font-poppins-bold ">Paramètres</h1>
-				<UsernameForm data={data} />
-				<EmailForm data={data}/>
-				<PasswordForm/>
-				<PreferencesForm data={data}/>
-				<GpsForm data={data}/>
-				{isGpsVisible && <LocationForm data={data}/>}
-			</div>
-		</div>
+		<>
+			{(data.username != "" && data.email != "" && data.preferences != "") ?
+				<div className="w-full flex justify-center mb-[4em] sm:mb-0">
+					<div className="flex flex-col p-2">
+						<UsernameForm data={data} />
+						<EmailForm data={data}/>
+						<PasswordForm/>
+						<PreferencesForm data={data}/>
+						<GpsForm data={data}/>
+						{isGpsVisible && <LocationForm data={data}/>}
+					</div>
+				</div>
+			:
+				<div className="w-full h-screen flex justify-center items-center">
+					<ClipLoader
+						color="#fff"
+						size={70}
+					/>
+				</div>
+			}
+		</>
 	)
 }
