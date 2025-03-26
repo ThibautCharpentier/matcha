@@ -29,7 +29,7 @@ export default function Notification() {
 	return (
 		<>
 			<div className="w-full">
-				<div className="flex flex-col items-center w-full p-2 mb-[6em] sm:mb-0">
+				<div className="flex flex-col items-center w-full p-2 mb-[4em] sm:mb-0">
 					<NotificationFilterBar
 						filterNotif={filterNotif}
 						setFilterNotif={setFilterNotif}

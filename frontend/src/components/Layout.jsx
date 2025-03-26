@@ -7,13 +7,17 @@ export default function Layout({ children }) {
 	return (
 		<>
 			{isAuthenticated ? 
-			<AuthentifiedProvider
-				children={children}
-			/>
+				<AuthentifiedProvider
+					children={children}
+				/>
 			:
-			<div>
-				{children}
-			</div>}
+				<>
+					<header></header>
+					<main>
+						{children}
+					</main>
+				</>
+			}
 			<footer></footer>
 		</>
 	);

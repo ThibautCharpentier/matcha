@@ -63,11 +63,17 @@ export default function AuthentifiedProvider({ children }) {
 			{/* 'flex flex-row' */}
 			{isCompleteProfile != null &&
 				<div className={`${isCompleteProfile && 'flex'}`}>
-					{isCompleteProfile && <Navbar 
-						hasNewNotif={hasNewNotif}
-					/>}
+					{isCompleteProfile ?
+						<Navbar 
+							hasNewNotif={hasNewNotif}
+						/>
+					:
+						<header></header>
+					}
 					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
-						{children}
+						<main className='w-full'>
+							{children}
+						</main>
 					</AuthentifiedContext.Provider>
 				</div>
 			}
