@@ -14,7 +14,7 @@ export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
 	const [hasNewNotif, setHasNewNotif] = useState(false)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
-	const [notifs, setNotifs] = useState([])
+	const [notifs, setNotifs] = useState(null)
 	const [data, setData] = useState({
 		username: "",
 		firstname: "",

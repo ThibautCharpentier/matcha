@@ -33,7 +33,7 @@ export default function LocationForm({ data }) {
 	const [position, setPosition] = useState(
         data.latitude && data.longitude ? { lat: data.latitude, lng: data.longitude } : null
     );
-	const [verified, setVerified] = useState(false);
+	const [verified, setVerified] = useState(true);
 	const [errState, setErrState] = useState("");
 	const [hasSubmit, setHasSumit] = useState(false);
 
