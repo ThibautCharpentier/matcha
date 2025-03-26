@@ -160,22 +160,16 @@ const getInterestsId = async (id) => {
 	return res.rows[0];
 }
 
-const getInterestIdbyInterestName = async (interestName) => {
+const removeInterestsNotInTab = async (userId, interestsId) => {
+	if (interestsId.length === 0) return;
+	console.log(interestsId)
+	
 	const client = await pool.connect();
-	const res = await client.query(`SELECT id FROM public.interest WHERE name = $1`, [interestName])
+	const res = await client.query(`
+		DELETE FROM public.user_interest
+            WHERE user_id = $1 AND interest NOT IN (SELECT UNNEST($2::int[]));
+			`, [userId, interestsId])
 	client.release();
-	if (res.rows.length == 0)
-		return null;
-	return res.rows[0].id;
-}
-
-const getAllInterests = async () => {
-	const client = await pool.connect();
-	const res = await client.query('SELECT name FROM public.interest');
-    client.release();
-	if (res.rows.length == 0)
-		return null;
-	return res.rows;
 }
 
 const addUserInterest = async (userId, interestId) => {
@@ -184,5 +178,14 @@ const addUserInterest = async (userId, interestId) => {
 	client.release();
 }
 
+const addAllUserInterests = async (userId, interestsId) => {
+    const client = await pool.connect();
+	await client.query(`INSERT INTO public.user_interest (user_id, interest)
+			SELECT $1, UNNEST($2::int[])
+			ON CONFLICT (user_id, interest) DO NOTHING;
+		`, [userId, interestsId])
+	client.release();
+}
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest, getAllInterests };
+
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeInterestsNotInTab, addUserInterest, addAllUserInterests };

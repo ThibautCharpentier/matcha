@@ -9,6 +9,7 @@ const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const user = require('../db/user');
+const interests = require('../db/interests');
 const utils = require('../utils/utils');
 const notif = require('../db/notifications');
 const mail = require('../config/mail');
@@ -153,12 +154,12 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
             await user.addPicture(req.user_id, files[i].path);
         if (Array.isArray(interest)) {
             for (let i = 0; i < interest.length; i++) {
-                let interestId = await user.getInterestIdbyInterestName(interest[i]);
+                let interestId = await interests.getInterestIdbyInterestName(interest[i]);
                 if (interestId)
                     await user.addUserInterest(req.user_id, interestId);
             }
         }
-    } catch (err) {
+    } catch (err) { 
         console.error(err);
         return res.status(400).json({ message: 'Invalid data' });
     }
@@ -185,8 +186,9 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	try
 	{
 		res_query = await user.selectById(req.user_id);
-        res_query.age = await utils.calculateAge(res_query.birthdate);
+        res_query.age = utils.calculateAge(res_query.birthdate);
         res_query.tags = await user.getNameInterestsById(res_query.id);
+		console.log(res_query.tags);
 	}
 	catch (err)
 	{
@@ -194,5 +196,23 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	}
 	return res.status(200).json({message: res_query});
 });
+
+router.patch('/updateinterests', jwtrequired(), async(req, res) => {
+	console.log(req.body);
+	const { tabInterests } = req.body;
+	let idInterests = []
+
+	try {
+		idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
+		console.log(idInterests)
+		await user.removeInterestsNotInTab(req.user_id, idInterests);
+		await user.addAllUserInterests(req.user_id, idInterests);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
 
 module.exports = router;

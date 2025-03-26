@@ -41,6 +41,7 @@ export default function HobbiesStep({nextStep, infosUser}) {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSave}
+                passions={passions}
             />
         </>
     )

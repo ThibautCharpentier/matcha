@@ -4,9 +4,9 @@ import axios from 'axios';
 import "../../style/Scrollbar.css"
 
 
-export default function ModalHobbies({ isOpen, onClose, onSave }) {
+export default function ModalHobbies({ isOpen, onClose, onSave, passions }) {
 	const [interestNames, setInterestNames] = useState([]);
-	const [selectedPassions, setSelectedPassions] = useState([]);
+	const [selectedPassions, setSelectedPassions] = useState(passions);
 
 	useEffect(() => {
 
