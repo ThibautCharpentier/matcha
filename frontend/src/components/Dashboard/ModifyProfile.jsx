@@ -1,10 +1,13 @@
 import { API_URL} from "../../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
     const pathPicture = API_URL + "/" + myData.picture_profile;
+	const [inputText, setInputText] = useState(myData.bio || "");
 
-	console.log(myData)
+	console.log(myData.bio)
+	console.log(inputText)
+	console.log(myData.bio !== inputText)
 
 	return (
 		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
@@ -40,7 +43,7 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
 				>
 					{!myData.tags && (
 						<>
-							<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#4b5563"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#4b5563" stroke-width="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+							<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#4b5563"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
 							<p className="text-gray-600">Ajoutez des intérêts</p>
 						</>
 					)}
@@ -52,11 +55,18 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
                     <h3 className="text-gray-600 mt-5">A propos de moi</h3>
                     <div className="mt-2">
                         <textarea 
-                            className="h-36 w-full border-2 border-[--color-light-green] resize-none" 
+                            className="h-36 w-full hover:ring-2 ring-[--color-light-green] resize-none" 
                             maxLength="200"
                             placeholder={myData.bio}
+							onChange={(e) => setInputText(e.target.value)}
                         >
                         </textarea>
+						{inputText !== myData.bio && (
+							<button className="">
+								<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M17.0303 8.78039L8.99993 16.8107L5.4696 13.2804L6.53026 12.2197L8.99993 14.6894L15.9696 7.71973L17.0303 8.78039Z" fill="#000000"></path> </g></svg>
+								<p>save</p>
+							</button>
+						)}
                     </div>
 
                 </div>
