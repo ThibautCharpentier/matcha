@@ -203,10 +203,17 @@ router.patch('/updateinterests', jwtrequired(), async(req, res) => {
 	let idInterests = []
 
 	try {
-		idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
-		console.log(idInterests)
-		await user.removeInterestsNotInTab(req.user_id, idInterests);
-		await user.addAllUserInterests(req.user_id, idInterests);
+		console.log(tabInterests);
+		console.log(tabInterests.length);
+		if (tabInterests.length === 0) {
+			await user.removeAllInterests(req.user_id);
+		}
+		else {
+			idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
+			console.log(idInterests)
+			await user.removeInterestsNotInTab(req.user_id, idInterests);
+			await user.addAllUserInterests(req.user_id, idInterests);
+		}
 	}
 	catch (err) {
 		console.log(err);

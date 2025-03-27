@@ -3,17 +3,9 @@ import { useEffect } from "react";
 
 export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
     const pathPicture = API_URL + "/" + myData.picture_profile;
-    const txtBio = "Bonjour à tous \nBienvenue sur mon profil"
-
-	const openModalHobbies = () => {
-
-	}
-
-	useEffect(() => {
-        console.log("myData a changé :", myData);
-    }, [myData]);
 
 	console.log(myData)
+
 	return (
 		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
@@ -46,6 +38,12 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
 					className="text-xs flex flex-wrap gap-1 hover:bg-gray-100 p-2 hover:cursor-pointer"
 					onClick={() => setIsModalHobbiesOpen(true)}
 				>
+					{!myData.tags && (
+						<>
+							<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#4b5563"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#4b5563" stroke-width="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+							<p className="text-gray-600">Ajoutez des intérêts</p>
+						</>
+					)}
 					{myData.tags && myData.tags.map((tag, index) => (
 						<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
 					))}

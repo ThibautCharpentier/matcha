@@ -160,6 +160,15 @@ const getInterestsId = async (id) => {
 	return res.rows[0];
 }
 
+const removeAllInterests = async (userId) => {
+	const client = await pool.connect();
+	const res = await client.query(`
+		DELETE FROM public.user_interest
+		WHERE user_id = $1;
+		`, [userId])
+	client.release();
+}
+
 const removeInterestsNotInTab = async (userId, interestsId) => {
 	if (interestsId.length === 0) return;
 	console.log(interestsId)
@@ -188,4 +197,4 @@ const addAllUserInterests = async (userId, interestsId) => {
 }
 
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeInterestsNotInTab, addUserInterest, addAllUserInterests };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests };
