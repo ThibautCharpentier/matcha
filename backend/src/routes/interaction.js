@@ -76,8 +76,10 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 router.post('/view', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try {
-		let res = await matchs.getViewProfile(req.user_id, target);
-		if (!res) {
+		let res = await matchs.getViewProfile(req.user_id, target)
+		let res2 = await matchs.getBlockProfile(req.user_id, target)
+		let res3 = await matchs.getBlockProfile(target, req.user_id)
+		if (!res && !res2 && !res3) {
 			await matchs.addViewProfile(req.user_id, target);
 			await notif.addNotif(req.user_id, target, "view")
 		}
@@ -92,10 +94,21 @@ router.post('/view', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try {
-		let res = await matchs.getDislikeProfile(req.user_id, target);
-		if (!res) {
-			await matchs.addDislikeProfile(req.user_id, target);
+		let res = await matchs.checkMatch(target, req.user_id)
+		let res2 = await matchs.getBlockProfile(req.user_id, target)
+		let res3 = await matchs.getBlockProfile(target, req.user_id)
+		if (res && !res2 && !res3) {
+			await matchs.addUnlikeProfile(req.user_id, target);
+			await notif.addNotif(req.user_id, target, "unlike")
+			await chat.deleteChat(req.user_id, target)
 			await user.changeFamerating(target)
+		}
+		else if (!res && !res2 && !res3) {
+			res = await matchs.getDislikeOrUnlikeProfile(req.user_id, target);
+			if (!res) {
+				await matchs.addDislikeProfile(req.user_id, target);
+				await user.changeFamerating(target)
+			}
 		}
 	}
 	catch (err) {
@@ -108,8 +121,10 @@ router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) 
 router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body;
 	try {
-		let res = await matchs.getLikeProfile(req.user_id, target);
-		if (!res) {
+		let res = await matchs.getLikeProfile(req.user_id, target)
+		let res2 = await matchs.getBlockProfile(req.user_id, target)
+		let res3 = await matchs.getBlockProfile(target, req.user_id)
+		if (!res && !res2 && !res3) {
 			await matchs.addLikeProfile(req.user_id, target);
 			await user.changeFamerating(target)
 			await notif.addNotif(req.user_id, target, "like")

@@ -37,4 +37,17 @@ const addChat = async (user1, user2) => {
 	client2.release();
 }
 
-module.exports = { addChat, getChats }
+const deleteChat = async (user1, user2) => {
+	const client = await pool.connect()
+	let values = [user1, user2]
+	const res = await client.query(`SELECT * FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, values)
+	client.release();
+	if (res.rows.length != 0)
+		return ;
+	const client2 = await pool.connect()
+	values = [user1, user2]
+	await client2.query(`DELETE FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, values);
+	client2.release();
+}
+
+module.exports = { addChat, getChats, deleteChat }
