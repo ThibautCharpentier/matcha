@@ -4,6 +4,7 @@ const { validateDto } = require('../dto/validatedto');
 const { UpdateUsernameDto } = require('../dto/updateusername.dto');
 const { UpdateEmailDto } = require('../dto/updateemail.dto');
 const { UpdatePreferencesDto } = require('../dto/updatepreferences.dto');
+const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
@@ -198,13 +199,10 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 });
 
 router.patch('/updateinterests', jwtrequired(), async(req, res) => {
-	console.log(req.body);
 	const { tabInterests } = req.body;
 	let idInterests = []
 
 	try {
-		console.log(tabInterests);
-		console.log(tabInterests.length);
 		if (tabInterests.length === 0) {
 			await user.removeAllInterests(req.user_id);
 		}
@@ -214,6 +212,20 @@ router.patch('/updateinterests', jwtrequired(), async(req, res) => {
 			await user.removeInterestsNotInTab(req.user_id, idInterests);
 			await user.addAllUserInterests(req.user_id, idInterests);
 		}
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
+
+router.patch('/updatebio', jwtrequired(), validateDto(UpdateBioDto), async(req, res) => {
+	const { bio } = req.body;
+	console.log(bio)
+	try {
+		await user.changeBio(req.user_id, bio);
+		console.log("test")
 	}
 	catch (err) {
 		console.log(err);

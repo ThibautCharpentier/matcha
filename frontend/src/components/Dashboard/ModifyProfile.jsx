@@ -1,13 +1,33 @@
 import { API_URL} from "../../utils/constants";
 import { useEffect, useState } from "react";
+import Request from "../../utils/request";
 
-export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
+export default function ModifyProfile({myData, setIsModalHobbiesOpen, setReload}) {
     const pathPicture = API_URL + "/" + myData.picture_profile;
 	const [inputText, setInputText] = useState(myData.bio || "");
+	const [textAreaIsFocused, setTextAreaIsFocused] = useState(false)
 
 	console.log(myData.bio)
 	console.log(inputText)
 	console.log(myData.bio !== inputText)
+
+	const handleSaveBio = async () => {
+
+		try {
+			console.log("aaaaa")
+			let res = await Request.changeBio(inputText);
+			console.log(res);
+			console.log("bbbbbb");
+			if (res?.success) {
+				setReload(prev => !prev);
+			} else {
+				console.error("Erreur lors de la mise à jour de la bio :", res?.message || "Réponse invalide");
+			}
+		} catch (error) {
+			console.error("Erreur réseau ou serveur :", error);
+		}
+	};
+	
 
 	return (
 		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
@@ -52,23 +72,32 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen}) {
 					))}
 				</div>
                 <div>
-                    <h3 className="text-gray-600 mt-5">A propos de moi</h3>
-                    <div className="mt-2">
-                        <textarea 
-                            className="h-36 w-full hover:ring-2 ring-[--color-light-green] resize-none" 
-                            maxLength="200"
-                            placeholder={myData.bio}
-							onChange={(e) => setInputText(e.target.value)}
-                        >
-                        </textarea>
+					<div className="mt-5 flex flex-row justify-between">
+						<h3 className="text-gray-600">A propos de moi</h3>
 						{inputText !== myData.bio && (
-							<button className="">
-								<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M17.0303 8.78039L8.99993 16.8107L5.4696 13.2804L6.53026 12.2197L8.99993 14.6894L15.9696 7.71973L17.0303 8.78039Z" fill="#000000"></path> </g></svg>
-								<p>save</p>
+							<button className="bg-gray-200 border-2 border-gray-200 rounded-md hover:bg-gray-300 hover:border-gray-300" onClick={() => {
+								console.log("btn");
+								handleSaveBio();
+								}}>
+								<svg height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M17.0303 8.78039L8.99993 16.8107L5.4696 13.2804L6.53026 12.2197L8.99993 14.6894L15.9696 7.71973L17.0303 8.78039Z" fill="#000000"></path> </g></svg>
 							</button>
 						)}
+					</div>
+                    <div className="mt-2 text-sm">
+                        <textarea 
+                            className="h-36 w-full hover:ring-2 ring-gray-100 focus:outline-none resize-none" 
+                            maxLength="200"
+                            value={inputText}
+							onChange={(e) => setInputText(e.target.value)}
+							spellCheck={false}
+							onFocus={() => setTextAreaIsFocused(true)}
+							onBlur={() => setTextAreaIsFocused(false)}
+                        >
+                        </textarea>
+						{textAreaIsFocused && (
+							<p className="text-xs text-gray-300 justify-self-end">{inputText.length}/200</p>
+						)}
                     </div>
-
                 </div>
 			</div>
 		</div>

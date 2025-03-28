@@ -17,10 +17,6 @@ export default function MyProfil() {
 	if (userData[0])
 		console.log(userData[0].tags)
 
-	const handleSave = () => {
-		setToggleEditProfil(false);
-	}
-
 	const handleSaveHobbies = async (selectedPassions) => {
         console.log("save Hobbies")
         console.log(selectedPassions)
@@ -77,7 +73,7 @@ export default function MyProfil() {
 			{userData && userData[0] && (
 			<div>
 			{toggleProfile ? (
-				<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen}/>
+				<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setReload={setReload}/>
 			) : (
 				<PicturesSlider userData={userData} userIndex={0} />
 			)}
