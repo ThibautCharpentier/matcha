@@ -2,8 +2,9 @@ import { API_URL} from "../../utils/constants";
 import { useEffect, useState } from "react";
 import Request from "../../utils/request";
 
-export default function ModifyProfile({myData, setIsModalHobbiesOpen, setReload}) {
+export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModalPhotosOpen,setReload}) {
     const pathPicture = API_URL + "/" + myData.picture_profile;
+	console.log(pathPicture)
 	const [inputText, setInputText] = useState(myData.bio || "");
 	const [textAreaIsFocused, setTextAreaIsFocused] = useState(false)
 
@@ -33,7 +34,17 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setReload}
 		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
 				<div className="flex flex-row space-x-3">
-					<img src={pathPicture} className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
+					<div 
+						className="relative w-[37.5%] h-auto m-4 border-2 border-white rounded-full"
+						onClick={() => setIsModalPhotosOpen(true)}
+					>
+						<img src={pathPicture} className="rounded-full" style={{userSelect: 'none'}}/>
+						<div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+							<svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M4 12H20M12 4V20" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+							</svg>
+						</div>
+					</div>
 					<div className="flex flex-col items-start justify-center text-white text-sm">
 						<div>{myData.firstname} {myData.lastname}</div>
 						<div>{myData.age} ans</div>

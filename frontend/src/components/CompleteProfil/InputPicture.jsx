@@ -1,5 +1,6 @@
 import InputSelectPicture from "./InputSelectPicture"
 import { useState, useEffect } from "react";
+import { API_URL} from "../../utils/constants";
 
 
 export default function InputPicture({handleAddCroppedImage, handleDeleteImage, index, images, isProfilPicture, setError}) {
@@ -10,15 +11,31 @@ export default function InputPicture({handleAddCroppedImage, handleDeleteImage, 
         : "relative w-[100px] h-[150px] rounded-lg border-dashed border-4 border-gray-300 bg-gray-200";
 
     useEffect(() => {
+        console.log("images")
+        console.log(images[index])
         if (images[index] != null) {
-            setImage(URL.createObjectURL(images[index]));
+            if (typeof images[index] === "string") {
+                console.log("string")
+                setImage(API_URL + "/" + images[index]); // URL
+            } else {
+                console.log("blob")
+                const objectURL = URL.createObjectURL(images[index]);
+                setImage(objectURL);
+            }
+            console.log("btn false")
             setBtnAddImage(false);
-        }
-        else {
+        } else {
             setImage(null);
             setBtnAddImage(true);
         }
-    }, [images])
+
+        return () => {
+            if (image && image.startsWith("blob:")) {
+                URL.revokeObjectURL(image);
+            }
+        };
+    }, [images, index]); // Ajout de index dans la dépendance pour éviter les bugs
+    
 
     return (
         <div className={classPreviewPhoto}>

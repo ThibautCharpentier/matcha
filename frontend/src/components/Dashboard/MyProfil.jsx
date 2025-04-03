@@ -5,12 +5,14 @@ import ModifyProfile from "./ModifyProfile";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import ModalHobbies from "../CompleteProfil/ModalHobbies";
+import ModalPhotos from "./ModalPhotos";
 import Request from "../../utils/request";
 
 export default function MyProfil() {
 	const hasFetched = useRef(false);
 	const [toggleProfile, setToggleProfile] = useState(false);
 	const [isModalHobbiesOpen, setIsModalHobbiesOpen] = useState(false);
+	const [isModalPhotosOpen, setIsModalPhotosOpen] = useState(false);
 	const [userData, setUserData] = useState([]);
 	const [reload, setReload] = useState(false);
 
@@ -62,18 +64,26 @@ export default function MyProfil() {
 		<div className="relative max-w-[400px] max-h-[550px]">
 		{isModalHobbiesOpen &&
 			<ModalHobbies
-							isOpen={isModalHobbiesOpen}
-							onClose={() => setIsModalHobbiesOpen(false)}
-							onSave={handleSaveHobbies}
-							passions={userData[0].tags}
-						/>
+				isOpen={isModalHobbiesOpen}
+				onClose={() => setIsModalHobbiesOpen(false)}
+				onSave={handleSaveHobbies}
+				passions={userData[0].tags}
+			/>
 		}
+		{isModalPhotosOpen &&
+			<ModalPhotos
+				isOpen={isModalPhotosOpen}
+				OnClose={() => setIsModalPhotosOpen(false)}
+				onSave={handleSaveHobbies}
+				photos={userData[0].pictures}
+			/>
+		}		
 			<div className="flex flex-col justify-center text-white text-sm">
 			</div>		
 			{userData && userData[0] && (
 			<div>
 			{toggleProfile ? (
-				<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setReload={setReload}/>
+				<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setIsModalPhotosOpen={setIsModalPhotosOpen} setReload={setReload}/>
 			) : (
 				<PicturesSlider userData={userData} userIndex={0} />
 			)}
