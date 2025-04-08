@@ -34,7 +34,7 @@ export default function InputPicture({handleAddCroppedImage, handleDeleteImage, 
                 URL.revokeObjectURL(image);
             }
         };
-    }, [images, index]); // Ajout de index dans la dépendance pour éviter les bugs
+    }, [images, index]);
     
 
     return (

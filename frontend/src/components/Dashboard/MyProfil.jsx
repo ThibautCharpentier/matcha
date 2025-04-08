@@ -31,6 +31,17 @@ export default function MyProfil() {
 			console.log("erreur lors de la mise à jour des interêts")
     };
 
+	const handleSavePhotos = async (selectedPhotos) => {
+		console.log("save photos")
+		let res = await Request.updatePhotos(selectedPhotos);
+		console.log(res)
+		setIsModalPhotosOpen(false);
+		if (res.succes === true)
+			setReload(prev => !prev);
+		else
+			console.log("erreur lors de la mise à jour des photos")
+	}
+
 	useEffect(() => {
 		console.log("reload")
 
@@ -55,7 +66,6 @@ export default function MyProfil() {
 				});
 				hasFetched.current = true;
 		}
-
 		getProfileUser();
 	}, [reload]);
 
@@ -74,7 +84,7 @@ export default function MyProfil() {
 			<ModalPhotos
 				isOpen={isModalPhotosOpen}
 				OnClose={() => setIsModalPhotosOpen(false)}
-				onSave={handleSaveHobbies}
+				onSave={handleSavePhotos}
 				photos={userData[0].pictures}
 			/>
 		}		

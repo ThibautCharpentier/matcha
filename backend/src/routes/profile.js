@@ -189,7 +189,6 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 		res_query = await user.selectById(req.user_id);
         res_query.age = utils.calculateAge(res_query.birthdate);
         res_query.tags = await user.getNameInterestsById(res_query.id);
-		console.log(res_query.tags);
 	}
 	catch (err)
 	{
@@ -233,5 +232,58 @@ router.patch('/updatebio', jwtrequired(), validateDto(UpdateBioDto), async(req, 
 	}
 	return res.status(200).json({message: 'OK'});
 })
+
+router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (req, res) => {
+    const files = req.files;
+    const pictureRefs = JSON.parse(req.body.pictureRefs);
+
+    console.log("Fichiers uploadés :", files);
+    console.log("Références d'images ou null :", pictureRefs);
+
+    const finalPictures = [];
+    let fileIndex = 0;
+
+    for (let i = 0; i < pictureRefs.length; i++) {
+        if (pictureRefs[i] === null) {
+            if (fileIndex < files.length) {
+                finalPictures.push(files[fileIndex].path);
+                fileIndex++;
+            } else {
+                finalPictures.push(null);
+            }
+        } else {
+            finalPictures.push(pictureRefs[i]);
+        }
+    }
+	console.log("Tableau final des images :", finalPictures);
+
+	try {
+        const res_query = await user.selectById(req.user_id);
+        console.log("Images actuelles dans la base de données :", res_query.pictures);
+
+        const imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
+
+        console.log("Images à supprimer :", imagesToDelete);
+
+        for (let imagePath of imagesToDelete) {
+            const fs = require('fs');
+            const pathToDelete = imagePath;
+
+            if (fs.existsSync(pathToDelete)) {
+                fs.unlinkSync(pathToDelete);
+                console.log(`Fichier supprimé : ${pathToDelete}`);
+            } else {
+                console.log(`Fichier non trouvé, suppression impossible : ${pathToDelete}`);
+            }
+        }
+		await user.updatePictures(req.user_id, finalPictures);
+    } catch (err) {
+        console.error("Erreur lors de la récupération des images de la base de données :", err);
+    }
+
+    return res.status(200).json({message: 'OK'});
+});
+
+
 
 module.exports = router;

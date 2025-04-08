@@ -88,6 +88,15 @@ const addPicture = async (id, picturePath) => {
 	client.release();
 }
 
+const updatePictures = async (id, picturesArray) => {
+	const client = await pool.connect();
+	await client.query(
+		`UPDATE public.users SET pictures = $1 WHERE id = $2`,
+		[picturesArray, id]
+	);
+	client.release();
+};
+
 const addProfilPicture = async (id, profilPicturePath) => {
 	const client = await pool.connect();
 	await client.query(`UPDATE public.users SET picture_profile = $1 WHERE id = $2`, [profilPicturePath, id]);
@@ -203,4 +212,4 @@ const addAllUserInterests = async (userId, interestsId) => {
 }
 
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests };

@@ -7,7 +7,6 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState("");
     const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
 
     const onSelectFile = (e) => {
         const file = e.target.files?.[0];
