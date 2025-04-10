@@ -12,6 +12,7 @@ const authRouter = require('./routes/auth')
 const dataRouter = require('./routes/data')
 const profileRouter = require('./routes/profile')
 const interactionRouter = require('./routes/interaction')
+const adminRouter = require('./routes/admin')
 const user = require('./db/user');
 const { handleWebSocketMessage } = require('./sockets/handlewebsocketmessage');
 const fs = require('fs');
@@ -44,6 +45,7 @@ app.use('/auth', authRouter);
 app.use('/data', dataRouter);
 app.use('/profile', profileRouter);
 app.use('/interaction', interactionRouter);
+app.use('/admin', adminRouter);
 app.use('/uploads', express.static(uploadDir));
 
 db.createTables().catch(err => {

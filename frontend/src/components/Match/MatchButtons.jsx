@@ -2,9 +2,7 @@ import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
 export default function MatchButtons({toggleProfile, switchToggleProfile, matchState, matchIndexState, setMatchIndexState, isResearch}) {
-	function ignoreMatch(e) {
-		e.preventDefault()
-
+	function ignoreMatch() {
 		if (isResearch)
 			setMatchIndexState(matchIndexState + 1)
 		else
@@ -28,9 +26,7 @@ export default function MatchButtons({toggleProfile, switchToggleProfile, matchS
 		}
 	}
 
-	function likeMatch(e) {
-		e.preventDefault()
-
+	function likeMatch() {
 		const obj = {
 			target: matchState[matchIndexState].id
 		}
@@ -49,9 +45,7 @@ export default function MatchButtons({toggleProfile, switchToggleProfile, matchS
 		});
 	}
 
-	function checkProfile(e) {
-		e.preventDefault()
-
+	function checkProfile() {
 		const obj = {
 			target: matchState[matchIndexState].id
 		}

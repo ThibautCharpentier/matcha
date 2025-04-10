@@ -2,6 +2,7 @@ import './style/App.css'
 import './style/BackgroundPattern.css'
 import { APP_ROUTES } from "./utils/constants"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { useLocation } from 'react-router'
 import Welcome from "./components/Welcome/Welcome"
 import AnimationBackground from "./components/AnimationBackground"
 import SignIn from "./components/Signin/SignIn"
@@ -19,14 +20,20 @@ import Notification from "./components/Notification/Notification"
 import Conversation from "./components/Conversation/Conversation"
 import Parameters from "./components/Parameters/Parameters"
 import CompleteProfile from "./components/CompleteProfil/CompleteProfil"
+import Admin from "./components/Admin/Admin"
 import { AuthProvider } from "./components/AuthContext"
 
-export default function App() {
+function AppRoutes() {
+	const location = useLocation()
 
 	return (
 		<>
-			<AuthProvider>
-				<BrowserRouter>
+			{location.pathname == "/admin" ?
+				<Routes>
+					<Route exact path={ APP_ROUTES.ADMIN } element={<Admin />} />
+				</Routes>
+			:
+				<AuthProvider>
 					<AnimationBackground />
 					<Layout>
 						<Routes>
@@ -44,8 +51,18 @@ export default function App() {
 							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={<Parameters />} />} />
 						</Routes>
 					</Layout>
-				</BrowserRouter>
-			</AuthProvider>
+				</AuthProvider>
+			}
+		</>
+	)
+}
+
+export default function App() {
+	return (
+		<>
+			<BrowserRouter>
+				<AppRoutes/>
+			</BrowserRouter>
 		</>
 	)
 }

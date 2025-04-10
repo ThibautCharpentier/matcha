@@ -145,9 +145,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 		return (sort)
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault()
-
+	function handleSubmit() {
 		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${parseFloat(position.lat.toFixed(6))}&lng=${parseFloat(position.lng.toFixed(6))}&tags=${selectTags}&sort=${sortParameters()}&filter=${filterParameters()}`, {
 			withCredentials: true,
 		})

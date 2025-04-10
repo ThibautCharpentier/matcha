@@ -18,10 +18,8 @@ export const API_ROUTES = {
 	GET_OTHER_PROFILE: 			`${API_URL}/profile/getotherprofile`,
 	//UPDATE_FIRSTNAME:			`${API_URL}/profile/updatefirstname`,
 	//UPDATE_LASTNAME: 			`${API_URL}/profile/updatelastname`,
-	//UPDATE_GENDER:            	`${API_URL}/profile/updategender`,
 	UPDATE_PREFERENCES:			`${API_URL}/profile/updatepreferences`,
 	UPDATE_BIO:           		`${API_URL}/profile/updatebio`,
-	//UPDATE_AGE:           		`${API_URL}/profile/updateage`,
 	UPDATE_PICTURES:      		`${API_URL}/profile/updatepictures`,
 	UPDATE_INTEREST:      		`${API_URL}/profile/updateinterest`,
 	UPDATE_PASSWORD:      		`${API_URL}/profile/updatepassword`,
@@ -42,7 +40,9 @@ export const API_ROUTES = {
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
     GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
 	GET_MATCHS:         		`${API_URL}/interaction/getmatchs`,
-	GET_RESEARCH:				`${API_URL}/interaction/getresearch`
+	GET_RESEARCH:				`${API_URL}/interaction/getresearch`,
+	ADMIN_AUTH_EMAIL:			`${API_URL}/admin/auth`,
+	ADMIN_AUTH_CODE:			`${API_URL}/admin/verification`,
 };
 
 export const APP_ROUTES = {
@@ -57,5 +57,6 @@ export const APP_ROUTES = {
     MATCH: "/match",
     CONVERSATION: "/conversation",
     NOTIFICATION: "/notification",
-    COMPLETE_PROFILE: "/complete-profile"
+    COMPLETE_PROFILE: "/complete-profile",
+	ADMIN: "/admin"
 };

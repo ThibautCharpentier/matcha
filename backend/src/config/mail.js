@@ -2,6 +2,7 @@ const { createTransport } = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const user = require('../db/user');
+const admin = require('../db/admin');
 
 dotenv.config();
 
@@ -57,10 +58,18 @@ Attention ce lien expirera au bout de 10 minutes. Si vous n'êtes pas à l'origi
 }
 
 const sendForgotUsername = async (email, username) => {
-	let query_user = await user.selectByEmail(email);
 	await sendMail(email, "nom d'utilisateur oublié", `SMACK
 Voici l'intitulé de votre nom d'utilisateur : '${username}'.
 A bientôt sur SMACK ;)`);
 }
 
-module.exports = { sendMail, sendVerifyEmail, sendValidateEmail, sendForgotPassword, sendForgotUsername };
+const sendAdminCode = async (id, email) => {
+	let code = ""
+	for (let i = 0; i < 6; i++)
+		code = code + Math.floor(Math.random() * 10).toString()
+	await admin.changeCode(id, code)
+	await sendMail(email, "code de vérification", `SMACK
+Voici votre code de vérification afin de vous connecter en mode administrateur : ${code}`)
+}
+
+module.exports = { sendMail, sendVerifyEmail, sendValidateEmail, sendForgotPassword, sendForgotUsername, sendAdminCode };

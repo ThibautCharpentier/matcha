@@ -76,9 +76,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 		return (filter)
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault()
-
+	function handleSubmit() {
 		axios.get(`${API_ROUTES.GET_MATCHS}?sort=${sortParameters()}&filter=${filterParameters()}`, {
 			withCredentials: true,
 		})

@@ -9,9 +9,7 @@ const Navbar = ({ hasNewNotif }) => {
 	const navigate = useNavigate();
 	const { logout } = useAuth();
 
-	function handleDeconnexion(e) {
-		e.preventDefault()
-
+	function handleDeconnexion() {
 		axios.post(API_ROUTES.SIGN_OUT, null, {
 			withCredentials: true,
 		})

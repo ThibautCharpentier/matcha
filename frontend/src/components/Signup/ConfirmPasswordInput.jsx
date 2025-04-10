@@ -14,8 +14,10 @@ export default function ConfirmPasswordInput({inputsStates, setInputsStates, sho
 			name="confirmPassword"
 			id="confirmPassword"
 			placeholder="Confirmez votre mot de passe"
+			autoComplete="new-password"
 			value={inputsStates.confirmPassword}
 			onChange={e => setInputsStates({...inputsStates, confirmPassword: e.target.value})}
+			onPaste={(e) => e.preventDefault()}
 			/>
 			<button
 			type="button"

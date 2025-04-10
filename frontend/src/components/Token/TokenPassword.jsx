@@ -114,6 +114,7 @@ export default function TokenPassword() {
 								autoComplete="new-password"
 								value={inputsStates.confirmPassword}
 								onChange={e => setInputsStates({...inputsStates, confirmPassword: e.target.value})}
+								onPaste={(e) => e.preventDefault()}
 								/>
 								<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
 									{isPasswordVisible ? (

@@ -7,8 +7,6 @@ export default function SexualPreferencesStep({nextStep, infosUser}) {
         titleSection = "Je suis intéressée par"
 
     function handleClik(e) {
-        e.preventDefault()
-
         if (e.target.innerHTML === "homme")
             infosUser.preferences = "men"
         else if (e.target.innerHTML === "femme")
