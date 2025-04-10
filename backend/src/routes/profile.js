@@ -236,6 +236,7 @@ router.patch('/updatebio', jwtrequired(), validateDto(UpdateBioDto), async(req, 
 router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (req, res) => {
     const files = req.files;
     const pictureRefs = JSON.parse(req.body.pictureRefs);
+	const modifyProfilePicture = pictureRefs[0] === null;
 
     console.log("Fichiers uploadés :", files);
     console.log("Références d'images ou null :", pictureRefs);
@@ -276,7 +277,9 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
                 console.log(`Fichier non trouvé, suppression impossible : ${pathToDelete}`);
             }
         }
-		await user.updatePictures(req.user_id, finalPictures);
+		if (modifyProfilePicture)
+			await user.addProfilPicture(req.user_id, finalPictures[0]);
+		await user.updatePictures(req.user_id, finalPictures.slice(1));
     } catch (err) {
         console.error("Erreur lors de la récupération des images de la base de données :", err);
     }

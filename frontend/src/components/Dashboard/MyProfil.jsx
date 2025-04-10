@@ -16,14 +16,9 @@ export default function MyProfil() {
 	const [userData, setUserData] = useState([]);
 	const [reload, setReload] = useState(false);
 
-	if (userData[0])
-		console.log(userData[0].tags)
-
 	const handleSaveHobbies = async (selectedPassions) => {
-        console.log("save Hobbies")
-        console.log(selectedPassions)
 		let res = await Request.updateInterests(selectedPassions);
-		console.log(res);
+
         setIsModalHobbiesOpen(false);
 		if (res.success === true)
 			setReload(prev => !prev);
@@ -32,26 +27,21 @@ export default function MyProfil() {
     };
 
 	const handleSavePhotos = async (selectedPhotos) => {
-		console.log("save photos")
 		let res = await Request.updatePhotos(selectedPhotos);
-		console.log(res)
+
 		setIsModalPhotosOpen(false);
-		if (res.succes === true)
+		if (res.success === true)
 			setReload(prev => !prev);
 		else
 			console.log("erreur lors de la mise à jour des photos")
 	}
 
 	useEffect(() => {
-		console.log("reload")
-
 		const getProfileUser = async () => {
-			console.log("passe dans la fonction")
 				await axios.get(`${API_ROUTES.GET_PROFILE_USER}`, {
 					withCredentials: true,
 				})
 				.then((res) => {
-					console.log(res);
 					if (res.status != 200)
 						throw new Error('Une erreur est survenue');
 					setUserData(() => {
@@ -59,7 +49,6 @@ export default function MyProfil() {
 						newState[0] = res.data.message;
 						return newState;
 					});
-					console.log("a jour")
 				})
 				.catch((err) => {
 					console.log(err)

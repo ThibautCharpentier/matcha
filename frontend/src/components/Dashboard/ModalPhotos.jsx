@@ -39,7 +39,9 @@ export default function ModalPhotos({ isOpen, onClose, onSave, photos }) {
 			<div className="bg-white rounded-xl shadow-lg relative h-4/6 z-10 max-w-lg w-full flex flex-col overflow-hidden">
 				<div className="bg-gray-100 rounded-xl flex justify-between items-center p-8">
 					<h2 className="text-xl text-center">Changez vos photos</h2>
-					<button className="btn btn-primary" onClick={() => onSave(croppedImages.filter(img => img !== null))}>Sauvegarder</button>
+					{croppedImages.filter(img => img !== null).length > 3 && croppedImages[0] != null && (
+						<button className="btn btn-primary" onClick={() => onSave(croppedImages.filter(img => img !== null))}>Sauvegarder</button>
+					)}
 				</div>
 				<div className="relative flex flex-wrap flex-1 overflow-y-auto pt-2 ml-2 items-center, justify-center">
 					<p className="text-center text-sm">Ajoutez au moins <span className="text-[--color-pink]">3 photos</span>, y compris votre photo de profil.</p>
