@@ -1,4 +1,5 @@
 import { API_URL} from "../../utils/constants";
+import profile from '../../assets/images/img_profile.png';
 
 export default function UserProfile({userData, userIndex}) {
     const pathPicture = API_URL + "/" + userData[userIndex].picture_profile;
@@ -24,7 +25,21 @@ export default function UserProfile({userData, userIndex}) {
 		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
 				<div className="flex flex-row space-x-3">
-					<img src={pathPicture} className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
+					{picture != "" ?
+						<img
+							src={`${API_URL}/${picture}`}
+							className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full"
+							style={{userSelect: 'none'}}
+							alt="Photo de profil"
+						/>
+					:
+						<img
+							src={profile}
+							className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full"
+							style={{userSelect: 'none'}}
+							alt="Photo de profil"
+						/>
+					}
 					<div className="flex flex-col items-start justify-center text-white text-sm">
 						<div>{userData[userIndex].firstname} {userData[userIndex].lastname}</div>
 						<div>{userData[userIndex].age} ans</div>

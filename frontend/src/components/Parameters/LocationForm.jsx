@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
+import BeatLoader from "react-spinners/BeatLoader";
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -32,8 +33,9 @@ export default function LocationForm({ data }) {
 	const [position, setPosition] = useState(
         data.latitude && data.longitude ? { lat: data.latitude, lng: data.longitude } : null
     );
-	const [verified, setVerified] = useState(false);
+	const [verified, setVerified] = useState(true);
 	const [errState, setErrState] = useState("");
+	const [hasSubmit, setHasSumit] = useState(false);
 
 	async function getCityName(lat, lng) {
 		try {
@@ -54,10 +56,13 @@ export default function LocationForm({ data }) {
 			return
 		}
 		setErrState("");
+		setHasSumit(true)
 		
 		const city = await getCityName(position.lat, position.lng)
-		if (!city)
+		if (!city) {
+			setHasSumit(false)
 			return
+		}
 
 		const obj = {
 			lat: parseFloat(position.lat.toFixed(6)),
@@ -75,12 +80,15 @@ export default function LocationForm({ data }) {
 		})
 		.catch((err) => {
 			setErrState("Formulaire invalide");
-		});
+		})
+		.finally(() => {
+			setHasSumit(false)
+		})
 	}
 
     return (
 		<>
-			<form action="" className="flex flex-col mt-6">
+			<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
 				<MapContainer className="z-0" center={data.latitude && data.longitude ? [data.latitude, data.longitude] : [46.6, 1.9]} zoom={13} scrollWheelZoom={true} style={{ height: "300px", width: "100%" }}>
 					<TileLayer
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -96,11 +104,22 @@ export default function LocationForm({ data }) {
 							<g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g>
 						</svg>
 					</button>
-					:
-					<button className="btn mt-3 flex self-center justify-center items-center w-80 h-12 p-2" onClick={handleSubmit}>
-						Valider la localisation
-					</button>
-					}
+				:
+					<>
+						{hasSubmit ?
+							<button className="btn mt-3 flex self-center justify-center items-center w-80 h-12 p-2 bg-[--color-pink]" disabled>
+								<BeatLoader
+									color="#fff"
+									size={9}
+								/>
+							</button>
+						:
+							<button className="btn mt-3 flex self-center justify-center items-center w-80 h-12 p-2">
+								Valider la localisation
+							</button>
+						}
+					</>
+				}
 				{errState != "" && (
 				<p className=" text-red-600 text-sm text-center">{errState}</p>
 				)}

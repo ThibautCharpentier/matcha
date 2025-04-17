@@ -144,7 +144,7 @@ router.post('/forgotusername', validateDto(ForgotUsernameDto), async (req, res) 
 		console.log(err);
 		return res.status(400).json({message: 'Invalid data'});
 	}
-	return res.status(200).json({message: 'OK'});
+	return res.status(200).json({message: email});
 })
 
 router.get('/refresh', async (req, res) => {

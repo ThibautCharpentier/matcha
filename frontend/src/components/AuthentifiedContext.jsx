@@ -14,7 +14,7 @@ export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
 	const [hasNewNotif, setHasNewNotif] = useState(false)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
-	const [notifs, setNotifs] = useState([])
+	const [notifs, setNotifs] = useState(null)
 	const [data, setData] = useState({
 		username: "",
 		firstname: "",
@@ -63,11 +63,17 @@ export default function AuthentifiedProvider({ children }) {
 			{/* 'flex flex-row' */}
 			{isCompleteProfile != null &&
 				<div className={`${isCompleteProfile && 'flex'}`}>
-					{isCompleteProfile && <Navbar 
-						hasNewNotif={hasNewNotif}
-					/>}
+					{isCompleteProfile ?
+						<Navbar 
+							hasNewNotif={hasNewNotif}
+						/>
+					:
+						<header></header>
+					}
 					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
-						{children}
+						<main className='w-full'>
+							{children}
+						</main>
 					</AuthentifiedContext.Provider>
 				</div>
 			}

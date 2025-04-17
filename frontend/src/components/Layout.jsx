@@ -23,9 +23,13 @@ export default function Layout({ children }) {
 				/>
 			</>	
 			:
-			<div >
-				{children}
-			</div>}
+			<>
+				<header></header>
+				<main>
+					{children}
+				</main>
+			</>
+			}
 			<footer></footer>
 		</>
 	);

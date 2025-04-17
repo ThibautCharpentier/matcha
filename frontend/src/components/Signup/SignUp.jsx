@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { API_ROUTES, APP_ROUTES } from "../../utils/constants";
 import { useState } from "react";
 import UsernameInput from "./UsernameInput"
@@ -10,9 +10,9 @@ import ConfirmPasswordInput from "./ConfirmPasswordInput"
 import ValidateSignup from "./ValidateSignup"
 import DOMPurify from 'dompurify';
 import axios from 'axios';
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function SignUp() {
-	const navigate = useNavigate();
 	const [showValidateSignup, setShowValidateSignup] = useState(false)
 	const [inputsStates, setInputsStates] = useState({
 		username: "",
@@ -22,7 +22,6 @@ export default function SignUp() {
 		password: "",
 		confirmPassword: ""
 	});
-
 	const [showValidation, setShowValidation] = useState({
 		username: "",
 		name: "",
@@ -32,8 +31,8 @@ export default function SignUp() {
 		confirmPassword: "",
 		server: ""
 	});
-
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [hasSubmit, setHasSumit] = useState(false);
 
 	function togglePasswordVisibility() {
 		setIsPasswordVisible((prevState) => !prevState);
@@ -43,6 +42,7 @@ export default function SignUp() {
 		e.preventDefault()
 
 		if (validationCheck()) {
+			setHasSumit(true)
 			const obj = {
 				username: DOMPurify.sanitize(inputsStates.username),
 				firstname: DOMPurify.sanitize(inputsStates.name),
@@ -67,6 +67,9 @@ export default function SignUp() {
 					setShowValidation(state => ({...state, mail: "Cette adresse e-mail est déjà utilisée"}))
 				else
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
+			})
+			.finally(() => {
+				setHasSumit(false)
 			})
 		}
 	}
@@ -125,9 +128,9 @@ export default function SignUp() {
 			setShowValidation(state => ({...state, confirmPassword: ""}))
 		}
 
-		if (Object.values(areValid).every(value => value)) {
+		setShowValidation(state => ({...state, server: ""}))
+		if (Object.values(areValid).every(value => value))
 			return true
-		}
 		return false
 	}
 
@@ -188,7 +191,16 @@ export default function SignUp() {
 					{showValidation.server != "" && (
 					<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
 					)}
-					<button className="btn mt-8">Créer un compte</button>
+					{hasSubmit ?
+						<button className="btn mt-8 bg-[--color-pink]" disabled>
+							<BeatLoader
+								color="#fff"
+								size={9}
+							/>
+						</button>
+					:
+						<button className="btn mt-8">Créer un compte</button>
+					}
 				</form>
 			</div>
 			}

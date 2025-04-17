@@ -4,6 +4,7 @@ import NotificationDisplay from "./NotificationDisplay";
 import { useAuthentified } from "../AuthentifiedContext"
 import axios from 'axios';
 import { API_ROUTES } from '../../utils/constants';
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Notification() {
 	const { notifs, hasNewNotif, setHasNewNotif } = useAuthentified();
@@ -28,16 +29,24 @@ export default function Notification() {
 	return (
 		<>
 			<div className="w-full">
-				<div className="flex flex-col items-center w-full mt-6 p-2 mb-[6em] sm:mb-0">
-					<h1 className="text-5xl text-center font-poppins-bold">Notifications</h1>
+				<div className="flex flex-col items-center w-full p-2 mb-[4em] sm:mb-0">
 					<NotificationFilterBar
 						filterNotif={filterNotif}
 						setFilterNotif={setFilterNotif}
 					/>
-					<NotificationDisplay
-						filterNotif={filterNotif}
-						notifs={notifs}
-					/>
+					{notifs != null ?
+						<NotificationDisplay
+							filterNotif={filterNotif}
+							notifs={notifs}
+						/>
+					:
+						<div className="mt-6">
+							<ClipLoader
+								color="#fff"
+								size={70}
+							/>
+						</div>
+					}
 				</div>
 			</div>
 		</>
