@@ -7,7 +7,7 @@ import MyProfil from './MyProfil';
 
 export default function Dashboard() {
     return (
-        <div className='w-full flex justify-center align-center'>
+        <div className='w-full flex justify-center align-center items-center'>
             <MyProfil/>
         </div>
     )

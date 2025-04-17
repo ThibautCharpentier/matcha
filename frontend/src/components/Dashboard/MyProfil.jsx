@@ -12,7 +12,7 @@ import { showErrorServer, showSuccess } from "../../utils/toastUtils";
 
 export default function MyProfil() {
 	const hasFetched = useRef(false);
-	const [toggleProfile, setToggleProfile] = useState(false);
+	const [toggleProfile, setToggleProfile] = useState(true);
 	const [isModalHobbiesOpen, setIsModalHobbiesOpen] = useState(false);
 	const [isModalPhotosOpen, setIsModalPhotosOpen] = useState(false);
 	const [userData, setUserData] = useState([]);
@@ -91,7 +91,11 @@ export default function MyProfil() {
 			)}
 			</div>
 			)}
-				<button onClick={() => setToggleProfile((prevState) => !prevState)}>Profile</button>
+			<div className="flex justify-center mt-5">
+				<button onClick={() => setToggleProfile((prevState) => !prevState)} className="btn-secondary flex justify-center items-center w-20 h-11 sm:w-24 sm:h-12 p-2">
+					{toggleProfile ? "Photos" : "Profil"}
+				</button>
 			</div>
+		</div>
 	)
 }
