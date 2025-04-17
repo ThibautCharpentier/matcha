@@ -8,6 +8,8 @@ import ModalHobbies from "../CompleteProfil/ModalHobbies";
 import ModalPhotos from "./ModalPhotos";
 import Request from "../../utils/request";
 
+import { showErrorServer, showSuccess } from "../../utils/toastUtils";
+
 export default function MyProfil() {
 	const hasFetched = useRef(false);
 	const [toggleProfile, setToggleProfile] = useState(false);
@@ -52,6 +54,7 @@ export default function MyProfil() {
 				})
 				.catch((err) => {
 					console.log(err)
+					showErrorServer()
 				});
 				hasFetched.current = true;
 		}

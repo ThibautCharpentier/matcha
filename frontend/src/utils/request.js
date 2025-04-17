@@ -2,6 +2,8 @@ import { API_ROUTES } from "./constants";
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 
+import { showErrorServer, showErrorData, showSuccess } from "./toastUtils";
+
 const Request = {
     updatePhotos : async (photos) => {
         const formData = new FormData();
@@ -12,14 +14,13 @@ const Request = {
                 blobsOnly.push(photo);
                 return null;
             }
-            return photo; // c'est une string
+            return photo;
         });
 
         blobsOnly.forEach(blob => {
             formData.append('pictures', blob);
         });
-    
-        // Ajouter le tableau pathsOrNulls au FormData (en tant que JSON)
+
         formData.append('pictureRefs', JSON.stringify(pathsOrNulls));
     
         return axios.patch(`${API_ROUTES.UPDATE_PICTURES}`, formData, {
@@ -29,14 +30,23 @@ const Request = {
             },
         })
         .then((res) => {
-            if (res.status != 200)
-                throw new Error('une erreur est survenue')
+            console.log(res.status);
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
             else {
+                showSuccess("Les modifications de ton profil ont été enregistrées.")
                 return {success: true}
             }
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            else
+                showErrorData();
             return {success: false}
         })
     },
@@ -52,14 +62,22 @@ const Request = {
             }
         })
         .then((res) => {
-            if (res.status != 200)
-                throw new Error('une erreur est survenue')
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
             else {
+                showSuccess("Les modifications de ton profil ont été enregistrées.")
                 return {success: true}
             }
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            else
+                showErrorData();
             return {success: false}
         })
     },
@@ -72,14 +90,22 @@ const Request = {
             withCredentials: true,
         })
         .then((res) => {
-            if (res.status != 200)
-                throw new Error('une erreur est survenue')
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
             else {
+                showSuccess("Les modifications de ton profil ont été enregistrées.")
                 return {success: true}
             }
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            else
+                showErrorData();
             return {success: false}
         })
     }
