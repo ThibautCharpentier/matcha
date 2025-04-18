@@ -1,11 +1,11 @@
-const notif = require('../db/notifications');
+const chat = require('../db/chat');
 
 const firstSelect = async (ws) => {
     try {
-        let res_query = await notif.getNotifications(ws.user_id);
+        let res_query = await chat.getAllChatsAndMessagesByUserId(ws.user_id);
         if (!res_query)
             ws.close(4001);
-        ws.notif = res_query
+        ws.conversations = res_query
     }
     catch (err) {
         console.log(err);
@@ -14,26 +14,23 @@ const firstSelect = async (ws) => {
 }
 
 const checkNewConversations = async (ws) => {
-    let new_notif = false
+    let new_conversations = false
     try {
-        let res_query = await notif.getNotifications(ws.user_id);
+        let res_query = await chat.getAllChatsAndMessagesByUserId(ws.user_id);
         if (!res_query)
             ws.close(4001);
-        if (res_query.length != ws.notif.length) {
-            ws.notif = res_query
-            new_notif = true
+        if (res_query.length != ws.chat.length) {
+            ws.chat = res_query
+            new_conversations = true
         }
         else {
-            for (let i = 0; i < res_query.length; i++) {
-                if (ws.notif[i].id != res_query[i].id) {
-                    new_notif = true
-                    ws.notif = res_query
-                    break
-                }
+                if (ws.chat.length != res_query.length) {
+                    new_conversations = true
+                    ws.chat = res_query;
             }
         }
-        if (new_notif == true)
-            ws.send(JSON.stringify(ws.notif));
+        if (new_conversations == true)
+            ws.send(JSON.stringify(ws.chat));
     }
     catch (err) {
         console.log(err);
@@ -42,10 +39,10 @@ const checkNewConversations = async (ws) => {
 }
 
 const checkConversations = async (ws) => {
-    if (ws.notif == null) {
-        ws.notif = [];
+    if (ws.conversations == null) {
+        ws.conversations = [];
         await firstSelect(ws);
-        ws.send(JSON.stringify(ws.notif));
+        ws.send(JSON.stringify(ws.conversations));
     }
     else
         await checkNewConversations(ws);
