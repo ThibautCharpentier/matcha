@@ -2,6 +2,7 @@ const { checkToken } = require('./checktoken')
 const { checkData } = require('./checkdata')
 const { checkNotif } = require('./checknotif')
 const { checkContact } = require('./checkcontact')
+const { checkConversations } = require('./checkconversations')
 
 const handleWebSocketMessage = async (ws, message) => {
 	message = message.toString();
@@ -18,6 +19,9 @@ const handleWebSocketMessage = async (ws, message) => {
 		case 'CONTACT':
 			await checkContact(ws);
 			break ;
+		case 'CONVERSATIONS' :
+			await checkConversations(ws);
+			break ;	
         default:
             console.log('Unknown message:', message);
     }

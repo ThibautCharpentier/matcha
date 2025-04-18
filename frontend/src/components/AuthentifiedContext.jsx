@@ -7,6 +7,7 @@ import { useSocketToken } from "../utils/sockets/useSocketToken";
 import { useSocketData } from "../utils/sockets/useSocketData";
 import { useSocketNotifs } from "../utils/sockets/useSocketNotifs";
 import { useSocketContacts } from "../utils/sockets/useSocketContacts";
+import { useSocketConversations } from "../utils/sockets/useSocketConversations"
 
 const AuthentifiedContext = createContext();
 
@@ -30,6 +31,16 @@ export default function AuthentifiedProvider({ children }) {
 		interest: []
 	})
 	const [contacts, setContacts] = useState([])
+	const [conversations, setConversations] = useState([{
+		id: "",
+		idUser1: "",
+		idUser2: "",
+		messages: [{
+			idSender: "",
+			content: "",
+			timestamp: ""
+		}]
+	}]);
 
     const profileComplete = () => {
         setIsCompleteProfile(true);
@@ -57,6 +68,7 @@ export default function AuthentifiedProvider({ children }) {
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 	useSocketContacts(isAuthenticated, setContacts)
+	useSocketConversations(isAuthenticated, setConversations)
 
 	return (
 		<>

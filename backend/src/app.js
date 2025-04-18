@@ -70,6 +70,9 @@ websocket.on('connection', async (ws, req) => {
 		ws.user_id = decoded.id;
 		ws.access_token = accessToken;
 		ws.data = null;
+		ws.chat = null;
+		ws.notif = null;
+		ws.conversations = null;
 		const res_query = await user.selectById(ws.user_id);
 		if (!res_query)
 			ws.close(4001);

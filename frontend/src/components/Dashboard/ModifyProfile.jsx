@@ -4,13 +4,10 @@ import Request from "../../utils/request";
 
 export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModalPhotosOpen,setReload}) {
     const pathPicture = API_URL + "/" + myData.picture_profile;
-	const [inputText, setInputText] = useState(myData.bio || "");
+	const [inputText, setInputText] = useState(myData.bio || null);
 	const [textAreaIsFocused, setTextAreaIsFocused] = useState(false)
 
-
-
 	const handleSaveBio = async () => {
-
 		try {
 			let res = await Request.changeBio(inputText);
 
@@ -100,7 +97,7 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModal
                         >
                         </textarea>
 						{textAreaIsFocused && (
-							<p className="text-xs text-gray-300 justify-self-end">{inputText.length}/200</p>
+							<p className="text-xs text-gray-300 justify-self-end">{inputText?.length}/200</p>
 						)}
                     </div>
                 </div>
