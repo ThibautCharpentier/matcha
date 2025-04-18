@@ -16,4 +16,17 @@ const jwtrequired = () => (req, res, next) => {
 	next();
 }
 
-module.exports = { jwtrequired };
+const jwtadminrequired = () => (req, res, next) => {
+	if (!req.body?.adminToken)
+		return res.status(401).json({ message: 'Token not found' });
+	try {
+		const decoded = jwt.verify(req.body.adminToken, process.env.ADMIN_SECRET_TOKEN_KEY);
+		req.admin_id = decoded.id;
+	}
+	catch (err) {
+		return res.status(403).json({message: err});
+	}
+	next();
+}
+
+module.exports = { jwtrequired, jwtadminrequired };

@@ -29,14 +29,12 @@ const getNotifications = async (id) => {
 
 const addNotif = async (from_id, user_id, action) => {
 	const client = await pool.connect()
-	let values = [user_id, from_id]
-	const res = await client.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND (action = 'block' OR action = 'unlike')`, values)
+	const res = await client.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND (action = 'block' OR action = 'unlike')`, [user_id, from_id])
 	client.release();
 	if (res.rows.length != 0)
 		return ;
 	const client2 = await pool.connect()
-	values = [user_id, from_id, action]
-	await client2.query(`INSERT INTO public.notification (user_id, from_id, action) VALUES ($1, $2, $3)`, values);
+	await client2.query(`INSERT INTO public.notification (user_id, from_id, action) VALUES ($1, $2, $3)`, [user_id, from_id, action]);
 	client2.release();
 }
 

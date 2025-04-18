@@ -9,6 +9,36 @@ function calculateAge(birthdate) {
     return age;
 }
 
+function getQueryAllReports() {
+	const query = `
+		SELECT DISTINCT
+			id,
+			firstname,
+			lastname,
+			status,
+			last_connection,
+			bio,
+			picture_profile,
+			pictures,
+			EXTRACT(YEAR FROM AGE(birthdate)) AS age,
+			famerating,
+			city,
+			(
+				SELECT ARRAY_AGG(public.interest.name)
+				FROM public.user_interest
+				JOIN public.interest ON public.user_interest.interest = public.interest.id
+				WHERE public.user_interest.user_id = public.users.id
+			) AS tags,
+			(
+				SELECT count(public.report.target)::INTEGER
+				FROM public.report
+				WHERE public.report.target = public.users.id
+			) AS nb_report,
+		FROM
+			public.users`
+	return (query)
+}
+
 function getInitialQueryMatchs(res_user) {
 	let query = `
 		SELECT
@@ -275,4 +305,4 @@ function getOrderByQueryMatchs(sort) {
 	return (query)
 }
 
-module.exports = { calculateAge, getInitialQueryMatchs, getFilterQueryMatchs, getOrderByQueryMatchs }
+module.exports = { calculateAge, getQueryAllReports, getInitialQueryMatchs, getFilterQueryMatchs, getOrderByQueryMatchs }

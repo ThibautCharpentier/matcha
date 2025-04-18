@@ -22,7 +22,7 @@ dotenv.config();
 router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), async (req, res) => {
 	const { username } = req.body;
 	try {
-		let res_query = await user.selectByUsername(username);
+		const res_query = await user.selectByUsername(username);
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Username already exists'});
 		await user.changeUsername(req.user_id, username);
@@ -37,7 +37,7 @@ router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), a
 router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (req, res) => {
 	const { email } = req.body;
 	try {
-		let res_query = await user.selectByEmail(email);
+		const res_query = await user.selectByEmail(email);
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Email already exists'});
 		await mail.sendValidateEmail(req.user_id, email);
@@ -181,7 +181,6 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 
 router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	let res_query;
-    let tag
 	try
 	{
 		res_query = await user.selectById(req.user_id);

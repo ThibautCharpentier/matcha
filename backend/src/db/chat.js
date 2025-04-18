@@ -24,30 +24,25 @@ const getChats = async (id) => {
 	return (chats)
 }
 
+const getChat = async (user1, user2) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT * FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, [user1, user2])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
 const addChat = async (user1, user2) => {
 	const client = await pool.connect()
-	let values = [user1, user2]
-	const res = await client.query(`SELECT * FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, values)
+	await client.query(`INSERT INTO public.chat (user1, user2) VALUES ($1, $2)`, [user1, user2]);
 	client.release();
-	if (res.rows.length != 0)
-		return ;
-	const client2 = await pool.connect()
-	values = [user1, user2]
-	await client2.query(`INSERT INTO public.chat (user1, user2) VALUES ($1, $2)`, values);
-	client2.release();
 }
 
 const deleteChat = async (user1, user2) => {
 	const client = await pool.connect()
-	let values = [user1, user2]
-	const res = await client.query(`SELECT * FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, values)
+	await client.query(`DELETE FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, [user1, user2]);
 	client.release();
-	if (res.rows.length != 0)
-		return ;
-	const client2 = await pool.connect()
-	values = [user1, user2]
-	await client2.query(`DELETE FROM public.chat WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)`, values);
-	client2.release();
 }
 
-module.exports = { addChat, getChats, deleteChat }
+module.exports = { addChat, getChats, deleteChat, getChat }

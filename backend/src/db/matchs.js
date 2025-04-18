@@ -49,8 +49,7 @@ const checkMatch = async (user1, user2) => {
 
 const addViewProfile = async (id, target) => {
 	const client = await pool.connect();
-	const values = [id, target]
-	await client.query(`INSERT INTO public.view (user_id, target) VALUES ($1, $2)`, values);
+	await client.query(`INSERT INTO public.view (user_id, target) VALUES ($1, $2)`, [id, target]);
 	client.release();
 }
 
@@ -65,23 +64,21 @@ const getViewProfile = async (id, target) => {
 
 const addDislikeProfile = async (id, target) => {
 	const client = await pool.connect();
-	const values = [id, target]
 	const hasLine = await getInteraction(id, target)
 	if (!hasLine)
-		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'dislike')`, values);
+		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'dislike')`, [id, target]);
 	else
-		await client.query(`UPDATE public.interaction SET action = 'dislike' WHERE user_id = $1 AND target = $2`, values);
+		await client.query(`UPDATE public.interaction SET action = 'dislike' WHERE user_id = $1 AND target = $2`, [id, target]);
 	client.release();
 }
 
 const addUnlikeProfile = async (id, target) => {
 	const client = await pool.connect();
-	const values = [id, target]
 	const hasLine = await getInteraction(id, target)
 	if (!hasLine)
-		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'unlike')`, values);
+		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'unlike')`, [id, target]);
 	else
-		await client.query(`UPDATE public.interaction SET action = 'unlike' WHERE user_id = $1 AND target = $2`, values);
+		await client.query(`UPDATE public.interaction SET action = 'unlike' WHERE user_id = $1 AND target = $2`, [id, target]);
 	client.release();
 }
 
@@ -96,12 +93,11 @@ const getDislikeOrUnlikeProfile = async (id, target) => {
 
 const addLikeProfile = async (id, target) => {
 	const client = await pool.connect();
-	const values = [id, target]
 	const hasLine = await getInteraction(id, target)
 	if (!hasLine)
-		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'like')`, values);
+		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'like')`, [id, target]);
 	else
-		await client.query(`UPDATE public.interaction SET action = 'like' WHERE user_id = $1 AND target = $2`, values);
+		await client.query(`UPDATE public.interaction SET action = 'like' WHERE user_id = $1 AND target = $2`, [id, target]);
 	client.release();
 }
 
@@ -116,12 +112,11 @@ const getLikeProfile = async (id, target) => {
 
 const addBlockProfile = async (id, target) => {
 	const client = await pool.connect();
-	const values = [id, target]
 	const hasLine = await getInteraction(id, target)
 	if (!hasLine)
-		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'block')`, values);
+		await client.query(`INSERT INTO public.interaction (user_id, target, action) VALUES ($1, $2, 'block')`, [id, target]);
 	else
-		await client.query(`UPDATE public.interaction SET action = 'block' WHERE user_id = $1 AND target = $2`, values);
+		await client.query(`UPDATE public.interaction SET action = 'block' WHERE user_id = $1 AND target = $2`, [id, target]);
 	client.release();
 }
 

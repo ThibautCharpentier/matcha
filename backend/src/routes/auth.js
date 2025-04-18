@@ -17,7 +17,7 @@ dotenv.config();
 
 router.get('/isconnected', jwtrequired(), async (req, res) => {
 	try {
-		let res_query = await user.selectById(req.user_id);
+		const res_query = await user.selectById(req.user_id);
 		if (!res_query)
 			return res.status(400).json({message: 'User not found'});
 	}
@@ -153,7 +153,7 @@ router.get('/refresh', async (req, res) => {
 	try {
 		const decoded = jwt.verify(req.cookies.refreshToken, process.env.SECRET_TOKEN_KEY);
 		req.user_id = decoded.id;
-		let res_query = await user.selectById(req.user_id);
+		const res_query = await user.selectById(req.user_id);
 		if (!res_query)
 			return res.status(400).json({message: 'User not found'});
 		const accessToken = jwt.sign({ id: req.user_id }, process.env.SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_ACCESSTOKEN_EXPIRATION });

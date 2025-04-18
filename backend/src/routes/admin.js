@@ -5,7 +5,10 @@ const { validateDto } = require('../dto/validatedto');
 const { AuthAdminDto } = require('../dto/authadmin.dto');
 const { CodeAdminDto } = require('../dto/codeadmin.dto')
 const admin = require('../db/admin');
+const user = require('../db/user');
 const mail = require('../config/mail');
+const { TargetDto } = require('../dto/target.dto');
+const { jwtadminrequired } = require('../config/jwt');
 const router = express.Router();
 
 dotenv.config();
@@ -43,5 +46,42 @@ router.post('/verification', validateDto(CodeAdminDto), async (req, res) => {
 	}
 	return res.status(200).json({message: adminToken});
 });
+
+router.get('/getallreports', jwtadminrequired(), async (req, res) => {
+	let res_query
+	try {
+		res_query = await admin.getAllReports()
+	}
+	catch (err) {
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+})
+
+router.post('/deletereport', jwtadminrequired(), validateDto(TargetDto), async (req, res) => {
+	const { target } = req.body;
+	try {
+		await admin.deleteReport(target)
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
+
+router.post('/confirmreport', jwtadminrequired(), validateDto(TargetDto), async (req, res) => {
+	const { target } = req.body
+	try {
+		const res_query = await user.selectById(target)
+		await mail.sendUserDeleted(res_query.email)
+		await admin.deleteUser(target)
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
 
 module.exports = router;

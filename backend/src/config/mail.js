@@ -72,4 +72,11 @@ const sendAdminCode = async (id, email) => {
 Voici votre code de vérification afin de vous connecter en mode administrateur : ${code}`)
 }
 
-module.exports = { sendMail, sendVerifyEmail, sendValidateEmail, sendForgotPassword, sendForgotUsername, sendAdminCode };
+const sendUserDeleted = async (email) => {
+	await sendMail(email, "Bannissement de votre compte SMACK", `SMACK
+Suite à de récents signalements à votre égard pour suspicion de faux compte et après vérification des administrateurs, nous avons le regret de vous signaler que votre compte a été supprimé.
+
+L'équipe SMACK`)
+}
+
+module.exports = { sendMail, sendVerifyEmail, sendValidateEmail, sendForgotPassword, sendForgotUsername, sendAdminCode, sendUserDeleted };
