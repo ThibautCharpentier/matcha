@@ -21,7 +21,7 @@ export const API_ROUTES = {
 	UPDATE_PREFERENCES:			`${API_URL}/profile/updatepreferences`,
 	UPDATE_BIO:           		`${API_URL}/profile/updatebio`,
 	UPDATE_PICTURES:      		`${API_URL}/profile/updatepictures`,
-	UPDATE_INTEREST:      		`${API_URL}/profile/updateinterest`,
+	UPDATE_INTERESTS:      		`${API_URL}/profile/updateinterests`,
 	UPDATE_PASSWORD:      		`${API_URL}/profile/updatepassword`,
 	UPDATE_EMAIL:         		`${API_URL}/profile/updateemail`,
 	VERIFY_NEW_EMAIL: 			`${API_URL}/profile/verifyemail`,

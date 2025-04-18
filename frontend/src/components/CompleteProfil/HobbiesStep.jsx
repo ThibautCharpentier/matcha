@@ -38,9 +38,10 @@ export default function HobbiesStep({nextStep, infosUser}) {
                 <button className="btn" onClick={handleSubmit}>Valider</button>
             </div>)}
             <ModalHobbies
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSave={handleSave}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSave}
+                passions={passions}
             />
         </>
     )

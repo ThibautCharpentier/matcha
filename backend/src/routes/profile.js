@@ -4,11 +4,13 @@ const { validateDto } = require('../dto/validatedto');
 const { UpdateUsernameDto } = require('../dto/updateusername.dto');
 const { UpdateEmailDto } = require('../dto/updateemail.dto');
 const { UpdatePreferencesDto } = require('../dto/updatepreferences.dto');
+const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const user = require('../db/user');
+const interests = require('../db/interests');
 const utils = require('../utils/utils');
 const notif = require('../db/notifications');
 const mail = require('../config/mail');
@@ -153,12 +155,12 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
             await user.addPicture(req.user_id, files[i].path);
         if (Array.isArray(interest)) {
             for (let i = 0; i < interest.length; i++) {
-                let interestId = await user.getInterestIdbyInterestName(interest[i]);
+                let interestId = await interests.getInterestIdbyInterestName(interest[i]);
                 if (interestId)
                     await user.addUserInterest(req.user_id, interestId);
             }
         }
-    } catch (err) {
+    } catch (err) { 
         console.error(err);
         return res.status(400).json({ message: 'Invalid data' });
     }
@@ -184,14 +186,104 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	try
 	{
 		res_query = await user.selectById(req.user_id);
-        res_query.age = await utils.calculateAge(res_query.birthdate);
-        res_query.tags = await user.getInterests(res_query.id);
+        res_query.age = utils.calculateAge(res_query.birthdate);
+        res_query.tags = await user.getNameInterestsById(res_query.id);
 	}
 	catch (err)
 	{
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
+});
+
+router.patch('/updateinterests', jwtrequired(), async(req, res) => {
+	const { tabInterests } = req.body;
+	let idInterests = []
+
+	try {
+		if (tabInterests.length === 0) {
+			await user.removeAllInterests(req.user_id);
+		}
+		else {
+			idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
+			console.log(idInterests)
+			await user.removeInterestsNotInTab(req.user_id, idInterests);
+			await user.addAllUserInterests(req.user_id, idInterests);
+		}
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
+
+router.patch('/updatebio', jwtrequired(), validateDto(UpdateBioDto), async(req, res) => {
+	const { bio } = req.body;
+	console.log(bio)
+	try {
+		await user.changeBio(req.user_id, bio);
+		console.log("test")
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+})
+
+router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (req, res) => {
+    const files = req.files;
+    const pictureRefs = JSON.parse(req.body.pictureRefs);
+	const modifyProfilePicture = pictureRefs[0] === null;
+
+    console.log("Fichiers uploadés :", files);
+    console.log("Références d'images ou null :", pictureRefs);
+
+    const finalPictures = [];
+    let fileIndex = 0;
+
+    for (let i = 0; i < pictureRefs.length; i++) {
+        if (pictureRefs[i] === null) {
+            if (fileIndex < files.length) {
+                finalPictures.push(files[fileIndex].path);
+                fileIndex++;
+            } else {
+                finalPictures.push(null);
+            }
+        } else {
+            finalPictures.push(pictureRefs[i]);
+        }
+    }
+	console.log("Tableau final des images :", finalPictures);
+
+	try {
+        const res_query = await user.selectById(req.user_id);
+        console.log("Images actuelles dans la base de données :", res_query.pictures);
+
+        const imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
+
+        console.log("Images à supprimer :", imagesToDelete);
+
+        for (let imagePath of imagesToDelete) {
+            const fs = require('fs');
+            const pathToDelete = imagePath;
+
+            if (fs.existsSync(pathToDelete)) {
+                fs.unlinkSync(pathToDelete);
+                console.log(`Fichier supprimé : ${pathToDelete}`);
+            } else {
+                console.log(`Fichier non trouvé, suppression impossible : ${pathToDelete}`);
+            }
+        }
+		if (modifyProfilePicture)
+			await user.addProfilPicture(req.user_id, finalPictures[0]);
+		await user.updatePictures(req.user_id, finalPictures.slice(1));
+    } catch (err) {
+        console.error("Erreur lors de la récupération des images de la base de données :", err);
+    }
+
+    return res.status(200).json({message: 'OK'});
 });
 
 module.exports = router;

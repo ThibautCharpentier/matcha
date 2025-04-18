@@ -7,7 +7,6 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState("");
     const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
 
     const onSelectFile = (e) => {
         const file = e.target.files?.[0];
@@ -19,7 +18,6 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
             const imageUrl = reader.result?.toString() || "";
             imageElement.src = imageUrl;
 
-    
             // Gestion des erreurs de chargement de l'image
             imageElement.addEventListener("error", () => {
                 setError("An error occurred while loading the image.");
@@ -43,6 +41,7 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
                 openModal();
             });
         });
+
         // Gestion des erreurs de lecture du fichier
         reader.addEventListener("error", () => {
             setError("An error occurred while reading the file.");

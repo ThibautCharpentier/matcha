@@ -76,11 +76,26 @@ const changeBirthdate = async (id, birthdate) => {
 	client.release();
 }
 
+const changeBio = async (id, bio) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.users SET bio = $1 WHERE id = $2`, [bio, id]);
+	client.release();
+}
+
 const addPicture = async (id, picturePath) => {
 	const client = await pool.connect();
 	await client.query(`UPDATE public.users SET pictures = array_append(pictures, $1) WHERE id = $2`, [picturePath, id]);
 	client.release();
 }
+
+const updatePictures = async (id, picturesArray) => {
+	const client = await pool.connect();
+	await client.query(
+		`UPDATE public.users SET pictures = $1 WHERE id = $2`,
+		[picturesArray, id]
+	);
+	client.release();
+};
 
 const addProfilPicture = async (id, profilPicturePath) => {
 	const client = await pool.connect();
@@ -133,13 +148,13 @@ const getData = async (id) => {
 	return res.rows[0];
 }
 
-const getInterests = async (id) => {
+const getNameInterestsById = async (id) => {
 	const client = await pool.connect();
 	const res = await client.query(`SELECT i.name FROM public.user_interest ui JOIN public.interest i ON ui.interest = i.id WHERE ui.user_id = $1`, [id]);
 	client.release();
 	if (res.rows.length == 0)
 		return null;
-	return res.rows;
+	return res.rows.map(row => row.name);
 }
 
 const getGps = async (id) => {
@@ -160,22 +175,25 @@ const getInterestsId = async (id) => {
 	return res.rows[0];
 }
 
-const getInterestIdbyInterestName = async (interestName) => {
+const removeAllInterests = async (userId) => {
 	const client = await pool.connect();
-	const res = await client.query(`SELECT id FROM public.interest WHERE name = $1`, [interestName])
+	const res = await client.query(`
+		DELETE FROM public.user_interest
+		WHERE user_id = $1;
+		`, [userId])
 	client.release();
-	if (res.rows.length == 0)
-		return null;
-	return res.rows[0].id;
 }
 
-const getAllInterests = async () => {
+const removeInterestsNotInTab = async (userId, interestsId) => {
+	if (interestsId.length === 0) return;
+	console.log(interestsId)
+	
 	const client = await pool.connect();
-	const res = await client.query('SELECT name FROM public.interest');
-    client.release();
-	if (res.rows.length == 0)
-		return null;
-	return res.rows;
+	const res = await client.query(`
+		DELETE FROM public.user_interest
+            WHERE user_id = $1 AND interest NOT IN (SELECT UNNEST($2::int[]));
+			`, [userId, interestsId])
+	client.release();
 }
 
 const addUserInterest = async (userId, interestId) => {
@@ -184,5 +202,13 @@ const addUserInterest = async (userId, interestId) => {
 	client.release();
 }
 
+const addAllUserInterests = async (userId, interestsId) => {
+    const client = await pool.connect();
+	await client.query(`INSERT INTO public.user_interest (user_id, interest)
+			SELECT $1, UNNEST($2::int[])
+			ON CONFLICT (user_id, interest) DO NOTHING;
+		`, [userId, interestsId])
+	client.release();
+}
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, addProfilPicture, addPicture, connect, selectByUsername, selectByEmail, selectById, getData, getInterests, getGps, getInterestsId, getInterestIdbyInterestName, addUserInterest, getAllInterests };
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests };
