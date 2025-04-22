@@ -4,7 +4,7 @@ import ConversationResearch from "./ConversationResearch"
 import ConversationRecent from "./ConversationRecent"
 import ConversationContact from "./ConversationContact"
 
-export default function ConversationInterface({ contacts }) {
+export default function ConversationInterface({ contacts, setRoomIdSelected }) {
 	const [tagConv, setTagConv] = useState("récents");
 
 	return (
@@ -14,11 +14,20 @@ export default function ConversationInterface({ contacts }) {
 				tagConv={tagConv}
 				setTagConv={setTagConv}
 			/>
-			{tagConv == "récents" ?
-			<ConversationRecent/>
-			:
-			<ConversationContact/>
-			}
+			<div className='flex-grow overflow-y-auto'>
+				{tagConv == "récents" ?
+				<ConversationRecent/>
+				:
+				<>
+					{contacts.map(contact => (
+						<ConversationContact 
+							key={contact.room_id} 
+							contact={contact} 
+							changeRoom={() => setRoomIdSelected(contact.room_id)}/>
+					))}
+				</>
+				}
+			</div>
 		</div>
 	)
 }

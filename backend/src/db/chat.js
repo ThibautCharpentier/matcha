@@ -18,7 +18,9 @@ const getChats = async (id) => {
 		chats.push({
 			room_id: res.rows[i].id,
 			firstname: res2.firstname,
-			lastname: res2.lastname
+			lastname: res2.lastname,
+			picture_profil: res2.picture_profile,
+			user_id: res2.id
 		})
 	}
 	return (chats)
