@@ -13,7 +13,7 @@ export const useSocketConversations = (isAuthenticated, setConversations) => {
             socketConversationsRef.current.onopen = () => {
                 repeat.current = setInterval(() => {
                     if (socketConversationsRef.current.readyState === WebSocket.OPEN)
-                        socketConversationsRef.current.send("CONVERATIONS");
+                        socketConversationsRef.current.send("CONVERSATIONS");
                 }, 100);
             }
 
@@ -71,13 +71,6 @@ export const useSocketConversations = (isAuthenticated, setConversations) => {
                 socketConversationsRef.current = null;
             }
         }
-
-        // Envoi périodique d'un message de heartbeat pour maintenir la connexion active
-        repeat.current = setInterval(() => {
-            if (socketConversationsRef.current.readyState === WebSocket.OPEN) {
-                socketConversationsRef.current.send(JSON.stringify({ type: "HEARTBEAT" }));
-            }
-        }, 10000); // Envoie un message toutes les 10 secondes
 
         return () => {
             if (socketConversationsRef.current && (socketConversationsRef.current.readyState === WebSocket.OPEN || socketConversationsRef.current.readyState === WebSocket.CLOSING))

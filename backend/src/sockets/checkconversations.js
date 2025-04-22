@@ -13,24 +13,40 @@ const firstSelect = async (ws) => {
     }
 }
 
+const groupedMessagesbyIdChat = (messages) => {
+    const grouped = {};
+
+	messages.forEach(messageRow => {
+		if (!grouped[messageRow.chat_id]) {
+			grouped[messageRow.chat_id] = {
+				chatId: messageRow.chat_id,
+				user1: messageRow.user1,
+				user2: messageRow.user2,
+				messages: []
+			};
+		}
+		grouped[messageRow.chat_id].messages.push({
+			sender: messageRow.sender,
+			receiver: messageRow.receiver,
+			message: messageRow.message,
+			created: messageRow.created,
+			view: messageRow.view
+		});
+	});
+
+	return Object.values(grouped);
+}
+
 const checkNewConversations = async (ws) => {
-    let new_conversations = false
     try {
         let res_query = await chat.getAllChatsAndMessagesByUserId(ws.user_id);
         if (!res_query)
             ws.close(4001);
-        if (res_query.length != ws.chat.length) {
+        if (res_query?.length != ws.chat?.length) {
             ws.chat = res_query
-            new_conversations = true
+            const groupedMessages = groupedMessagesbyIdChat(ws.chat);
+            ws.send(JSON.stringify(groupedMessages));
         }
-        else {
-                if (ws.chat.length != res_query.length) {
-                    new_conversations = true
-                    ws.chat = res_query;
-            }
-        }
-        if (new_conversations == true)
-            ws.send(JSON.stringify(ws.chat));
     }
     catch (err) {
         console.log(err);
