@@ -2,7 +2,8 @@ import { API_URL} from "../../utils/constants";
 import profile from '../../assets/images/img_profile.png';
 
 export default function UserProfile({userData, userIndex}) {
-    const pathPicture = API_URL + "/" + userData[userIndex].picture_profile;
+    const picture = userData[userIndex]?.picture_profile || "";
+
 	function findLastConnection() {
 		const last_connection = new Date(userData[userIndex].last_connection)
 		const now = new Date()
@@ -62,19 +63,21 @@ export default function UserProfile({userData, userIndex}) {
 					</div>
 				</div>
 			</div>
-			<div className="bg-white rounded-3xl flex-grow p-4" style={{overflowY: 'auto'}}>
-				<div className="text-xs flex flex-wrap gap-1">
-					{userData[userIndex].tags && userData[userIndex].tags.map((tag, index) => (
-						<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
-					))}
-				</div>
-                <div>
-                    <h3 className="text-gray-600 mt-5">A propos de moi</h3>
-                    <div className="mt-2">
-                        <p className="text-sm ">Je m'appelle Ismérie bonjour à tous {userData[userIndex].bio}</p>
-                    </div>
+			<div className="bg-white rounded-3xl flex-grow p-3 overflow-hidden">
+				<div style={{ overflowY: 'auto'}} className="h-full p-1">
+					<div className="text-xs flex flex-wrap gap-1">
+						{userData[userIndex].tags && userData[userIndex].tags.map((tag, index) => (
+							<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
+						))}
+					</div>
+					<div>
+						<h3 className="text-gray-600 mt-5">A propos de moi</h3>
+						<div className="mt-2">
+							<p className="text-sm ">{userData[userIndex].bio}</p>
+						</div>
 
-                </div>
+					</div>
+				</div>
 			</div>
 		</div>
 	)

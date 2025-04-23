@@ -261,7 +261,11 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
         const res_query = await user.selectById(req.user_id);
         console.log("Images actuelles dans la base de données :", res_query.pictures);
 
-        const imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
+		let imagesToDelete
+		if (res_query.pictures)
+        	imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
+		else
+			imagesToDelete = []
 
         console.log("Images à supprimer :", imagesToDelete);
 

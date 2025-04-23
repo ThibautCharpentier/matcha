@@ -14,8 +14,6 @@ export const API_ROUTES = {
 	IS_CONNECTED: 				`${API_URL}/auth/isconnected`,
     IS_COMPLETE_PROFILE:        `${API_URL}/profile/iscompleteprofile`,
     COMPLETE_PROFILE:           `${API_URL}/profile/completeprofile`,
-	GET_MY_PROFILE: 			`${API_URL}/profile/getmyprofile`,
-	GET_OTHER_PROFILE: 			`${API_URL}/profile/getotherprofile`,
 	//UPDATE_FIRSTNAME:			`${API_URL}/profile/updatefirstname`,
 	//UPDATE_LASTNAME: 			`${API_URL}/profile/updatelastname`,
 	UPDATE_PREFERENCES:			`${API_URL}/profile/updatepreferences`,

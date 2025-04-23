@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import PicturesSlider from "../Profile/PicturesSlider";
-import MatchProfil from "../Profile/UserProfile";
 import ModifyProfile from "./ModifyProfile";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
@@ -8,7 +7,7 @@ import ModalHobbies from "../CompleteProfil/ModalHobbies";
 import ModalPhotos from "./ModalPhotos";
 import Request from "../../utils/request";
 
-import { showErrorServer, showSuccess } from "../../utils/toastUtils";
+import { showErrorServer } from "../../utils/toastUtils";
 
 export default function MyProfil() {
 	const hasFetched = useRef(false);
@@ -40,59 +39,57 @@ export default function MyProfil() {
 
 	useEffect(() => {
 		const getProfileUser = async () => {
-				await axios.get(`${API_ROUTES.GET_PROFILE_USER}`, {
-					withCredentials: true,
-				})
-				.then((res) => {
-					if (res.status != 200)
-						throw new Error('Une erreur est survenue');
-					setUserData(() => {
-						let newState = [];
-						newState[0] = res.data.message;
-						return newState;
-					});
-				})
-				.catch((err) => {
-					console.log(err)
-					showErrorServer()
+			await axios.get(`${API_ROUTES.GET_PROFILE_USER}`, {
+				withCredentials: true,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('Une erreur est survenue');
+				setUserData(() => {
+					let newState = [];
+					newState[0] = res.data.message;
+					return newState;
 				});
-				hasFetched.current = true;
+			})
+			.catch((err) => {
+				console.log(err)
+				showErrorServer()
+			});
+			hasFetched.current = true;
 		}
 		getProfileUser();
 	}, [reload]);
 
 	return (
 		
-		<div className="relative max-w-[400px] max-h-[550px]">
-		{isModalHobbiesOpen &&
-			<ModalHobbies
-				isOpen={isModalHobbiesOpen}
-				onClose={() => setIsModalHobbiesOpen(false)}
-				onSave={handleSaveHobbies}
-				passions={userData[0].tags}
-			/>
-		}
-		{isModalPhotosOpen &&
-			<ModalPhotos
-				isOpen={isModalPhotosOpen}
-				OnClose={() => setIsModalPhotosOpen(false)}
-				onSave={handleSavePhotos}
-				photos={userData[0].pictures}
-			/>
-		}		
-			<div className="flex flex-col justify-center text-white text-sm">
-			</div>		
-			{userData && userData[0] && (
-			<div>
-			{toggleProfile ? (
-				<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setIsModalPhotosOpen={setIsModalPhotosOpen} setReload={setReload}/>
-			) : (
-				<PicturesSlider userData={userData} userIndex={0} />
-			)}
-			</div>
+		<div className="flex flex-col">
+			{isModalHobbiesOpen &&
+				<ModalHobbies
+					isOpen={isModalHobbiesOpen}
+					onClose={() => setIsModalHobbiesOpen(false)}
+					onSave={handleSaveHobbies}
+					passions={userData?.[0]?.tags}
+				/>
+			}
+			{isModalPhotosOpen &&
+				<ModalPhotos
+					isOpen={isModalPhotosOpen}
+					onClose={() => setIsModalPhotosOpen(false)}
+					onSave={handleSavePhotos}
+					photos={userData?.[0]?.pictures}
+				/>
+			}			
+			{userData?.[0] && (
+				<div className="relative max-w-[400px] max-h-[550px]">
+					{toggleProfile ? (
+						<ModifyProfile myData={userData[0]} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setIsModalPhotosOpen={setIsModalPhotosOpen} setReload={setReload}/>
+					) : (
+						<PicturesSlider userData={userData} userIndex={0} />
+					)}
+				</div>
 			)}
 			<div className="flex justify-center mt-5">
-				<button onClick={() => setToggleProfile((prevState) => !prevState)} className="btn-secondary flex justify-center items-center w-20 h-11 sm:w-24 sm:h-12 p-2">
+				<button onClick={() => setToggleProfile((prevState) => !prevState)} className="btn flex justify-center items-center w-20 h-11 sm:w-24 sm:h-12 p-2">
 					{toggleProfile ? "Photos" : "Profil"}
 				</button>
 			</div>

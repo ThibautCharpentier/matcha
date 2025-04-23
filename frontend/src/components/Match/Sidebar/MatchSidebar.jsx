@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MatchSortAndFilter from "./MatchSortAndFilter";
 import MatchResearch from "./MatchResearch";
 
