@@ -4,7 +4,7 @@ import ConversationResearch from "./ConversationResearch"
 import ConversationRecent from "./ConversationRecent"
 import ConversationContact from "./ConversationContact"
 
-export default function ConversationInterface({ contacts, setRoomIdSelected }) {
+export default function ConversationInterface({ contacts, roomSelected, setRoomSelected }) {
 	const [tagConv, setTagConv] = useState("récents");
 
 	return (
@@ -23,7 +23,14 @@ export default function ConversationInterface({ contacts, setRoomIdSelected }) {
 						<ConversationContact 
 							key={contact.room_id} 
 							contact={contact} 
-							changeRoom={() => setRoomIdSelected(contact.room_id)}/>
+							roomSelected={roomSelected}
+							changeRoom={() => setRoomSelected({
+								room_id: contact.room_id,
+								contact_picture_profile:contact.picture_profil,
+								contact_firstname: contact.firstname,
+								contact_lastname: contact.lastname
+							})}	
+						/>
 					))}
 				</>
 				}

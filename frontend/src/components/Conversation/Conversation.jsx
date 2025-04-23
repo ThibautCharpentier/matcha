@@ -5,18 +5,18 @@ import { useAuthentified } from "../AuthentifiedContext"
 
 export default function Conversation() {
 	const { contacts } = useAuthentified();
-	const [roomIdSelected, setRoomIdSelected] = useState(-1)
-	console.log(contacts)
+	const [roomSelected, setRoomSelected] = useState(null)
 
 	return (
 		<div className="w-full h-screen bg-gray-50 border-gray-300 border-l-[1px]">
 			<div className="flex flex-row">
 				<ConversationInterface
 					contacts={contacts}
-					setRoomIdSelected={setRoomIdSelected}
+					roomSelected={roomSelected}
+					setRoomSelected={setRoomSelected}
 				/>
 				<ConversationMessage 
-					roomIdSelected={roomIdSelected}/>
+					roomSelected={roomSelected}/>
 			</div>
 		</div>
 	)

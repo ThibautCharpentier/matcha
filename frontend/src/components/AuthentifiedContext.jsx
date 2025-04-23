@@ -55,7 +55,7 @@ export default function AuthentifiedProvider({ children }) {
             if (res.status != 200)
 				throw new Error('Une erreur est survenue');
             if (res.data.message == true) {
-				console.log(res);
+				console.log(res.data.id_user)
 				idUserRef.current = res.data.id_user;
                 setIsCompleteProfile(true);
 			}
@@ -86,7 +86,7 @@ export default function AuthentifiedProvider({ children }) {
 					:
 						<header></header>
 					}
-					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUserRef}}>
+					<AuthentifiedContext.Provider value={{data, notifs, conversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUserRef}}>
 						<main className='w-full'>
 							{children}
 						</main>
