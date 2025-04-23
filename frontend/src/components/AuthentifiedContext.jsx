@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useAuth } from "./AuthContext";
 import Navbar from "./Navbar/Navbar"
 import axios from 'axios';
@@ -41,6 +41,7 @@ export default function AuthentifiedProvider({ children }) {
 			timestamp: ""
 		}]
 	}]);
+	const idUserRef = useRef(null);
 
     const profileComplete = () => {
         setIsCompleteProfile(true);
@@ -53,8 +54,11 @@ export default function AuthentifiedProvider({ children }) {
         .then((res) => {
             if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-            if (res.data.message == true)
+            if (res.data.message == true) {
+				console.log(res);
+				idUserRef.current = res.data.id_user;
                 setIsCompleteProfile(true);
+			}
             else
                 setIsCompleteProfile(false);
         })
@@ -82,7 +86,7 @@ export default function AuthentifiedProvider({ children }) {
 					:
 						<header></header>
 					}
-					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
+					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUserRef}}>
 						<main className='w-full'>
 							{children}
 						</main>

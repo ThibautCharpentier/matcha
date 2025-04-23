@@ -178,7 +178,10 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	}
     if (res_query.gender == null || res_query.birthdate == null)
         return res.status(200).json({message: false});
-	return res.status(200).json({message: true});
+	return res.status(200).json({
+		message: true,
+		id_user: res_query.id
+	});
 });
 
 router.get('/getprofileuser', jwtrequired(), async(req, res) => {
