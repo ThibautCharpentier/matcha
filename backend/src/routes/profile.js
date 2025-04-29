@@ -181,21 +181,6 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	return res.status(200).json({message: true});
 });
 
-router.get('/getprofileuser', jwtrequired(), async(req, res) => {
-	let res_query;
-	try
-	{
-		res_query = await user.selectById(req.user_id);
-        res_query.age = utils.calculateAge(res_query.birthdate);
-        res_query.tags = await user.getNameInterestsById(res_query.id);
-	}
-	catch (err)
-	{
-		return res.status(400).json({message: err});
-	}
-	return res.status(200).json({message: res_query});
-});
-
 router.patch('/updateinterests', jwtrequired(), async(req, res) => {
 	const { tabInterests } = req.body;
 	let idInterests = []

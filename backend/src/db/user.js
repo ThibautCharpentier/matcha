@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { pool } = require('./db');
+const utils = require('../utils/utils');
 
 const insert = async (username, firstname, lastname, email, password) => {
 	const client = await pool.connect();
@@ -141,10 +142,12 @@ const selectById = async (id) => {
 
 const getData = async (id) => {
 	const client = await pool.connect();
-	const res = await client.query(`SELECT username, firstname, lastname, email, preferences, bio, gps, latitude, longitude FROM public.users WHERE id = $1`, [id]);
+	const res = await client.query(`SELECT username, firstname, lastname, birthdate, email, preferences, bio, picture_profile, pictures, famerating, gps, latitude, longitude, city FROM public.users WHERE id = $1`, [id]);
 	client.release();
 	if (res.rows.length == 0)
 		return null;
+	res.rows[0].age = utils.calculateAge(res.rows[0].birthdate);
+	res.rows[0].birthdate = undefined
 	return res.rows[0];
 }
 

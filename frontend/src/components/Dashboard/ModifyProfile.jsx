@@ -1,28 +1,23 @@
 import { API_URL} from "../../utils/constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Request from "../../utils/request";
 
 import profile from '../../assets/images/img_profile.png';
 
-export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModalPhotosOpen, setReload}) {
-    const pathPicture = myData?.picture_profile || "";
+export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModalPhotosOpen}) {
+    const pathPicture = myData.picture_profile || "";
 	const [inputText, setInputText] = useState(myData.bio);
 	const [textAreaIsFocused, setTextAreaIsFocused] = useState(false)
 
 	const handleSaveBio = async () => {
-		try {
-			let res = await Request.changeBio(inputText);
-
-			if (res?.success) {
-				setReload(prev => !prev);
-			} else {
-				console.error("Erreur lors de la mise à jour de la bio :", res?.message || "Réponse invalide");
-			}
-		} catch (error) {
-			console.error("Erreur réseau ou serveur :", error);
-		}
+		await Request.changeBio(inputText);
 	};
 	
+	useEffect(() => {
+		if (inputText !== myData.bio && !textAreaIsFocused)
+			setInputText(myData.bio)
+	}, [myData.bio])
+
 	return (
 		<div className="w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl max-h-[185px] aspect-[400/185] sm:h-[185px]">
@@ -65,13 +60,13 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModal
 						className="text-xs flex flex-wrap gap-1 hover:bg-gray-100 p-2 hover:cursor-pointer"
 						onClick={() => setIsModalHobbiesOpen(true)}
 					>
-						{!myData.tags && (
+						{!myData.interest && (
 							<>
 								<svg height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#4b5563"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
 								<p className="text-gray-600">Ajoutez des intérêts</p>
 							</>
 						)}
-						{myData.tags && myData.tags.map((tag, index) => (
+						{myData.interest && myData.interest.map((tag, index) => (
 							<div key={index} className="bg-gray-700 rounded-3xl p-1 text-white">#{tag}</div>
 						))}
 					</div>

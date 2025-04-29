@@ -19,14 +19,17 @@ export default function AuthentifiedProvider({ children }) {
 		username: "",
 		firstname: "",
 		lastname: "",
+		age: null,
 		email: "",
 		preferences: "",
 		bio: "",
 		picture_profile: null,
 		pictures: [],
+		famerating: null,
 		gps: false,
 		latitude: null,
 		longitude: null,
+		city: "",
 		interest: []
 	})
 	const [contacts, setContacts] = useState([])

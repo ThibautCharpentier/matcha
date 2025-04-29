@@ -25,16 +25,40 @@ const checkNewData = async (ws) => {
 		if (!res_query)
 			ws.close(4001);
 		for (let item in res_query) {
-			if (ws.data[item] != res_query[item]) {
+			if (item != "pictures" && ws.data[item] != res_query[item]) {
 				new_data = true;
 				ws.data[item] = res_query[item];
 			}
+			else if (item == "pictures") {
+				if (res_query[item].length != ws.data[item].length) {
+					new_data = true;
+					ws.data[item].length = 0
+					for (let i in res_query[item])
+						ws.data[item][i] = res_query[item][i];
+				}
+				else {
+					for (let i in res_query[item]) {
+						if (ws.data[item][i] != res_query[item][i]) {
+							new_data = true;
+							ws.data[item][i] = res_query[item][i];
+						}
+					}
+				}
+			}
 		}
 		res_query = await user.getNameInterestsById(ws.user_id);
-		for (let i in res_query) {
-			if (ws.data["interest"][i] != res_query[i]) {
-				new_data = true;
+		if (res_query.length != ws.data["interest"].length) {
+			new_data = true;
+			ws.data["interest"].length = 0
+			for (let i in res_query)
 				ws.data["interest"][i] = res_query[i];
+		}
+		else {
+			for (let i in res_query) {
+				if (ws.data["interest"][i] != res_query[i]) {
+					new_data = true;
+					ws.data["interest"][i] = res_query[i];
+				}
 			}
 		}
 		if (new_data == true)
