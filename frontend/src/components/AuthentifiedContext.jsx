@@ -31,16 +31,7 @@ export default function AuthentifiedProvider({ children }) {
 		interest: []
 	})
 	const [contacts, setContacts] = useState([])
-	const [conversations, setConversations] = useState([{
-		id: "",
-		idUser1: "",
-		idUser2: "",
-		messages: [{
-			idSender: "",
-			content: "",
-			timestamp: ""
-		}]
-	}]);
+	const [conversations, setConversations] = useState([]);
 	const idUserRef = useRef(null);
 
     const profileComplete = () => {

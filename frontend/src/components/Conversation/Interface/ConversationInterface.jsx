@@ -28,7 +28,8 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 								room_id: contact.room_id,
 								contact_picture_profile:contact.picture_profil,
 								contact_firstname: contact.firstname,
-								contact_lastname: contact.lastname
+								contact_lastname: contact.lastname,
+								contact_id: contact.user_id
 							})}	
 						/>
 					))}

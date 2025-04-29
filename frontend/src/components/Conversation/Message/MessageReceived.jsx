@@ -9,7 +9,11 @@ export default function MessageReceived({content, timestamp}) {
     return (
         <div className='flex justify-start'>
             <div className='flex flex-row w-fit p-1 bg-gray-200 mb-5 rounded-xl rounded-bl-none'>
-                <p className='m-2'>{content}</p>
+            <div className='m-2 text-start'>
+            {content.split('\n').map((line, index) => (
+                <p key={index}>{line}</p>
+            ))}
+            </div>
                 <p className='text-xs self-end text-gray-500 mr-1'>{formattedTime}</p>
             </div>
         </div>

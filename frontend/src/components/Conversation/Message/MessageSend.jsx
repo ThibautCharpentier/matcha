@@ -9,7 +9,11 @@ export default function MessageSend({content, timestamp}) {
     return (
         <div className='flex justify-end'>
             <div className='flex flex-row w-fit p-1 bg-[--color-light-pink] mb-5 rounded-xl rounded-br-none'>
-            <p className='m-2'>{content}</p>
+            <div className='m-2 text-start'>
+            {content.split('\n').map((line, index) => (
+                <p key={index}>{line}</p>
+            ))}
+            </div>
             <p className='text-xs self-end text-[--color-lightiest-pink] mr-1'>{formattedTime}</p>
             </div>
         </div>

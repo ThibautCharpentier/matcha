@@ -19,46 +19,9 @@ export const useSocketConversations = (isAuthenticated, setConversations) => {
 
             socketConversationsRef.current.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-            
-                if (res.type === 'newMessage') {
-                    setConversations((prevConversations) => {
-                        const conversationExists = prevConversations.some(conv => conv.id === res.conversationId);
-            
-                        if (!conversationExists) {
-                            const newConversation = {
-                                id: res.conversationId,
-                                user1: res.senderId,
-                                user2: res.receiverId,
-                                messages: [
-                                    {
-                                        senderId: res.senderId,
-                                        content: res.content,
-                                        timestamp: res.timestamp
-                                    }
-                                ]
-                            };
-                            return [...prevConversations, newConversation];
-                        } else {
-                            const updatedConversations = prevConversations.map(conv => {
-                                if (conv.id === res.conversationId) {
-                                    return {
-                                        ...conv,
-                                        messages: [...conv.messages, {
-                                            senderId: res.senderId,
-                                            content: res.content,
-                                            timestamp: res.timestamp
-                                        }]
-                                    };
-                                }
-                                return conv;
-                            });
-            
-                            return updatedConversations;
-                        }
-                    });
-                }
+
+                setConversations(res);
             }
-            
 
             socketConversationsRef.current.onclose = (event) => {
                 clearInterval(repeat.current);

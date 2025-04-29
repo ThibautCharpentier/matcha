@@ -8,40 +8,42 @@ export default function AllMessages({ roomId }) {
     const { conversations, idUserRef } = useAuthentified();
     let lastDate = null;
 
+    console.log("cooooooooonvs");
+    console.log(conversations)
     // Simulation de conversations
     const allConversations = [{
-        id: roomId,
-        idUser1: 1,
-        idUser2: 2,
+        chatId: roomId,
+        user1: 1,
+        user2: 2,
         messages: [
             {
-                idSender: 1,
-                content: "Hello, comment ça va ?",
-                timestamp: "2025-04-23T10:00:00"
+                sender: 1,
+                message: "Hello, comment ça va ?",
+                created: "2025-04-23T10:00:00"
             },
             {
-                idSender: 2,
-                content: "Super et toi ?",
-                timestamp: "2025-04-23T10:01:00"
+                sender: 2,
+                message: "Super et toi ?",
+                created: "2025-04-23T10:01:00"
             },
             {
-                idSender: 1,
-                content: "On se voit demain ?",
-                timestamp: "2025-04-24T09:30:00"
+                sender: 1,
+                message: "On se voit demain ?",
+                created: "2025-04-24T09:30:00"
             }
         ]
     }];
 
     useEffect(() => {
-        const convRoomId = allConversations.find(conv => conv.id === roomId);
+        const convRoomId = conversations.find(conv => conv.chatId === roomId);
         setConversation(convRoomId?.messages || []);
-    }, [roomId]);
+    }, [roomId, conversations]);
 
 
     return (
         <div className='flex flex-col'>
             {conversation.map((message, index) => {
-                const dateObj = new Date(message.timestamp);
+                const dateObj = new Date(message.created);
                 const messageDate = dateObj.toLocaleDateString('fr-FR', {
                     weekday: 'long',
                     year: 'numeric',
@@ -56,10 +58,10 @@ export default function AllMessages({ roomId }) {
                         {showDate && (
                             <p className="text-center text-gray-500 text-xs my-2">{messageDate}</p>
                         )}
-                        {message.idSender === idUserRef.current ? (
-                            <MessageSend content={message.content} timestamp={message.timestamp} />
+                        {message.sender === idUserRef.current ? (
+                            <MessageSend content={message.message} timestamp={message.created} />
                         ) : (
-                            <MessageReceived content={message.content} timestamp={message.timestamp} />
+                            <MessageReceived content={message.message} timestamp={message.created} />
                         )}
                     </div>
                 );

@@ -108,6 +108,38 @@ const Request = {
                 showErrorData();
             return {success: false}
         })
+    },
+    sendNewMessage : async (newMessage, room_id, receiver_id) => {
+        const obj = {
+            newMessage: DOMPurify.sanitize(newMessage),
+            receiver_id: receiver_id,
+            room_id: room_id
+        }
+
+        console.log("obj")
+        console.log(obj)
+
+        return axios.post(`${API_ROUTES.SEND_MESSAGE}`, obj, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
+            else {
+                return {success: true}
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            else
+                showErrorData();
+            return {success: false}
+        })
     }
 }
 

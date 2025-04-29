@@ -48,8 +48,6 @@ const getAllChatsAndMessagesByUserId = async (userId) => {
 		return result.rows;
 };
 
-
-
 const addChat = async (user1, user2) => {
 	const client = await pool.connect()
 	let values = [user1, user2]
@@ -76,4 +74,11 @@ const deleteChat = async (user1, user2) => {
 	client2.release();
 }
 
-module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat }
+const addMessageInChat = async (room_id, sender_id, receier_id, new_message) => {
+	const client = await pool.connect()
+	let values = [room_id, sender_id, receier_id, new_message]
+	const res = await client.query(`INSERT INTO public.message (chat, sender, receiver, message) VALUES ($1, $2, $3, $4)`, values)
+	client.release();
+}
+
+module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat, addMessageInChat }

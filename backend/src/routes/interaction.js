@@ -7,6 +7,7 @@ const chat = require('../db/chat')
 const utils = require('../utils/utils');
 const { validateDto } = require('../dto/validatedto');
 const { TargetDto } = require('../dto/target.dto.js');
+const { NewMessageDto } = require('../dto/newmessage.dto.js');
 const { jwtrequired } = require('../config/jwt');
 const router = express.Router();
 
@@ -142,5 +143,22 @@ router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 	}
 	return res.status(200).json({message: 'OK'});
 });
+
+router.post('/sendmessage', jwtrequired(), validateDto(NewMessageDto), async (req, res) => {
+	const { newMessage, receiver_id, room_id } = req.body;
+
+	console.log(newMessage)
+	console.log(room_id)
+	console.log(receiver_id)
+	try {
+		await chat.addMessageInChat(room_id, req.user_id, receiver_id, newMessage)
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
 
 module.exports = router;

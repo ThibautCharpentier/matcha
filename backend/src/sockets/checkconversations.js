@@ -16,6 +16,8 @@ const firstSelect = async (ws) => {
 const groupedMessagesbyIdChat = (messages) => {
     const grouped = {};
 
+    console.log(messages)
+    
 	messages.forEach(messageRow => {
 		if (!grouped[messageRow.chat_id]) {
 			grouped[messageRow.chat_id] = {
