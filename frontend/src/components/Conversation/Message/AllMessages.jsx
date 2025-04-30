@@ -7,57 +7,56 @@ export default function AllMessages({ roomId }) {
     const [conversation, setConversation] = useState([]);
     const { conversations, idUser } = useAuthentified();
     const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
     const hasScrolledToBottom = useRef(false);
+    const [autoScroll, setAutoScroll] = useState(true);
     let lastDate = null;
-
-    console.log(messagesEndRef.current)
-    // Simulation de conversations
-    const allConversations = [{
-        chatId: roomId,
-        user1: 1,
-        user2: 2,
-        messages: [
-            {
-                sender: 1,
-                message: "Hello, comment ça va ?",
-                created: "2025-04-23T10:00:00"
-            },
-            {
-                sender: 2,
-                message: "Super et toi ?",
-                created: "2025-04-23T10:01:00"
-            },
-            {
-                sender: 1,
-                message: "On se voit demain ?",
-                created: "2025-04-24T09:30:00"
-            }
-        ]
-    }];
-
+    
+    const handleScroll = () => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+        
+        const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
+        setAutoScroll(isAtBottom);
+    };
+    
     useEffect(() => {
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
         setConversation(convRoomId?.messages || []);
         hasScrolledToBottom.current = false;
+        console.log("room")
     }, [roomId, conversations]);
+
+
+    useEffect(() => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+
+        container.addEventListener('scroll', handleScroll);
+        return () => {
+            container.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     useEffect(() => {
         if (!messagesEndRef.current) return;
 
-        // scrolle sans animation dès que les messages sont là
-        if (conversation.length > 0 && hasScrolledToBottom.current === false) {
+        if (autoScroll && conversation.length > 0 && hasScrolledToBottom.current === false) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+            console.log("smooth")
         }
-        else {
+        else if (autoScroll) {
             messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
             hasScrolledToBottom.current = true;
+            console.log("auto")
         }
     }, [conversation]);
 
-
-
     return (
-        <div className='flex flex-col'>
+        <div
+            ref={messagesContainerRef}
+            className='flex flex-col overflow-y-auto h-full px-2'
+        >
             {conversation.map((message, index) => {
                 const dateObj = new Date(message.created);
                 const messageDate = dateObj.toLocaleDateString('fr-FR', {
