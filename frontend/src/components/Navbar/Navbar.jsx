@@ -27,7 +27,7 @@ const Navbar = ({ hasNewNotif }) => {
 	return (
 		<>
 			<header>
-				<div className="fixed z-10 flex-none bottom-0 w-full sm:h-screen sm:w-24 lg:w-56 bg-gray-50 text-gray-700">
+				<div className="fixed z-10 flex-none bottom-0 w-full sm:h-screen sm:w-24 lg:w-56 bg-gray-50">
 					<nav className="h-full flex flex-col justify-between">
 						<ul className='h-full sm:h-auto grid grid-cols-5 sm:px-0 sm:flex sm:flex-col w-full text-gray-500 items-center lg:items-start justify-between sm:justify-start'>
 							<div className="hidden sm:flex items-center self-center h-16">

@@ -45,7 +45,23 @@ export default function MyProfil() {
 				/>
 			}
 			{data.firstname != "" && data.lastname != "" && data.age != null && data.famerating != null &&
-				<div className="relative max-w-[400px] max-h-[550px]">
+				<div className="relative w-full max-w-[400px] max-h-[610px] aspect-[61/40] sm:w-[400px] sm:h-[610px] bg-gray-50 flex flex-col rounded-3xl">
+					<div className="bg-gray-50 w-full rounded-3xl max-h-[60px] aspect-[20/3] sm:h-[60px] justify-center flex items-center">
+						<div className="text-gray-500 flex flex-row items-center justify-between sm:w-[60%]">
+							<span className={`${toggleProfile && "text-gray-900"} pr-3`}>Profil</span>
+							<button onClick={() => setToggleProfile((prevState) => !prevState)}
+								className="relative w-24 h-8 bg-pink-600 rounded-full"
+							>
+							
+							<div
+								className={`absolute top-1 left-1 w-10 h-6 bg-white rounded-full shadow transition-transform duration-300 ${
+								toggleProfile ? "translate-x-0" : "translate-x-[calc(100%+0.5rem)]"
+								}`}
+							></div>
+							</button>
+							<span className={`${!toggleProfile && "text-gray-900"} pl-3`}>Photos</span>
+						</div>
+					</div>
 					{toggleProfile ? (
 						<ModifyProfile myData={data} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setIsModalPhotosOpen={setIsModalPhotosOpen}/>
 					) : (
@@ -53,11 +69,6 @@ export default function MyProfil() {
 					)}
 				</div>
 			}
-			<div className="flex justify-center mt-5">
-				<button onClick={() => setToggleProfile((prevState) => !prevState)} className="btn flex justify-center items-center w-20 h-11 sm:w-24 sm:h-12 p-2">
-					{toggleProfile ? "Photos" : "Profil"}
-				</button>
-			</div>
 		</div>
 	)
 }

@@ -17,8 +17,8 @@ export default function PicturesSlider({userData, userIndex}) {
 	}
 	
 	return (
-		<div className="relative slider-container w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] rounded-3xl overflow-hidden">
-			<Carousel className="rounded-3xl"
+		<div className="relative slider-container w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] rounded-3xl">
+			<Carousel className="rounded-3xl overflow-hidden"
 				showThumbs={false}
 				showStatus={false}
 				transitionTime={100}
