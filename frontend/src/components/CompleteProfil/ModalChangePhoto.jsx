@@ -1,18 +1,35 @@
 import { useState } from "react";
 import Cropper from 'react-easy-crop'
 
-const ASPECT_RATIO = 1;
-const MIN_DIMENSION = 150;
+const MAX_WIDTH = 400;
+const MAX_HEIGHT = 550;
+const RATIO_DIMENSION = 1.375;
+
+function getCropSize(width, height) {
+    if (width * RATIO_DIMENSION >= height) {
+        if (height > MAX_HEIGHT)
+            return ({width: (height / (height / MAX_HEIGHT)) / RATIO_DIMENSION, height: height / (height / MAX_HEIGHT)})
+        else
+            return ({width: height / RATIO_DIMENSION, height: height})
+    }
+    else {
+        if (width > MAX_WIDTH)
+            return ({width: width / (width / MAX_WIDTH), height: width / (width / MAX_WIDTH) * RATIO_DIMENSION})
+        else
+            return ({width: width, height: width * RATIO_DIMENSION})
+    }
+}
 
 export default function ModalChangePhoto({onClose, onSave, imgSrc, index, isProfilPicture}) {
+    const [localImgSrc, setLocalImgSrc] = useState(imgSrc);
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [zoom, setZoom] = useState(1)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [titlePhoto, setTitlePhoto] = isProfilPicture 
         ? useState("Première photo qui apparaitra sur votre profil de match")
         : useState(null);
-    let [cropShape, setCropShape] = useState("rect")
-    let [cropSize, setCropSize] = useState({width: 400, height: 550})
+    const [cropShape, setCropShape] = useState("rect")
+    const [cropSize, setCropSize] = useState(getCropSize(window.innerWidth, window.innerHeight))
 
     const onCropComplete = (croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -22,7 +39,7 @@ export default function ModalChangePhoto({onClose, onSave, imgSrc, index, isProf
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const image = new Image();
-        image.src = imgSrc;
+        image.src = localImgSrc;
 
         const { width, height, x, y } = croppedAreaPixels;
 
@@ -49,8 +66,15 @@ export default function ModalChangePhoto({onClose, onSave, imgSrc, index, isProf
             const newIndex = index + 1
             onSave(croppedImage, newIndex);
             setCropShape("round")
-            setCropSize({width: 400, height: 400})
+            setCropSize({width: Math.min(cropSize.width, cropSize.height), height: Math.min(cropSize.width, cropSize.height)})
             setTitlePhoto("Votre photo de profil")
+            setZoom(1);
+            setCrop({ x: 0, y: 0 });
+            const reader = new FileReader();
+            reader.readAsDataURL(croppedImage);
+            reader.onloadend = () => {
+                setLocalImgSrc(reader.result)
+            }
             return
         }
         onSave(croppedImage, index);
@@ -77,7 +101,7 @@ export default function ModalChangePhoto({onClose, onSave, imgSrc, index, isProf
                 )}
                 <div className="relative h-3/4">
                         <Cropper
-                        image={imgSrc}
+                        image={localImgSrc}
                         crop={crop}
                         zoom={zoom}
                         cropShape={cropShape}

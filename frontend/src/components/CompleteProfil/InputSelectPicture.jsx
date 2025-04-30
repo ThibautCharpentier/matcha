@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ModalChangePhoto from "./ModalChangePhoto"
 
 const MIN_DIMENSION = 150;
