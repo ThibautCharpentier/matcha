@@ -3,6 +3,7 @@ import AllMessages from './AllMessages';
 import profile from '../../../assets/images/img_profile.png';
 import { API_URL } from '../../../utils/constants';
 import InputNewMessage from './InputNewMessage';
+import BackEndMessages from './BackEndMessages';
 
 export default function ConversationMessage({roomSelected}) {
 	const [windowSize, setWindowSize] = useState(window.innerWidth);
@@ -29,11 +30,11 @@ export default function ConversationMessage({roomSelected}) {
 							<img src={roomSelected.contact_picture_profile ? pathPicture : profile} className="w-12 h-auto m-2 mx-3 rounded-full" style={{userSelect: 'none'}}/>
 							<p className='self-center '>{roomSelected.contact_firstname} {roomSelected.contact_lastname}</p>
 						</div>	
-						<div className='flex-1 overflow-y-auto px-4 scroll-container'>
+						<div className='flex-1 overflow-y-auto px-4 scroll-container relative'>
 							<AllMessages 
-								roomId={roomSelected.room_id}	
+								roomId={roomSelected.room_id}
+								roomSelected={roomSelected}
 							/>
-
 						</div>
 						<InputNewMessage roomSelected={roomSelected}/>
 					</div>

@@ -8,7 +8,7 @@ export default function MessageReceived({content, timestamp}) {
 
     return (
         <div className='flex justify-start'>
-            <div className='flex flex-row w-fit p-1 bg-gray-200 mb-5 rounded-xl rounded-bl-none'>
+            <div className='flex flex-row w-fit p-1 bg-gray-200 mb-2 rounded-xl rounded-bl-none'>
                 <div className='m-2 text-start whitespace-pre-wrap'>
                     {content}
                 </div>
