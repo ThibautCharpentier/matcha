@@ -116,9 +116,6 @@ const Request = {
             room_id: room_id
         }
 
-        console.log("obj")
-        console.log(obj)
-
         return axios.post(`${API_ROUTES.SEND_MESSAGE}`, obj, {
             withCredentials: true,
         })

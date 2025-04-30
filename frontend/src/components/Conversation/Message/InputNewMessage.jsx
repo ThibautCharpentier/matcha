@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { API_URL } from '../../../utils/constants';
 import Request from '../../../utils/request';
 import { useAuthentified } from '../../AuthentifiedContext';
 
 export default function InputNewMessage({roomSelected}) {
     const [newMessage, setNewMessage] = useState("");
+    const textareaRef = useRef(null);
 
 
     const handleSendNewMessage = async () => {
@@ -12,8 +13,12 @@ export default function InputNewMessage({roomSelected}) {
             return;
 
         const res = await Request.sendNewMessage(newMessage, roomSelected.room_id, roomSelected.contact_id);
-        if (res.success)
+        if (res.success) {
             setNewMessage("");
+            if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+            }
+        }
     }
 
     return (
@@ -21,6 +26,7 @@ export default function InputNewMessage({roomSelected}) {
             <div className='bg-gray-200 p-3 rounded-md m-3 flex items-end'>
                 <textarea
                     className='bg-gray-200 resize-none w-full outline-none overflow-hidden'
+                    ref={textareaRef}
                     rows={1}
                     placeholder='Mon message...'
                     id="newMessage"

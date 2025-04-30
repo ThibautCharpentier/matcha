@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuthentified } from '../../AuthentifiedContext';
 import MessageReceived from './MessageReceived';
 import MessageSend from './MessageSend';
 
 export default function AllMessages({ roomId }) {
     const [conversation, setConversation] = useState([]);
-    const { conversations, idUserRef } = useAuthentified();
+    const { conversations, idUser } = useAuthentified();
+    const messagesEndRef = useRef(null);
+    const hasScrolledToBottom = useRef(false);
     let lastDate = null;
 
-    console.log("cooooooooonvs");
-    console.log(conversations)
+    console.log(messagesEndRef.current)
     // Simulation de conversations
     const allConversations = [{
         chatId: roomId,
@@ -37,7 +38,22 @@ export default function AllMessages({ roomId }) {
     useEffect(() => {
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
         setConversation(convRoomId?.messages || []);
+        hasScrolledToBottom.current = false;
     }, [roomId, conversations]);
+
+    useEffect(() => {
+        if (!messagesEndRef.current) return;
+
+        // scrolle sans animation dès que les messages sont là
+        if (conversation.length > 0 && hasScrolledToBottom.current === false) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+        else {
+            messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+            hasScrolledToBottom.current = true;
+        }
+    }, [conversation]);
+
 
 
     return (
@@ -58,7 +74,7 @@ export default function AllMessages({ roomId }) {
                         {showDate && (
                             <p className="text-center text-gray-500 text-xs my-2">{messageDate}</p>
                         )}
-                        {message.sender === idUserRef.current ? (
+                        {message.sender === idUser ? (
                             <MessageSend content={message.message} timestamp={message.created} />
                         ) : (
                             <MessageReceived content={message.message} timestamp={message.created} />
@@ -66,6 +82,7 @@ export default function AllMessages({ roomId }) {
                     </div>
                 );
             })}
+            <div ref={messagesEndRef} />
         </div>
     );
 }

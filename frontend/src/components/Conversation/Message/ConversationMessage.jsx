@@ -29,7 +29,7 @@ export default function ConversationMessage({roomSelected}) {
 							<img src={roomSelected.contact_picture_profile ? pathPicture : profile} className="w-12 h-auto m-2 mx-3 rounded-full" style={{userSelect: 'none'}}/>
 							<p className='self-center '>{roomSelected.contact_firstname} {roomSelected.contact_lastname}</p>
 						</div>	
-						<div className='flex-1 overflow-y-auto p-4'>
+						<div className='flex-1 overflow-y-auto px-4 scroll-container'>
 							<AllMessages 
 								roomId={roomSelected.room_id}	
 							/>
