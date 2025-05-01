@@ -15,7 +15,7 @@ export default function AllMessages({ roomId, roomSelected }) {
     const [notifNewMessage, setNotifNewMessage] = useState(false);
     let lastDate = null;
     
-    console.log(conversation)
+    console.log(conversations)
     console.log(roomSelected)
 
     const handleScroll = () => {

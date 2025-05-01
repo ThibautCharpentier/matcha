@@ -16,7 +16,10 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 			/>
 			<div className='flex-grow overflow-y-auto'>
 				{tagConv == "récents" ?
-				<ConversationRecent/>
+				<ConversationRecent
+					roomSelected={roomSelected}
+					setRoomSelected={setRoomSelected}
+				/>
 				:
 				<>
 					{contacts.map(contact => (
