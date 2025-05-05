@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../../utils/constants";
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
@@ -39,7 +39,6 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 		fameRating: false,
 		commonTags: false
 	})
-	const hasFetched = useRef(false)
 
 	const handleSortChange = (e) => {
 		const { name, checked } = e.target;
@@ -70,25 +69,21 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 	};
 
 	useEffect(() => {
-        if (hasFetched.current == false)
-		{
-			axios.get(API_ROUTES.GET_ALL_INTERESTS, {
-				withCredentials: true,
-				timeout: 5000,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('une erreur est survenue')
-				let tab = []
-				for (let i = 0; i < res.data.data.length; i++)
-					tab.push(res.data.data[i].name)
-				setListTags(tab)
-			})
-			.catch((err) => {
-				console.log(err)
-			})
-		}
-        hasFetched.current = true;
+		axios.get(API_ROUTES.GET_ALL_INTERESTS, {
+			withCredentials: true,
+			timeout: 5000,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('une erreur est survenue')
+			let tab = []
+			for (let i = 0; i < res.data.data.length; i++)
+				tab.push(res.data.data[i].name)
+			setListTags(tab)
+		})
+		.catch((err) => {
+			console.log(err)
+		})
     }, []);
 
 	function filterParameters() {

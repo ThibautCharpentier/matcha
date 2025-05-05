@@ -36,9 +36,9 @@ export const API_ROUTES = {
 	REPORT:               		`${API_URL}/interaction/report`,
 	GET_MY_CONVERSATIONS: 		`${API_URL}/interaction/getmyconversations`,
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
-    GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
 	GET_MATCHS:         		`${API_URL}/interaction/getmatchs`,
 	GET_RESEARCH:				`${API_URL}/interaction/getresearch`,
+	GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
 	ADMIN_AUTH_EMAIL:			`${API_URL}/admin/auth`,
 	ADMIN_AUTH_CODE:			`${API_URL}/admin/verification`,
 };

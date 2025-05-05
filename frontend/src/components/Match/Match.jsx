@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import MatchButtons from "./MatchButtons";
 import MatchParameters from "./MatchParameters";
 import PicturesSlider from "../Profile/PicturesSlider";
@@ -7,6 +7,7 @@ import MatchOverlays from "./MatchOverlays";
 import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Match() {
 	const [isSidebarSortAndFilterOpen, setSidebarSortAndFilterOpen] = useState(false);
@@ -15,7 +16,6 @@ export default function Match() {
 	const [matchState, setMatchState] = useState(null);
 	const [matchIndexState, setMatchIndexState] = useState(0);
 	const [isResearch, setIsResearch] = useState(false);
-	const hasFetched = useRef(false);
 
 	const openSidebarSortAndFilter = () => {
 		setSidebarSortAndFilterOpen(true);
@@ -38,53 +38,74 @@ export default function Match() {
 	}
 
 	useEffect(() => {
-		if (hasFetched.current != true)
-		{
-            axios.get(`${API_ROUTES.GET_MATCHS}`, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-				setMatchState(res.data.message);
-				setMatchIndexState(0);
-			})
-			.catch((err) => {
-				console.log(err)
-			});
-			hasFetched.current = true;
-		}
+        axios.get(`${API_ROUTES.GET_MATCHS}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			setMatchState(res.data.message);
+			setMatchIndexState(0);
+		})
+		.catch((err) => {
+			console.log(err)
+		});
     }, []);
 
 	return (
 		<>
-			<div className="w-full py-4 sm-py-8">
-				<div className="flex flex-col items-center w-full mt-6 p-2 mb-0">
-					<MatchParameters 
-						openSidebarSortAndFilter={openSidebarSortAndFilter}
-						openSidebarResearch={openSidebarResearch}
-					/>
-					{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
-					{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
-					{(matchState && matchState[matchIndexState] && <div className="relative max-w-[400px] max-h-[550px]">
-						{(toggleProfile ? <UserProfile
-							userData={matchState}
-							userIndex={matchIndexState}
-						/> : <PicturesSlider
-							userData={matchState}
-							userIndex={matchIndexState}
-						/>)}
-						<MatchButtons
-							toggleProfile={toggleProfile}
-							switchToggleProfile={switchToggleProfile}
-							matchState={matchState}
-							matchIndexState={matchIndexState}
-							setMatchIndexState={setMatchIndexState}
-							isResearch={isResearch}
+			{matchState != null ?
+				<div className="w-full sm:p-2 mb-[4em] sm:mb-0">
+					<div className="flex flex-col items-center w-full">
+						<MatchParameters 
+							openSidebarSortAndFilter={openSidebarSortAndFilter}
+							openSidebarResearch={openSidebarResearch}
 						/>
-					</div>)}
+						{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
+						{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
+						{(matchState && matchState[matchIndexState] && <div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
+							{(toggleProfile ?
+								<>
+									<UserProfile
+										userData={matchState}
+										userIndex={matchIndexState}
+									/>
+									<MatchButtons
+										toggleProfile={toggleProfile}
+										switchToggleProfile={switchToggleProfile}
+										matchState={matchState}
+										matchIndexState={matchIndexState}
+										setMatchIndexState={setMatchIndexState}
+										isResearch={isResearch}
+									/>
+								</>
+							:
+								<>
+									<PicturesSlider
+										userData={matchState}
+										userIndex={matchIndexState}
+									/>
+									<MatchButtons
+										toggleProfile={toggleProfile}
+										switchToggleProfile={switchToggleProfile}
+										matchState={matchState}
+										matchIndexState={matchIndexState}
+										setMatchIndexState={setMatchIndexState}
+										isResearch={isResearch}
+									/>
+								</>
+							)}
+						</div>)}
+					</div>
 				</div>
-			</div>
+			:
+				<div className="w-full h-screen flex justify-center items-center">
+					<ClipLoader
+						color="#fff"
+						size={70}
+					/>
+				</div>
+			}
 			<MatchOverlays
 				isSidebarSortAndFilterOpen={isSidebarSortAndFilterOpen}
 				isSidebarResearchOpen={isSidebarResearchOpen}

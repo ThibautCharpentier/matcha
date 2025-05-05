@@ -84,7 +84,7 @@ export default function ModalChangePhoto({onClose, onSave, imgSrc, index, isProf
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
 			<div className="bg-gray-800 bg-opacity-50 absolute inset-0" onClick={onClose}></div>
-			<div className="bg-white sm:rounded-xl shadow-lg relative h-full sm:h-5/6 z-10 max-w-lg w-full flex flex-col">
+			<div className="bg-white sm:rounded-xl shadow-lg relative h-full sm:h-5/6 z-10 sm:max-w-lg w-full flex flex-col">
                 <div className="bg-gray-100 rounded-xl flex p-4">
 					<div className="flex flex-col w-full">
 						<div className="flex justify-end mb-3">

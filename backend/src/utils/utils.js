@@ -111,6 +111,12 @@ function getInitialQueryMatchs(res_user) {
 					SELECT count(*)
 					FROM public.interaction
 					WHERE public.interaction.target = public.users.id AND public.interaction.user_id = $4
+				) = 0
+			AND
+				(
+					SELECT count(*)
+					FROM public.interaction
+					WHERE public.interaction.target = $4 AND public.interaction.user_id = public.users.id AND (public.interaction.action = 'block' OR public.interaction.action = 'unlike' OR public.interaction.action = 'dislike')
 				) = 0`
 	return (query)
 }

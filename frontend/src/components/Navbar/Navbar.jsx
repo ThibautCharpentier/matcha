@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { APP_ROUTES, API_ROUTES } from "../../utils/constants"
@@ -127,7 +127,7 @@ const Navbar = ({ hasNewNotif }) => {
 										)}
 									</NavLink>
 								</li>
-								<li className='h-full  sm:mb-6 sm:h-auto sm:bottom-0 sm:mt-6 sm:w-full hover:text-gray-900 group flex items-center' >
+								<li className='h-full sm:mb-6 sm:h-auto sm:bottom-0 sm:mt-6 sm:w-full hover:text-gray-900 group flex items-center' >
 									<button onClick={handleDeconnexion} className='w-full sm:py-2.5 sm:px-4 flex justify-center lg:justify-start'
 									>
 										<svg className="sm:mr-2 lg:ml-4 group-hover:text-pink-600" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

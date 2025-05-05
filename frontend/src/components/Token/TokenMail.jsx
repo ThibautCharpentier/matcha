@@ -1,32 +1,27 @@
 import { API_ROUTES } from "../../utils/constants";
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function TokenMail() {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
-	const hasFetched = useRef(false);
 	const [display, setDisplay] = useState("");
 
 	useEffect(() => {
-        if (hasFetched.current == false)
-		{
-			axios.get(`${API_ROUTES.VERIFY_EMAIL}?token=${token}`, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-				else
-					setDisplay("Votre adresse mail a été vérifiée avec succès !");
-			})
-			.catch((err) => {
-				setDisplay("Le lien a expiré !");
-			});
-		}
-        hasFetched.current = true;
+		axios.get(`${API_ROUTES.VERIFY_EMAIL}?token=${token}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			else
+				setDisplay("Votre adresse mail a été vérifiée avec succès !");
+		})
+		.catch((err) => {
+			setDisplay("Le lien a expiré !");
+		});
     }, []);
 
 	return (

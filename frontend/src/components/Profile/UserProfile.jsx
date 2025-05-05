@@ -23,7 +23,7 @@ export default function UserProfile({userData, userIndex}) {
 	}
 
 	return (
-		<div className="w-[95vw] max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
+		<div className="w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
 				<div className="flex flex-row space-x-3">
 					{picture != "" ?
