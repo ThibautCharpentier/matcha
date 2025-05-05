@@ -50,6 +50,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					picture_profil: contact.picture_profil,
 					pathPicture: API_URL + "/" + contact.picture_profil || null,
 					lastMessage: truncLastMessage(lastMessage.message),
+					message: lastMessage.message,
 					lastDate: new Date(lastMessage.created),
 				};
 			}).filter(Boolean); 
@@ -59,34 +60,38 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}, [conversations])
 
 	return (
-		<div className='flex-grow overflow-y-auto'>
-			{ recentsConversations.map(conv => (
-				<div 
-					style={{cursor: 'pointer'}}
-						className={`hover:bg-gray-100 flex flex-row w-full ${conv.chatId === roomSelected?.room_id ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
-					onClick={() => setRoomSelected({
-								room_id: conv.chatId,
-								contact_picture_profile: conv.picture_profil,
-								contact_firstname: conv.firstname,
-								contact_lastname: conv.lastname,
-								contact_id: conv.contactId
-							})}
-				>
-					<img src={conv.pathPicture ? conv.pathPicture : profile} className="w-[17%] h-auto m-2 mx-3 rounded-full" style={{userSelect: 'none'}}/>
-					<div className="flex flex-col items-start justify-center">
-						<div className="mb-1">
-							<p>{conv.firstname} {conv.lastname}</p>
-						</div>
-						<div className="flex flex-row text-sm text-gray-500 items-center w-full overflow-hidden">
-							<p className="truncate break-words overflow-hidden text-ellipsis max-w-[60%] min-w-0">
-								{conv.lastMessage}
-							</p>
-							<p className="mx-2"> - </p>
-							<p className="whitespace-nowrap">{formatRelativeDate(conv.lastDate)}</p>
-						</div>
+				<div className="overflow-y-auto">
+		{recentsConversations.map(conv => (
+			<div
+			key={conv.chatId}
+			onClick={() => setRoomSelected({
+				room_id: conv.chatId,
+				contact_picture_profile: conv.picture_profil,
+				contact_firstname: conv.firstname,
+				contact_lastname: conv.lastname,
+				contact_id: conv.contactId
+			})}
+			className={`flex items-center w-full px-2 py-3 cursor-pointer overflow-hidden
+				${conv.chatId === roomSelected?.room_id ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
+			>
+			<img
+				src={conv.pathPicture || profile}
+				className="w-14 h-14 rounded-full flex-shrink-0 mr-3"
+				style={{ userSelect: 'none' }}
+			/>
+			<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+				<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
+				<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden">
+					<p className="truncate flex-1 min-w-0 overflow-hidden text-ellipsis break-all">
+						{conv.message}
+					</p>
+					<span className="shrink-0 whitespace-nowrap ml-2">
+						- {formatRelativeDate(conv.lastDate)}
+					</span>
 					</div>
-				</div>
-			))}
-		</div>
+			</div>
+			</div>
+		))}
+		</div>	
 	)
 }
