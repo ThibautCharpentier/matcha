@@ -38,7 +38,7 @@ export default function ParametersButton({handleDeconnexion}) {
                     <span className="hidden lg:block">Plus</span>
                 </button>
                 {isMenuOpen && (
-                    <div ref={menuRef} className="absolute w-24 right-2 bottom-4 bg-white  border border-gray-200 rounded-md shadow-lg text-gray-500 flex flex-col justify-center items-center">
+                    <div ref={menuRef} className="absolute w-24 right-2 bottom-4 bg-white border border-gray-200 rounded-md shadow-lg text-gray-500 flex flex-col justify-center items-center">
                         <NavLink to={APP_ROUTES.PARAMETERS} className="rounded-full w-14 h-14 hover:bg-gray-200 flex justify-center items-center my-1 hover:text-pink-600"
                         onClick={() => setIsMenuOpen(false)}>
                         <svg  width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

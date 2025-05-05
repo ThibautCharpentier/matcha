@@ -3,6 +3,7 @@ import MatchButtons from "./MatchButtons";
 import MatchParameters from "./MatchParameters";
 import PicturesSlider from "../Profile/PicturesSlider";
 import UserProfile from "../Profile/UserProfile";
+import ReportButton from "../Profile/ReportButton";
 import MatchOverlays from "./MatchOverlays";
 import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
@@ -78,6 +79,15 @@ export default function Match() {
 										setMatchIndexState={setMatchIndexState}
 										isResearch={isResearch}
 									/>
+									<div className="absolute right-1 top-4">
+										<ReportButton
+											toggleProfile={toggleProfile}
+											switchToggleProfile={switchToggleProfile}
+											matchState={matchState}
+											matchIndexState={matchIndexState}
+											setMatchIndexState={setMatchIndexState}
+										/>
+									</div>
 								</>
 							:
 								<>

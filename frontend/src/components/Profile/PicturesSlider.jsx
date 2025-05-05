@@ -43,7 +43,7 @@ export default function PicturesSlider({userData, userIndex}) {
 			</Carousel>
 			<div className="absolute flex bottom-0 max-h-[80px] sm:h-[80px] w-full aspect-[5] bg-gray-800 bg-opacity-50 rounded-b-3xl text-white flex-col items-start justify-center px-6">
 				<div className="font-bold text-lg sm:text-xl">{data.firstname} {data.lastname}, {data.age} ans</div>
-				{data.distance && (
+				{data.distance != null && data.distance != undefined && (
 					<div className="text-base sm:text-lg">{data.city}, {data.distance} km</div>
 				)}
 			</div>
