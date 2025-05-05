@@ -81,15 +81,15 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			/>
 			<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
 				<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
-				<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden">
-					<p className="truncate flex-1 min-w-0 overflow-hidden text-ellipsis break-all">
-						{conv.message}
+				<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden max-w-full">
+					<p className="truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis">
+					{conv.lastMessage}
 					</p>
 					<span className="shrink-0 whitespace-nowrap ml-2">
-						- {formatRelativeDate(conv.lastDate)}
+					- {formatRelativeDate(conv.lastDate)}
 					</span>
-					</div>
-			</div>
+				</div>
+				</div>
 			</div>
 		))}
 		</div>	
