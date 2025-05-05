@@ -25,8 +25,8 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	};
 
 	const truncLastMessage = (message) => {
-		let truncMessage = message.slice(0, 10);
-		if (message.length > 10)
+		let truncMessage = message.slice(0, 40);
+		if (message.length > 40)
 			truncMessage = truncMessage + "...";
 		return truncMessage;
 	}
@@ -50,7 +50,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					picture_profil: contact.picture_profil,
 					pathPicture: API_URL + "/" + contact.picture_profil || null,
 					lastMessage: truncLastMessage(lastMessage.message),
-					message: lastMessage.message,
 					lastDate: new Date(lastMessage.created),
 				};
 			}).filter(Boolean); 
@@ -60,7 +59,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}, [conversations])
 
 	return (
-				<div className="overflow-y-auto">
+		<div className="overflow-y-auto">
 		{recentsConversations.map(conv => (
 			<div
 			key={conv.chatId}
@@ -74,21 +73,21 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			className={`flex items-center w-full px-2 py-3 cursor-pointer overflow-hidden
 				${conv.chatId === roomSelected?.room_id ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
 			>
-			<img
-				src={conv.pathPicture || profile}
-				className="w-14 h-14 rounded-full flex-shrink-0 mr-3"
-				style={{ userSelect: 'none' }}
-			/>
-			<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-				<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
-				<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden max-w-full">
-					<p className="truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis">
-					{conv.lastMessage}
-					</p>
-					<span className="shrink-0 whitespace-nowrap ml-2">
-					- {formatRelativeDate(conv.lastDate)}
-					</span>
-				</div>
+				<img
+					src={conv.pathPicture || profile}
+					className="w-14 h-14 rounded-full flex-shrink-0 mr-3"
+					style={{ userSelect: 'none' }}
+				/>
+				<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+					<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
+					<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden max-w-full">
+						<p className="truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis">
+							{conv.lastMessage}
+						</p>
+						<span className="shrink-0 whitespace-nowrap ml-2">
+						- {formatRelativeDate(conv.lastDate)}
+						</span>
+					</div>
 				</div>
 			</div>
 		))}
