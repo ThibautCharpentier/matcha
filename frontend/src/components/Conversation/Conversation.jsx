@@ -20,7 +20,9 @@ export default function Conversation() {
 					setRoomSelected={setRoomSelected}
 				/>
 				<ConversationMessage 
-					roomSelected={roomSelected}/>
+					roomSelected={roomSelected}
+					setRoomSelected={setRoomSelected}
+				/>
 			</div>
 		</div>
 	)

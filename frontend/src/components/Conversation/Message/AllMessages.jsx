@@ -73,7 +73,7 @@ export default function AllMessages({ roomId, roomSelected }) {
         <>
             <div
                 ref={messagesContainerRef}
-                className='flex flex-col overflow-y-auto h-full px-2 relative'
+                className='flex flex-col overflow-y-auto h-full px-2 pr-0 relative'
             >
                 {conversation.map((message, index) => {
                     const dateObj = new Date(message.created);

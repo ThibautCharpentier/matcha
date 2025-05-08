@@ -45,7 +45,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					chatId: conv.chatId,
 					contactId: contact.user_id,
 					firstname: contact.firstname,
-					lastanme: contact.lastname,
+					lastname: contact.lastname,
 					picture_profil: contact.picture_profil,
 					pathPicture: API_URL + "/" + contact.picture_profil || null,
 					lastMessage: truncLastMessage(lastMessage.message),
