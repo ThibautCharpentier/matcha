@@ -55,7 +55,10 @@ const deleteUser = async (id) => {
 const getAllReports = async () => {
 	const client = await pool.connect();
 	const res = await client.query(utils.getQueryAllReports())
-	return (res)
+	client.release();
+	if (res.rows.length == 0)
+		return [];
+	return (res.rows)
 }
 
 module.exports = { selectById, selectByEmail, changeCode, getReport, addReport, deleteReport, deleteUser, getAllReports };

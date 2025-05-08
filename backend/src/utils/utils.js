@@ -11,7 +11,7 @@ function calculateAge(birthdate) {
 
 function getQueryAllReports() {
 	const query = `
-		SELECT DISTINCT
+		SELECT
 			id,
 			firstname,
 			lastname,
@@ -33,9 +33,15 @@ function getQueryAllReports() {
 				SELECT count(public.report.target)::INTEGER
 				FROM public.report
 				WHERE public.report.target = public.users.id
-			) AS nb_report,
+			) AS nb_report
 		FROM
-			public.users`
+			public.users
+		WHERE
+			(
+				SELECT count(public.report.target)::INTEGER
+				FROM public.report
+				WHERE public.report.target = public.users.id
+			) > 0`
 	return (query)
 }
 

@@ -12,7 +12,7 @@ export default function SexualPreferencesStep({nextStep, infosUser}) {
         else if (e.target.innerHTML === "femme")
             infosUser.preferences = "women"
         else if (e.target.innerHTML === "tout le monde")
-            infosUser.preferences = "all"
+            infosUser.preferences = "bi"
         
         nextStep()
     }
@@ -37,7 +37,7 @@ export default function SexualPreferencesStep({nextStep, infosUser}) {
                 </ul>
             </div>
             <div className="flex justify-center mt-5">
-                <button className="btn text-sm hover:bg-slate-100 hover:text-black" onClick={handleClik}>tout le monde</button>
+                <button className="btn text-sm hover:bg-slate-100 hover:text-black" onClick={handleClik}>les deux</button>
             </div> 
             
         </>

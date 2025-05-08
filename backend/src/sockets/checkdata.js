@@ -30,7 +30,7 @@ const checkNewData = async (ws) => {
 				ws.data[item] = res_query[item];
 			}
 			else if (item == "pictures") {
-				if (res_query[item].length != ws.data[item].length) {
+				if (res_query[item]?.length != ws.data[item]?.length) {
 					new_data = true;
 					ws.data[item].length = 0
 					for (let i in res_query[item])
@@ -47,7 +47,7 @@ const checkNewData = async (ws) => {
 			}
 		}
 		res_query = await user.getNameInterestsById(ws.user_id);
-		if (res_query.length != ws.data["interest"].length) {
+		if (res_query?.length != ws.data["interest"]?.length) {
 			new_data = true;
 			ws.data["interest"].length = 0
 			for (let i in res_query)

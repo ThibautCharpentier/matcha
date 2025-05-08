@@ -41,6 +41,9 @@ export const API_ROUTES = {
 	GET_ALL_INTERESTS:          `${API_URL}/data/listinterests`,
 	ADMIN_AUTH_EMAIL:			`${API_URL}/admin/auth`,
 	ADMIN_AUTH_CODE:			`${API_URL}/admin/verification`,
+	GET_ALL_REPORTS:			`${API_URL}/admin/getallreports`,
+	DELETE_REPORT:				`${API_URL}/admin/deletereport`,
+	CONFIRM_REPORT:				`${API_URL}/admin/confirmreport`,
 };
 
 export const APP_ROUTES = {

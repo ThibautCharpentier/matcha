@@ -78,7 +78,6 @@ export default function MatchButtons({toggleProfile, switchToggleProfile, matchS
 				}}
                     className="relative w-16 h-6 sm:w-24 sm:h-8 bg-pink-600 rounded-full"
                 >
-                
                 <div
                     className={`absolute top-1 left-1 w-6 h-4 sm:w-10 sm:h-6 bg-white rounded-full shadow transition-transform duration-300 ${
                     toggleProfile ? "translate-x-0" : "translate-x-[calc(100%+0.5rem)]"

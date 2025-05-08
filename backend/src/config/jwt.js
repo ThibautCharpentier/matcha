@@ -17,10 +17,11 @@ const jwtrequired = () => (req, res, next) => {
 }
 
 const jwtadminrequired = () => (req, res, next) => {
-	if (!req.body?.adminToken)
+	const { adminToken } = req.query
+	if (!adminToken)
 		return res.status(401).json({ message: 'Token not found' });
 	try {
-		const decoded = jwt.verify(req.body.adminToken, process.env.ADMIN_SECRET_TOKEN_KEY);
+		const decoded = jwt.verify(adminToken, process.env.ADMIN_SECRET_TOKEN_KEY);
 		req.admin_id = decoded.id;
 	}
 	catch (err) {
