@@ -51,6 +51,7 @@ export default function SignUp() {
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
 
+			console.log(obj)
 			axios.post(API_ROUTES.SIGN_UP, obj, {
 				withCredentials: true,
 			})

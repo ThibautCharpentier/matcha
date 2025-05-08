@@ -5,7 +5,7 @@ import { APP_ROUTES, API_ROUTES } from "../../utils/constants"
 import ParametersButton from "./ParametersButton"
 import { useAuth } from "../AuthContext";
 
-const Navbar = ({ hasNewNotif }) => {
+const Navbar = ({ hasNewNotif, hasNewMessage }) => {
 	const navigate = useNavigate();
 	const { logout } = useAuth();
 
@@ -75,12 +75,16 @@ const Navbar = ({ hasNewNotif }) => {
 								className="sm:h-auto rounded-full sm:py-2.5 sm:px-4 sm:rounded-none w-14 h-14 sm:w-full hover:bg-gray-200  flex lg:py-2.5 lg:px-4 lg:w-full justify-center items-center lg:justify-start"
 								>
 								{({ isActive }) => (
-								<>    
-									<svg className={`sm:mr-2 lg:ml-4 group-hover:text-pink-600 ${isActive && 'text-pink-600'}`} width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<g id="SVGRepo_bgCarrier" strokeWidth="0"/>
-										<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
-										<g id="SVGRepo_iconCarrier"> <path d="M9 12C9 12.5523 8.55228 13 8 13C7.44772 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11C8.55228 11 9 11.4477 9 12Z" fill="currentColor"/> <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12Z" fill="currentColor"/> <path d="M17 12C17 12.5523 16.5523 13 16 13C15.4477 13 15 12.5523 15 12C15 11.4477 15.4477 11 16 11C16.5523 11 17 11.4477 17 12Z" fill="currentColor"/> <path fillRule="evenodd" clipRule="evenodd" d="M22.75 12C22.75 6.06294 17.9371 1.25 12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 13.7183 1.65371 15.3445 2.37213 16.7869C2.47933 17.0021 2.50208 17.2219 2.4526 17.4068L1.857 19.6328C1.44927 21.1566 2.84337 22.5507 4.3672 22.143L6.59324 21.5474C6.77814 21.4979 6.99791 21.5207 7.21315 21.6279C8.65553 22.3463 10.2817 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12ZM12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C10.5189 21.25 9.12121 20.9025 7.88191 20.2852C7.38451 20.0375 6.78973 19.9421 6.20553 20.0984L3.97949 20.694C3.57066 20.8034 3.19663 20.4293 3.30602 20.0205L3.90163 17.7945C4.05794 17.2103 3.96254 16.6155 3.7148 16.1181C3.09752 14.8788 2.75 13.4811 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75Z" fill="currentColor"/> </g>
-									</svg>
+								<>  
+									<div className="relative inline-block">
+										<svg className={`sm:mr-2 lg:ml-4 group-hover:text-pink-600 ${isActive && 'text-pink-600'}`} width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="SVGRepo_bgCarrier" strokeWidth="0"/>
+											<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
+											<g id="SVGRepo_iconCarrier"> <path d="M9 12C9 12.5523 8.55228 13 8 13C7.44772 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11C8.55228 11 9 11.4477 9 12Z" fill="currentColor"/> <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12Z" fill="currentColor"/> <path d="M17 12C17 12.5523 16.5523 13 16 13C15.4477 13 15 12.5523 15 12C15 11.4477 15.4477 11 16 11C16.5523 11 17 11.4477 17 12Z" fill="currentColor"/> <path fillRule="evenodd" clipRule="evenodd" d="M22.75 12C22.75 6.06294 17.9371 1.25 12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 13.7183 1.65371 15.3445 2.37213 16.7869C2.47933 17.0021 2.50208 17.2219 2.4526 17.4068L1.857 19.6328C1.44927 21.1566 2.84337 22.5507 4.3672 22.143L6.59324 21.5474C6.77814 21.4979 6.99791 21.5207 7.21315 21.6279C8.65553 22.3463 10.2817 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12ZM12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C10.5189 21.25 9.12121 20.9025 7.88191 20.2852C7.38451 20.0375 6.78973 19.9421 6.20553 20.0984L3.97949 20.694C3.57066 20.8034 3.19663 20.4293 3.30602 20.0205L3.90163 17.7945C4.05794 17.2103 3.96254 16.6155 3.7148 16.1181C3.09752 14.8788 2.75 13.4811 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75Z" fill="currentColor"/> </g>
+										</svg>
+										{hasNewMessage && <span className="absolute top-0 right-1 sm:right-3 w-2 h-2 bg-[--color-light-green] rounded-full"></span>
+										}
+									</div>	
 									<span className={`hidden lg:block ${isActive && 'text-gray-900'}`}>Messageries</span>
 									</>
 									)}  
@@ -99,7 +103,7 @@ const Navbar = ({ hasNewNotif }) => {
 											<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"/>
 											<g id="SVGRepo_iconCarrier"> <path fillRule="evenodd" clipRule="evenodd" d="M12 1.25C7.71983 1.25 4.25004 4.71979 4.25004 9V9.7041C4.25004 10.401 4.04375 11.0824 3.65717 11.6622L2.50856 13.3851C1.17547 15.3848 2.19318 18.1028 4.51177 18.7351C5.26738 18.9412 6.02937 19.1155 6.79578 19.2581L6.79768 19.2632C7.56667 21.3151 9.62198 22.75 12 22.75C14.378 22.75 16.4333 21.3151 17.2023 19.2632L17.2042 19.2581C17.9706 19.1155 18.7327 18.9412 19.4883 18.7351C21.8069 18.1028 22.8246 15.3848 21.4915 13.3851L20.3429 11.6622C19.9563 11.0824 19.75 10.401 19.75 9.7041V9C19.75 4.71979 16.2802 1.25 12 1.25ZM15.3764 19.537C13.1335 19.805 10.8664 19.8049 8.62349 19.5369C9.33444 20.5585 10.571 21.25 12 21.25C13.4289 21.25 14.6655 20.5585 15.3764 19.537ZM5.75004 9C5.75004 5.54822 8.54826 2.75 12 2.75C15.4518 2.75 18.25 5.54822 18.25 9V9.7041C18.25 10.6972 18.544 11.668 19.0948 12.4943L20.2434 14.2172C21.0086 15.3649 20.4245 16.925 19.0936 17.288C14.4494 18.5546 9.5507 18.5546 4.90644 17.288C3.57561 16.925 2.99147 15.3649 3.75664 14.2172L4.90524 12.4943C5.45609 11.668 5.75004 10.6972 5.75004 9.7041V9Z" fill="currentColor"/> </g>
 										</svg>
-										{hasNewNotif && <span className="absolute top-0 right-1 sm:right-3 w-2 h-2 bg-red-600 rounded-full"></span>
+										{hasNewNotif && <span className="absolute top-0 right-1 sm:right-3 w-2 h-2 bg-[--color-light-green] rounded-full"></span>
 										}
 									</div>
 										<span className={`hidden lg:block ${isActive && 'text-gray-900'}`}>Notifications</span>

@@ -32,14 +32,13 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}
 
 	useEffect(() => {
-		console.log("passe ici")
 		if (conversations.length > 0 && conversations.length === contacts.length) {
 
 			let newRecents = conversations.map((conv) => {
-				const lastMessage = conv.messages.at(-1);
+				const lastMessage = conv.messages.at(-1); 
 				const contactId = conv.user1 === idUser ? conv.user2 : conv.user1;
 				const contact = contacts.find(c => c.user_id === contactId);
-		
+			
 				if (!lastMessage || !contact) return null;
 			
 				return {
@@ -50,6 +49,8 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					picture_profil: contact.picture_profil,
 					pathPicture: API_URL + "/" + contact.picture_profil || null,
 					lastMessage: truncLastMessage(lastMessage.message),
+					lastMessageSender: lastMessage.sender,
+					viewMessage: lastMessage.view,
 					lastDate: new Date(lastMessage.created),
 				};
 			}).filter(Boolean); 
@@ -63,13 +64,23 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 		{recentsConversations.map(conv => (
 			<div
 			key={conv.chatId}
-			onClick={() => setRoomSelected({
-				room_id: conv.chatId,
-				contact_picture_profile: conv.picture_profil,
-				contact_firstname: conv.firstname,
-				contact_lastname: conv.lastname,
-				contact_id: conv.contactId
-			})}
+			onClick={() => {
+				setRoomSelected({
+					room_id: conv.chatId,
+					contact_picture_profile: conv.picture_profil,
+					contact_firstname: conv.firstname,
+					contact_lastname: conv.lastname,
+					contact_id: conv.contactId
+				});
+
+				setRecentsConversations(prev =>
+					prev.map(c =>
+						c.chatId === conv.chatId && c.lastMessageSender !== idUser
+							? { ...c, viewMessage: true }
+							: c
+					)
+				);
+			}}
 			className={`flex items-center w-full px-2 py-3 cursor-pointer overflow-hidden
 				${conv.chatId === roomSelected?.room_id ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
 			>
@@ -81,7 +92,9 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 				<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
 					<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
 					<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden max-w-full">
-						<p className="truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis">
+						<p className={`truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis ${conv.chatId != roomSelected?.room_id && !conv.viewMessage && conv.lastMessageSender != idUser && 'font-semibold text-black'}`}>
+							{conv.lastMessageSender === idUser &&
+							(<span>vous: </span>)}
 							{conv.lastMessage}
 						</p>
 						<span className="shrink-0 whitespace-nowrap ml-2">

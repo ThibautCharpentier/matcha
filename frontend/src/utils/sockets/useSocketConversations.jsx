@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { WS_URL } from '../constants';
 
-export const useSocketConversations = (isAuthenticated, setConversations) => {
+export const useSocketConversations = (isAuthenticated, setConversations, sethasMessage) => {
     const socketConversationsRef = useRef(null);
     const repeat = useRef();
     const [closeState, setCloseState] = useState(false);
@@ -19,7 +19,8 @@ export const useSocketConversations = (isAuthenticated, setConversations) => {
 
             socketConversationsRef.current.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-
+            
+                sethasMessage(true);
                 setConversations(res);
             }
 

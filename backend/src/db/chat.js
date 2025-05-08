@@ -74,11 +74,18 @@ const deleteChat = async (user1, user2) => {
 	client2.release();
 }
 
-const addMessageInChat = async (room_id, sender_id, receier_id, new_message) => {
+const addMessageInChat = async (room_id, sender_id, receiver_id, new_message) => {
 	const client = await pool.connect()
-	let values = [room_id, sender_id, receier_id, new_message]
+	let values = [room_id, sender_id, receiver_id, new_message]
 	const res = await client.query(`INSERT INTO public.message (chat, sender, receiver, message) VALUES ($1, $2, $3, $4)`, values)
 	client.release();
 }
 
-module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat, addMessageInChat }
+const allMessagesView = async (room_id, receiver_id) => {
+	const client = await pool.connect()
+	const res = await client.query(`UPDATE public.message SET view = true WHERE chat = $1 AND receiver = $2`,[room_id, receiver_id]
+	);
+	client.release();
+}
+
+module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat, addMessageInChat, allMessagesView }

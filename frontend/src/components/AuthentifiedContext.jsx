@@ -14,6 +14,7 @@ const AuthentifiedContext = createContext();
 export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
 	const [hasNewNotif, setHasNewNotif] = useState(false)
+	const [hasNewMessage, setHasNewMessage] = useState(true)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
 	const [notifs, setNotifs] = useState(null)
 	const [data, setData] = useState({
@@ -63,7 +64,7 @@ export default function AuthentifiedProvider({ children }) {
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 	useSocketContacts(isAuthenticated, setContacts)
-	useSocketConversations(isAuthenticated, setConversations)
+	useSocketConversations(isAuthenticated, setConversations, setHasNewMessage)
 
 	return (
 		<>
@@ -73,11 +74,12 @@ export default function AuthentifiedProvider({ children }) {
 					{isCompleteProfile ?
 						<Navbar 
 							hasNewNotif={hasNewNotif}
+							hasNewMessage={hasNewMessage}
 						/>
 					:
 						<header></header>
 					}
-					<AuthentifiedContext.Provider value={{data, notifs, conversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser}}>
+					<AuthentifiedContext.Provider value={{data, notifs, conversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser, hasNewMessage, setHasNewMessage}}>
 						<main className='w-full'>
 							{children}
 						</main>

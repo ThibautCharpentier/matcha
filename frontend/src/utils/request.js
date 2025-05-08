@@ -137,6 +137,33 @@ const Request = {
                 showErrorData();
             return {success: false}
         })
+    },
+    sendMessageView: async (room_id) => {
+        const obj = {
+            room_id: room_id,
+        }
+
+        return axios.patch(`${API_ROUTES.SEND_MESSAGE_VIEW}`, obj, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
+            else {
+                return {success: true}
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            else
+                showErrorData();
+            return {success: false}
+        })
     }
 }
 

@@ -44,6 +44,7 @@ export const API_ROUTES = {
 	GET_MATCHS:         		`${API_URL}/interaction/getmatchs`,
 	GET_RESEARCH:				`${API_URL}/interaction/getresearch`,
 	SEND_MESSAGE:			    `${API_URL}/interaction/sendmessage`,
+	SEND_MESSAGE_VIEW:			`${API_URL}/interaction/sendmessageview`,
 };
 
 export const APP_ROUTES = {

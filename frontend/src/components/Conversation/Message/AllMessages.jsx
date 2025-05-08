@@ -3,6 +3,8 @@ import { useAuthentified } from '../../AuthentifiedContext';
 import MessageReceived from './MessageReceived';
 import MessageSend from './MessageSend';
 import BackEndMessages from './BackEndMessages'
+import { API_URL } from '../../../utils/constants';
+import Request from '../../../utils/request';
 
 export default function AllMessages({ roomId, roomSelected }) {
     const [conversation, setConversation] = useState([]);
@@ -14,9 +16,6 @@ export default function AllMessages({ roomId, roomSelected }) {
     const [autoScroll, setAutoScroll] = useState(true);
     const [notifNewMessage, setNotifNewMessage] = useState(false);
     let lastDate = null;
-    
-    console.log(conversations)
-    console.log(roomSelected)
 
     const handleScroll = () => {
         const container = messagesContainerRef.current;
@@ -28,8 +27,7 @@ export default function AllMessages({ roomId, roomSelected }) {
     
     useEffect(() => {
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
-        console.log(convRoomId)
-        const lastMessage = convRoomId?.messages[convRoomId?.messages.length - 1] || null
+        const lastMessage = convRoomId?.messages[convRoomId?.messages.length - 1] || null;
 
         setConversation(convRoomId?.messages || []);
         if (oldRoomIdref.current === roomId)
@@ -44,6 +42,8 @@ export default function AllMessages({ roomId, roomSelected }) {
                 contact_picture_profile: roomSelected.contact_picture_profile
             })
         }
+
+        Request.sendMessageView(roomId);
     }, [roomId, conversations]);
 
 
@@ -91,10 +91,10 @@ export default function AllMessages({ roomId, roomSelected }) {
                             {showDate && (
                                 <p className="text-center text-gray-500 text-xs my-2">{messageDate}</p>
                             )}
-                            {message.sender === idUser ? (
-                                <MessageSend content={message.message} timestamp={message.created} />
-                            ) : (
+                            {message.sender != idUser ? (
                                 <MessageReceived content={message.message} timestamp={message.created} />
+                            ) : (
+                                <MessageSend content={message.message} timestamp={message.created} />
                             )}
                         </div>
                     );

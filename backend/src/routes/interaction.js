@@ -160,5 +160,18 @@ router.post('/sendmessage', jwtrequired(), validateDto(NewMessageDto), async (re
 	return res.status(200).json({message: 'OK'});
 });
 
+router.patch('/sendmessageview', jwtrequired(), async (req, res) => {
+	const { room_id } = req.body;
+
+	try {
+		await chat.allMessagesView(room_id, req.user_id)
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
 
 module.exports = router;
