@@ -178,7 +178,10 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	}
     if (res_query.gender == null || res_query.birthdate == null)
         return res.status(200).json({message: false});
-	return res.status(200).json({message: true});
+	return res.status(200).json({
+		message: true,
+		id_user: res_query.id
+	});
 });
 
 router.patch('/updateinterests', jwtrequired(), async(req, res) => {
@@ -191,7 +194,6 @@ router.patch('/updateinterests', jwtrequired(), async(req, res) => {
 		}
 		else {
 			idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
-			console.log(idInterests)
 			await user.removeInterestsNotInTab(req.user_id, idInterests);
 			await user.addAllUserInterests(req.user_id, idInterests);
 		}
@@ -205,10 +207,8 @@ router.patch('/updateinterests', jwtrequired(), async(req, res) => {
 
 router.patch('/updatebio', jwtrequired(), validateDto(UpdateBioDto), async(req, res) => {
 	const { bio } = req.body;
-	console.log(bio)
 	try {
 		await user.changeBio(req.user_id, bio);
-		console.log("test")
 	}
 	catch (err) {
 		console.log(err);
@@ -221,9 +221,6 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
     const files = req.files;
     const pictureRefs = JSON.parse(req.body.pictureRefs);
 	const modifyProfilePicture = pictureRefs[0] === null;
-
-    console.log("Fichiers uploadés :", files);
-    console.log("Références d'images ou null :", pictureRefs);
 
     const finalPictures = [];
     let fileIndex = 0;
@@ -240,11 +237,9 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
             finalPictures.push(pictureRefs[i]);
         }
     }
-	console.log("Tableau final des images :", finalPictures);
 
 	try {
         const res_query = await user.selectById(req.user_id);
-        console.log("Images actuelles dans la base de données :", res_query.pictures);
 
 		let imagesToDelete
 		if (res_query.pictures)
@@ -252,18 +247,12 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
 		else
 			imagesToDelete = []
 
-        console.log("Images à supprimer :", imagesToDelete);
-
         for (let imagePath of imagesToDelete) {
             const fs = require('fs');
             const pathToDelete = imagePath;
 
-            if (fs.existsSync(pathToDelete)) {
+            if (fs.existsSync(pathToDelete))
                 fs.unlinkSync(pathToDelete);
-                console.log(`Fichier supprimé : ${pathToDelete}`);
-            } else {
-                console.log(`Fichier non trouvé, suppression impossible : ${pathToDelete}`);
-            }
         }
 		if (modifyProfilePicture)
 			await user.addProfilPicture(req.user_id, finalPictures[0]);

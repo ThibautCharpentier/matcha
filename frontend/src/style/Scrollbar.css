@@ -1,19 +1,45 @@
 ::-webkit-scrollbar {
-    width: 10px;
+	width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+	background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
+	background: #888;
+	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+	background: #555;
 }
+
+.scroll-container {
+	overflow-y: auto;
+	scrollbar-width: thin; /* Pour Firefox */
+	scrollbar-color: transparent transparent; /* Barre invisible par défaut */
+	transition: scrollbar-color 0.2s ease;
+  }
+  
+  /* Pour Chrome, Edge, Safari */
+  .scroll-container::-webkit-scrollbar {
+	width: 6px;
+  }
+  
+  .scroll-container::-webkit-scrollbar-track {
+	background: transparent;
+  }
+  
+  .scroll-container::-webkit-scrollbar-thumb {
+	background-color: transparent;
+	border-radius: 10px;
+	transition: background-color 0.2s ease;
+  }
+  
+  .scroll-container:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(156, 163, 175, 0.8); /* gris-400 */
+  }

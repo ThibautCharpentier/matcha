@@ -4,10 +4,9 @@ import AgeStep from "./AgeStep"
 import HobbiesStep from "./HobbiesStep"
 import PicturesStep from "./PicturesStep"
 import React, { useState, useRef } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import { API_ROUTES, APP_ROUTES } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
+import { API_ROUTES } from "../../utils/constants";
 import axios from 'axios';
-import { useAuth } from "../AuthContext";
 import { useAuthentified } from "../AuthentifiedContext"
 
 export default function CompleteProfil() {
@@ -25,10 +24,6 @@ export default function CompleteProfil() {
 
     const nextStep = () => {
         setStep(prevStep => prevStep + 1);
-    };
-
-    const previousStep = () => {
-        setStep(prevStep => prevStep - 1);
     };
     
     const renderStep = () => {

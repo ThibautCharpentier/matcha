@@ -11,7 +11,7 @@ export default function SexualPreferencesStep({nextStep, infosUser}) {
             infosUser.preferences = "men"
         else if (e.target.innerHTML === "femme")
             infosUser.preferences = "women"
-        else if (e.target.innerHTML === "tout le monde")
+        else if (e.target.innerHTML === "les deux")
             infosUser.preferences = "bi"
         
         nextStep()

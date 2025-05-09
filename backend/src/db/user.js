@@ -188,9 +188,8 @@ const removeAllInterests = async (userId) => {
 }
 
 const removeInterestsNotInTab = async (userId, interestsId) => {
-	if (interestsId.length === 0) return;
-	console.log(interestsId)
-	
+	if (interestsId.length === 0)
+		return;
 	const client = await pool.connect();
 	const res = await client.query(`
 		DELETE FROM public.user_interest

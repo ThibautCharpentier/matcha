@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useAuth } from "./AuthContext";
 import Navbar from "./Navbar/Navbar"
 import axios from 'axios';
@@ -7,12 +7,14 @@ import { useSocketToken } from "../utils/sockets/useSocketToken";
 import { useSocketData } from "../utils/sockets/useSocketData";
 import { useSocketNotifs } from "../utils/sockets/useSocketNotifs";
 import { useSocketContacts } from "../utils/sockets/useSocketContacts";
+import { useSocketConversations } from "../utils/sockets/useSocketConversations"
 
 const AuthentifiedContext = createContext();
 
 export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
 	const [hasNewNotif, setHasNewNotif] = useState(false)
+	const [hasNewMessage, setHasNewMessage] = useState(true)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
 	const [notifs, setNotifs] = useState(null)
 	const [data, setData] = useState({
@@ -33,6 +35,9 @@ export default function AuthentifiedProvider({ children }) {
 		interest: []
 	})
 	const [contacts, setContacts] = useState([])
+	const [conversations, setConversations] = useState([]);
+	const [idUser, setIdUser] = useState(null);
+
 
     const profileComplete = () => {
         setIsCompleteProfile(true);
@@ -45,8 +50,10 @@ export default function AuthentifiedProvider({ children }) {
         .then((res) => {
             if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-            if (res.data.message == true)
+            if (res.data.message == true) {
+				setIdUser(res.data.id_user);
                 setIsCompleteProfile(true);
+			}
             else
                 setIsCompleteProfile(false);
         })
@@ -60,6 +67,7 @@ export default function AuthentifiedProvider({ children }) {
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 	useSocketContacts(isAuthenticated, setContacts)
+	useSocketConversations(isAuthenticated, setConversations, setHasNewMessage)
 
 	return (
 		<>
@@ -69,11 +77,12 @@ export default function AuthentifiedProvider({ children }) {
 					{isCompleteProfile ?
 						<Navbar 
 							hasNewNotif={hasNewNotif}
+							hasNewMessage={hasNewMessage}
 						/>
 					:
 						<header></header>
 					}
-					<AuthentifiedContext.Provider value={{data, notifs, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete}}>
+					<AuthentifiedContext.Provider value={{data, notifs, conversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser, hasNewMessage, setHasNewMessage}}>
 						<main className='w-full'>
 							{children}
 						</main>

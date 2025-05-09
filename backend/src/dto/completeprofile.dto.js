@@ -6,7 +6,7 @@ class CompleteProfileDto {
     @IsIn(['man', 'woman'])
 	gender;
 
-    @IsIn(['men', 'women', 'all'])
+    @IsIn(['men', 'women', 'bi'])
     preferences;
 
     @Type(() => Date)
