@@ -146,10 +146,7 @@ router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 
 router.post('/sendmessage', jwtrequired(), validateDto(NewMessageDto), async (req, res) => {
 	const { newMessage, receiver_id, room_id } = req.body;
-
-	console.log(newMessage)
-	console.log(room_id)
-	console.log(receiver_id)
+	
 	try {
 		await chat.addMessageInChat(room_id, req.user_id, receiver_id, newMessage)
 	}

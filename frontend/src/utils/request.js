@@ -30,7 +30,6 @@ const Request = {
             },
         })
         .then((res) => {
-            console.log(res.status);
             if (res.status != 200) {
                 const error = new Error('une erreur est survenue')
                 error.status = res.status;
