@@ -40,6 +40,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 				const contact = contacts.find(c => c.user_id === contactId);
 			
 				if (!lastMessage || !contact) return null;
+		
 			
 				return {
 					chatId: conv.chatId,

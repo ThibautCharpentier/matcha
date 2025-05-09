@@ -4,7 +4,7 @@ import ConversationResearch from "./ConversationResearch"
 import ConversationRecent from "./ConversationRecent"
 import ConversationContact from "./ConversationContact"
 
-export default function ConversationInterface({ contacts, roomSelected, setRoomSelected }) {
+export default function ConversationInterface({ contacts, roomSelected, setRoomSelected}) {
 	const [tagConv, setTagConv] = useState("récents");
 
 	return (

@@ -3,12 +3,11 @@ import { useAuthentified } from '../../AuthentifiedContext';
 import MessageReceived from './MessageReceived';
 import MessageSend from './MessageSend';
 import BackEndMessages from './BackEndMessages'
-import { API_URL } from '../../../utils/constants';
 import Request from '../../../utils/request';
 
-export default function AllMessages({ roomId, roomSelected }) {
+export default function AllMessages({ roomId, roomSelected}) {
     const [conversation, setConversation] = useState([]);
-    const { conversations, idUser } = useAuthentified();
+    const { conversations, setConversations, idUser } = useAuthentified();
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
     const hasScrolledToBottom = useRef(false);
@@ -24,6 +23,26 @@ export default function AllMessages({ roomId, roomSelected }) {
         const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
         setAutoScroll(isAtBottom);
     };
+
+    function markLastMessageAsViewed(conversations, targetChatId) {
+        return conversations.map(conv => {
+        if (conv.chatId !== targetChatId) return conv;
+
+        const messages = [...conv.messages];
+        if (messages.length > 0) {
+            const lastMessageIndex = messages.length - 1;
+            messages[lastMessageIndex] = {
+            ...messages[lastMessageIndex],
+            view: true,
+            };
+        }
+
+        return {
+            ...conv,
+            messages,
+        };
+        });
+    }
     
     useEffect(() => {
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
@@ -44,6 +63,13 @@ export default function AllMessages({ roomId, roomSelected }) {
         }
 
         Request.sendMessageView(roomId);
+
+        const updatedConversations = markLastMessageAsViewed(conversations, roomId);
+        const isDifferent = JSON.stringify(updatedConversations) !== JSON.stringify(conversations);
+        if (isDifferent) {
+            setConversations(updatedConversations);
+        }
+        
     }, [roomId, conversations]);
 
 

@@ -14,7 +14,7 @@ const AuthentifiedContext = createContext();
 export default function AuthentifiedProvider({ children }) {
 	const { isAuthenticated, logout } = useAuth();
 	const [hasNewNotif, setHasNewNotif] = useState(false)
-	const [hasNewMessage, setHasNewMessage] = useState(true)
+	const [hasNewMessage, setHasNewMessage] = useState(false)
     const [isCompleteProfile, setIsCompleteProfile] = useState(null);
 	const [notifs, setNotifs] = useState(null)
 	const [data, setData] = useState({
@@ -82,7 +82,7 @@ export default function AuthentifiedProvider({ children }) {
 					:
 						<header></header>
 					}
-					<AuthentifiedContext.Provider value={{data, notifs, conversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser, hasNewMessage, setHasNewMessage}}>
+					<AuthentifiedContext.Provider value={{data, notifs, conversations, setConversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser, hasNewMessage, setHasNewMessage}}>
 						<main className='w-full'>
 							{children}
 						</main>

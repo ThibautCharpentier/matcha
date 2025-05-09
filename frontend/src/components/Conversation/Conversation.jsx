@@ -5,7 +5,7 @@ import { useAuthentified } from "../AuthentifiedContext"
 
 export default function Conversation() {
 	const { contacts, setHasNewMessage } = useAuthentified();
-	const [roomSelected, setRoomSelected] = useState(null)
+	const [roomSelected, setRoomSelected] = useState(null);
 
 	useEffect(() => {
 		setHasNewMessage(false);
