@@ -26,9 +26,7 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
 
             socketConversationsRef.current.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-                console.log(res);
                 
-                console.log(!location.pathname.includes('/conversation'))
                 if (!locationRef.current.includes('/conversation')) {
                     const allLastMessagesNotViewed = res.every(conv => {
                         const lastMessage = conv.messages[conv.messages.length - 1];

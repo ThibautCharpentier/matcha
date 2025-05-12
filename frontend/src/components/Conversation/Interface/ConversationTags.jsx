@@ -1,7 +1,7 @@
 export default function ConversationTags({ tagConv, setTagConv }) {
 	return (
 		<>
-			<div className="mt-2 text-gray-500 flex flex-row">
+			<div className="mt-7 text-gray-500 flex flex-row">
 				<button onClick={() => {setTagConv("récents")}}  className={`w-1/2 ${tagConv != "récents" && `hover:text-gray-900`} pb-2`}>
 					{(tagConv == "récents" ?
 						<span className="text-gray-900">Récents</span>

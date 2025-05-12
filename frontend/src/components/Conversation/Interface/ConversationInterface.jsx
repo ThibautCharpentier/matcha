@@ -9,7 +9,9 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 
 	return (
 		<div className={`max-h-screen w-full sm:w-5/12 lg:w-1/4 flex flex-col ${roomSelected != null && "hidden sm:flex"}`}>
-			<ConversationResearch/>
+			<ConversationResearch 
+				setRoomSelected={setRoomSelected}
+			/>
 			<ConversationTags
 				tagConv={tagConv}
 				setTagConv={setTagConv}
