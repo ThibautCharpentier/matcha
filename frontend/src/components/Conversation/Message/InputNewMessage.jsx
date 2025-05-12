@@ -24,7 +24,7 @@ export default function InputNewMessage({roomSelected}) {
     return (
         <div className='bg-gray-200 p-3 rounded-md m-3 flex items-end mb-16 sm:mb-3'>
             <textarea
-                className='bg-gray-200 resize-none w-full outline-none overflow-hidden'
+                className='bg-gray-200 resize-none w-full outline-none overflow-hidden max-h-48 overflow-y-auto'
                 ref={textareaRef}
                 rows={1}
                 placeholder='Mon message...'

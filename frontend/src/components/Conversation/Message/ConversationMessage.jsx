@@ -10,11 +10,11 @@ export default function ConversationMessage({roomSelected, setRoomSelected}) {
 
 	return (
 		<>
-			<div className={`w-full border-gray-300 sm:border-l-[1px] sm:flex sm:flex-col justify-center h-screen sm:w-7/12 lg:w-3/4 text-center ${roomSelected === null ? 'hidden' : 'flex flex-col' }`}>
+			<div className={`w-full border-gray-300 sm:border-l-[1px] h-[100dvh] sm:flex sm:flex-col justify-center  sm:w-7/12 lg:w-3/4 text-center ${roomSelected === null ? 'hidden' : 'flex flex-col' }`}>
 				{roomSelected === null ? (
 					<div>Sélectionnez un contact pour afficher la conversation</div>
 				): (
-					<div className='h-screen flex flex-col justify-end'>
+					<div className='h-full flex flex-col justify-end'>
 						<div className='flex flex-row border-gray-300 border-b-[1px]'>
 							<svg 
 								onClick={() => {setRoomSelected(null)}}
