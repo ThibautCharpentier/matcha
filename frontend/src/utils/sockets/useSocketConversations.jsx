@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { WS_URL } from '../constants';
 
-export const useSocketConversations = (isAuthenticated, setConversations, sethasMessage) => {
+export const useSocketConversations = (isAuthenticated, setConversations, setHasNewMessage, idUser) => {
     const socketConversationsRef = useRef(null);
     const repeat = useRef();
     const [closeState, setCloseState] = useState(false);
+    const location = useLocation();
+    const locationRef = useRef(location.pathname);
+
+    useEffect(() => {
+        locationRef.current = location.pathname;
+    }, [location.pathname])
 
     useEffect(() => {
         if (isAuthenticated && socketConversationsRef.current == null) {
@@ -19,8 +26,19 @@ export const useSocketConversations = (isAuthenticated, setConversations, sethas
 
             socketConversationsRef.current.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-            
-                sethasMessage(true);
+                console.log(res);
+                
+                console.log(!location.pathname.includes('/conversation'))
+                if (!locationRef.current.includes('/conversation')) {
+                    const allLastMessagesNotViewed = res.every(conv => {
+                        const lastMessage = conv.messages[conv.messages.length - 1];
+                        if (lastMessage.sender === idUser)
+                            return false;
+                        return lastMessage.view === false;
+                    });
+                    if (allLastMessagesNotViewed)
+                        setHasNewMessage(true);
+                }
                 setConversations(res);
             }
 

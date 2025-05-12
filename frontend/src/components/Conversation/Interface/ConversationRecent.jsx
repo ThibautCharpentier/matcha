@@ -4,7 +4,7 @@ import { API_URL } from '../../../utils/constants';
 import { useAuthentified } from "../../AuthentifiedContext";
 
 export default function ConversationRecent({roomSelected, setRoomSelected}) {
-	const { conversations, contacts, idUser } = useAuthentified();
+	const { conversations, contacts, idUser, setHasNewMessage } = useAuthentified();
 	const [recentsConversations, setRecentsConversations] = useState([]);
 
 	const formatRelativeDate = (date) => {
@@ -57,6 +57,18 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			}).filter(Boolean); 
 			newRecents.sort((a, b) => b.lastDate - a.lastDate);
 			setRecentsConversations(newRecents);
+
+			const allLastMessagesNotViewed = newRecents.every(conv => {
+				if (conv.chatId === roomSelected?.room_id)
+					return false
+				else if (conv.lastMessageSender === idUser)
+					return false;
+				return conv.viewMessage === false
+			});
+			if (allLastMessagesNotViewed)
+				setHasNewMessage(true);
+			else
+				setHasNewMessage(false);
 		}
 	}, [conversations])
 

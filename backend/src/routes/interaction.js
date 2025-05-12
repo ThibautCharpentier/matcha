@@ -141,7 +141,7 @@ router.post('/like', jwtrequired(), validateDto(TargetDto), async (req, res) => 
 			if (res_query) {
 				await notif.addNotif(req.user_id, target, "match")
 				await notif.addNotif(target, req.user_id, "match")
-				if (!chat.getChat(req.user_id, target))
+				if (!(await chat.getChat(req.user_id, target)))
 					await chat.addChat(req.user_id, target)
 			}
 		}

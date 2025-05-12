@@ -3,6 +3,7 @@ const chat = require('../db/chat');
 const firstSelect = async (ws) => {
 	try {
 		let res_query = await chat.getChats(ws.user_id);
+		console.log(res_query)
 		if (!res_query)
 			ws.close(4001);
 		ws.chat = res_query

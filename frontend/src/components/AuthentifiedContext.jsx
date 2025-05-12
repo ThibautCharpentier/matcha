@@ -67,7 +67,7 @@ export default function AuthentifiedProvider({ children }) {
 	useSocketData(isAuthenticated, setData);
 	useSocketNotifs(isAuthenticated, setNotifs, setHasNewNotif);
 	useSocketContacts(isAuthenticated, setContacts)
-	useSocketConversations(isAuthenticated, setConversations, setHasNewMessage)
+	useSocketConversations(isAuthenticated, setConversations, setHasNewMessage, idUser)
 
 	return (
 		<>

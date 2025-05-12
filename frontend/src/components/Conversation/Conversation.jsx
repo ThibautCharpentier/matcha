@@ -7,10 +7,6 @@ export default function Conversation() {
 	const { contacts, setHasNewMessage } = useAuthentified();
 	const [roomSelected, setRoomSelected] = useState(null);
 
-	useEffect(() => {
-		setHasNewMessage(false);
-	})
-
 	return (
 		<div className="w-full h-screen bg-gray-50 border-gray-300 border-l-[1px]">
 			<div className="flex flex-row">
