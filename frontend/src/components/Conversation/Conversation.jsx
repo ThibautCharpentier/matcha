@@ -4,7 +4,7 @@ import ConversationMessage from "./Message/ConversationMessage"
 import { useAuthentified } from "../AuthentifiedContext"
 
 export default function Conversation() {
-	const { contacts, setHasNewMessage } = useAuthentified();
+	const { contacts } = useAuthentified();
 	const [roomSelected, setRoomSelected] = useState(null);
 
 	return (
