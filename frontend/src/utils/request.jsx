@@ -163,6 +163,84 @@ const Request = {
                 showErrorData();
             return {success: false}
         })
+    },
+    deleteMatch: async (id_contact) => {
+        const obj = {
+            contactId: id_contact,
+        }
+
+        return axios.patch(`${API_ROUTES.DISLIKE}`, obj, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
+            else {
+                showSuccess("Le match a été retiré.")
+                return {success: true}
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            return {success: false}
+        })
+    },
+    blockMatch: async (id_contact) => {
+        const obj = {
+            contactId: id_contact,
+        }
+
+        return axios.patch(`${API_ROUTES.BLOCK}`, obj, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
+            else {
+                showSuccess("Le profil a été bloqué.")
+                return {success: true}
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            return {success: false}
+        })
+    },
+    reportMatch: async (id_contact) => {
+        const obj = {
+            contactId: id_contact,
+        }
+
+        return axios.patch(`${API_ROUTES.REPORT}`, obj, {
+            withCredentials: true,
+        })
+        .then((res) => {
+            if (res.status != 200) {
+                const error = new Error('une erreur est survenue')
+                error.status = res.status;
+                throw error;
+            }
+            else {
+                showSuccess("Le profil a été signalé.")
+                return {success: true}
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            if (err.status === 500)
+                showErrorServer();
+            return {success: false}
+        })
     }
 }
 

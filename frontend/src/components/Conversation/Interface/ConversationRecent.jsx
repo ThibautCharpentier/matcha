@@ -35,7 +35,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 		if (conversations.length > 0 && conversations.length === contacts.length) {
 
 			let newRecents = conversations.map((conv) => {
-				const lastMessage = conv.messages.at(-1); 
+				const lastMessage = conv.messages?.at(-1); 
 				const contactId = conv.user1 === idUser ? conv.user2 : conv.user1;
 				const contact = contacts.find(c => c.user_id === contactId);
 			
