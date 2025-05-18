@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function ReportButton({toggleProfile, switchToggleProfile, matchState, matchIndexState, setMatchIndexState}) {
+export default function ReportButton({toggleProfile, switchToggleProfile, userData, userIndex, functionInterface}) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -18,7 +18,7 @@ export default function ReportButton({toggleProfile, switchToggleProfile, matchS
 
     function reportProfile() {
 		const obj = {
-			target: matchState[matchIndexState].id
+			target: userData[userIndex].id
 		}
 		axios.post(API_ROUTES.REPORT, obj, {
 			withCredentials: true,
@@ -29,7 +29,7 @@ export default function ReportButton({toggleProfile, switchToggleProfile, matchS
             setIsMenuOpen(false);
 			if (toggleProfile)
 				switchToggleProfile()
-			setMatchIndexState(matchIndexState + 1)
+			functionInterface()
 		})
 		.catch((err) => {
 			console.log(err)

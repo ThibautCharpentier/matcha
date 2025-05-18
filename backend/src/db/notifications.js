@@ -5,8 +5,10 @@ const getNotifications = async (id) => {
 	let query = `
 		SELECT
 			public.notification.id AS id,
+			public.users.id AS id_user,
 			public.users.firstname AS firstname,
 			public.users.lastname AS lastname,
+			public.users.picture_profile AS picture_profile,
 			action,
 			public.notification.verified AS verified,
 			created
@@ -17,6 +19,15 @@ const getNotifications = async (id) => {
 		WHERE
 			user_id = $1
 			AND created >= CURRENT_DATE - INTERVAL '1 month'
+			AND NOT EXISTS
+				(
+					SELECT 1
+					FROM public.interaction
+					WHERE
+						public.interaction.user_id = $1
+						AND public.interaction.target = public.notification.from_id
+						AND public.interaction.action IN ('block', 'unlike')
+				)
 		ORDER BY
 			created DESC
 		LIMIT 10`
@@ -27,6 +38,15 @@ const getNotifications = async (id) => {
 	return (res.rows)
 }
 
+const getNotification = async (from_id, user_id, action) => {
+	const client = await pool.connect()
+	const res = await client.query(`SELECT * FROM public.notification WHERE user_id = $1 AND from_id = $2 AND action = $3`, [user_id, from_id, action])
+	client.release();
+	if (res.rows.length == 0)
+		return (false)
+	return (true)
+}
+
 const addNotif = async (from_id, user_id, action) => {
 	const client = await pool.connect()
 	const res = await client.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND (action = 'block' OR action = 'unlike')`, [user_id, from_id])
@@ -34,7 +54,9 @@ const addNotif = async (from_id, user_id, action) => {
 	if (res.rows.length != 0)
 		return ;
 	const client2 = await pool.connect()
-	await client2.query(`INSERT INTO public.notification (user_id, from_id, action) VALUES ($1, $2, $3)`, [user_id, from_id, action]);
+	const notif = await getNotification(from_id, user_id, action)
+	if (!notif)
+		await client2.query(`INSERT INTO public.notification (user_id, from_id, action) VALUES ($1, $2, $3)`, [user_id, from_id, action]);
 	client2.release();
 }
 

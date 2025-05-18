@@ -109,7 +109,13 @@ router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) 
 		else if (!res_query && !res_query2 && !res_query3) {
 			res_query = await matchs.getDislikeOrUnlikeProfile(req.user_id, target);
 			if (!res_query) {
-				await matchs.addDislikeProfile(req.user_id, target);
+				res_query = await matchs.getLikeProfile(req.user_id, target)
+				if (!res_query)
+					await matchs.addDislikeProfile(req.user_id, target);
+				else {
+					await matchs.addUnlikeProfile(req.user_id, target);
+					await notif.addNotif(req.user_id, target, "unlike")
+				}
 				await user.changeFamerating(target)
 			}
 		}
@@ -152,8 +158,12 @@ router.post('/block', jwtrequired(), validateDto(TargetDto), async (req, res) =>
 	try {
 		const res_query = await matchs.getBlockProfile(req.user_id, target)
 		const res_query2 = await matchs.getBlockProfile(target, req.user_id)
-		if (!res_query && !res_query2)
+		if (!res_query && !res_query2) {
 			await matchs.addBlockProfile(req.user_id, target)
+			await user.changeFamerating(target)
+			if (!chat.getChat(req.user_id, target))
+				await chat.deleteChat(req.user_id, target)
+		}
 	}
 	catch (err) {
 		console.log(err);
@@ -182,6 +192,9 @@ router.post('/report', jwtrequired(), validateDto(TargetDto), async (req, res) =
 		if (!res_query) {
 			await admin.addReport(req.user_id, target)
 			await matchs.addBlockProfile(req.user_id, target)
+			await user.changeFamerating(target)
+			if (!chat.getChat(req.user_id, target))
+				await chat.deleteChat(req.user_id, target)
 		}
 	}
 	catch (err) {
@@ -202,6 +215,20 @@ router.patch('/sendmessageview', jwtrequired(), async (req, res) => {
 		return res.status(400).json({message: 'Invalid data'});
 	}
 	return res.status(200).json({message: 'OK'});
+})
+
+router.get('/getinteraction', jwtrequired(), async(req, res) => {
+	const { id_user } = req.query
+	let res_msg = null;
+	try {
+		const res_query = await matchs.getInteraction(req.user_id, id_user)
+		if (res_query)
+			res_msg = res_query.action
+	}
+	catch (err) {
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_msg});
 })
 
 module.exports = router;

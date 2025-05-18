@@ -137,7 +137,7 @@ const Request = {
             return {success: false}
         })
     },
-    sendMessageView: async (room_id) => {
+    sendMessageView : async (room_id) => {
         const obj = {
             room_id: room_id,
         }

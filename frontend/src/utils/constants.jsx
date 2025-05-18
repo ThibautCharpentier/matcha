@@ -34,6 +34,7 @@ export const API_ROUTES = {
 	BLOCK:                		`${API_URL}/interaction/block`,
 	VIEW:                 		`${API_URL}/interaction/view`,
 	REPORT:               		`${API_URL}/interaction/report`,
+	GET_INTERACTION:			`${API_URL}/interaction/getinteraction`,
 	GET_MY_CONVERSATIONS: 		`${API_URL}/interaction/getmyconversations`,
 	GET_MESSAGES:         		`${API_URL}/interaction/getmessages`,
 	GET_MATCHS:         		`${API_URL}/interaction/getmatchs`,

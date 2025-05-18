@@ -1,13 +1,13 @@
 import { useState } from "react";
-import PicturesSlider from "../Profile/PicturesSlider";
-import ToggleProfile from "../Profile/ToggleProfile";
+import PicturesSlider from "../../Profile/PicturesSlider";
+import ToggleProfile from "../../Profile/ToggleProfile";
 import ModifyProfile from "./ModifyProfile";
-import ModalHobbies from "../CompleteProfil/ModalHobbies";
+import ModalHobbies from "../../CompleteProfil/ModalHobbies";
 import ModalPhotos from "./ModalPhotos";
-import Request from "../../utils/request";
-import { useAuthentified } from "../AuthentifiedContext";
+import Request from "../../../utils/request";
+import { useAuthentified } from "../../AuthentifiedContext";
 
-export default function MyProfil() {
+export default function MyProfile() {
 	const { data } = useAuthentified()
 	const [toggleProfile, setToggleProfile] = useState(true);
 	const [isModalHobbiesOpen, setIsModalHobbiesOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function MyProfil() {
 				/>
 			}
 			{data.firstname != "" && data.lastname != "" && data.age != null && data.famerating != null &&
-				<div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-50 flex flex-col rounded-3xl">
+				<div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
 					<ToggleProfile toggleProfile={toggleProfile} switchToggleProfile={switchToggleProfile} />
 					{toggleProfile ? (
 						<ModifyProfile myData={data} setIsModalHobbiesOpen={setIsModalHobbiesOpen} setIsModalPhotosOpen={setIsModalPhotosOpen}/>

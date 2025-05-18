@@ -38,7 +38,7 @@ const checkNewData = async (ws) => {
 				}
 				else {
 					for (let i in res_query[item]) {
-						if (ws.data[item][i] != res_query[item][i]) {
+						if (ws.data[item] && ws.data[item][i] != res_query[item][i]) {
 							new_data = true;
 							ws.data[item][i] = res_query[item][i];
 						}
@@ -55,7 +55,7 @@ const checkNewData = async (ws) => {
 		}
 		else {
 			for (let i in res_query) {
-				if (ws.data["interest"][i] != res_query[i]) {
+				if (ws.data["interest"] && ws.data["interest"][i] != res_query[i]) {
 					new_data = true;
 					ws.data["interest"][i] = res_query[i];
 				}

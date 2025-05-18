@@ -42,7 +42,7 @@ export default function UserProfile({userData, userIndex}) {
 						/>
 					}
 					<div className="flex flex-col items-start justify-center text-white text-sm">
-						<div>{userData[userIndex].firstname} {userData[userIndex].lastname}</div>
+						<div className="max-w-[80%] sm:max-w-[100%]">{userData[userIndex].firstname} {userData[userIndex].lastname}</div>
 						<div>{userData[userIndex].age} ans</div>
 						<div>{userData[userIndex].city}</div>
 						<div className="flex space-x-1 flex-row mt-3">

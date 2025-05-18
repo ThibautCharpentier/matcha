@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputPicture from "../CompleteProfil/InputPicture";
+import InputPicture from "../../CompleteProfil/InputPicture";
 
 export default function ModalPhotos({ isOpen, onClose, onSave, photos, picture_profile }) {
 	const [croppedImages, setCroppedImages] = useState([picture_profile || null, photos?.[0] || null, photos?.[1] || null, photos?.[2] || null, photos?.[3] || null, photos?.[4] || null]);

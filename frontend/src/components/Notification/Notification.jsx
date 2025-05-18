@@ -5,10 +5,13 @@ import { useAuthentified } from "../AuthentifiedContext"
 import axios from 'axios';
 import { API_ROUTES } from '../../utils/constants';
 import ClipLoader from "react-spinners/ClipLoader";
+import ModalUserProfile from "../Profile/ModalUserProfile";
 
 export default function Notification() {
 	const { notifs, hasNewNotif, setHasNewNotif } = useAuthentified();
 	const [filterNotif, setFilterNotif] = useState("tout");
+	const [isModalProfileUserOpen, setIsModalProfileUserOpen] = useState(false);
+	const [dataUser, setDataUser] = useState(null)
 
 	useEffect(() => {
 		if (hasNewNotif) {
@@ -26,6 +29,21 @@ export default function Notification() {
 		}
 	}, [hasNewNotif]);
 
+	const getProfileUser = async(id_user) => {
+		axios.get(`${API_ROUTES.GET_PROFILE_USER}?id_user=${id_user}`, {
+			withCredentials: true,
+		})
+		.then((res) => {
+			if (res.status != 200)
+				throw new Error('Une erreur est survenue');
+			setDataUser(res.data.message)
+			setIsModalProfileUserOpen(true)
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
+
 	return (
 		<>
 			<div className="w-full">
@@ -38,6 +56,7 @@ export default function Notification() {
 						<NotificationDisplay
 							filterNotif={filterNotif}
 							notifs={notifs}
+							getProfileUser={getProfileUser}
 						/>
 					:
 						<div className="mt-6">
@@ -48,6 +67,12 @@ export default function Notification() {
 						</div>
 					}
 				</div>
+				{isModalProfileUserOpen && <ModalUserProfile
+					isModalProfileUserOpen={isModalProfileUserOpen}
+					setIsModalProfileUserOpen={setIsModalProfileUserOpen}
+					dataUser={dataUser}
+					setDataUser={setDataUser}
+				/>}
 			</div>
 		</>
 	)

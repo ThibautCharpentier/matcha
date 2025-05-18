@@ -264,4 +264,17 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
     return res.status(200).json({message: 'OK'});
 });
 
+router.get('/getprofileuser', jwtrequired(), async(req, res) => {
+	const { id_user } = req.query
+	let res_query;
+	try {
+		let res_user = await user.selectById(req.user_id);
+		res_query = await user.getProfileUser(id_user, res_user.latitude, res_user.longitude);
+	}
+	catch (err) {
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+})
+
 module.exports = router;

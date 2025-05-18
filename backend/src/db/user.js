@@ -213,4 +213,42 @@ const addAllUserInterests = async (userId, interestsId) => {
 	client.release();
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests };
+const getProfileUser = async (id, latitude, longitude) => {
+	const client = await pool.connect();
+	const res = await client.query(`
+		SELECT
+			id,
+			firstname,
+			lastname,
+			status,
+			last_connection,
+			bio,
+            picture_profile,
+            pictures,
+			EXTRACT(YEAR FROM AGE(birthdate)) AS age,
+			famerating,
+			city,
+			(
+				SELECT ARRAY_AGG(public.interest.name)
+				FROM public.user_interest
+				JOIN public.interest ON public.user_interest.interest = public.interest.id
+				WHERE public.user_interest.user_id = public.users.id
+			) AS tags,
+			(
+				ROUND(6371 * acos(
+					sin(radians($2)) * sin(radians(latitude)) +
+					cos(radians($2)) * cos(radians(latitude)) *
+					cos(radians(longitude) - radians($3))
+				))
+			) AS distance
+		FROM
+			public.users
+		WHERE
+			id = $1`, [id, latitude, longitude]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows;
+}
+
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser };

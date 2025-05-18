@@ -1,8 +1,8 @@
-import { API_URL} from "../../utils/constants";
+import { API_URL} from "../../../utils/constants";
 import { useState, useEffect } from "react";
-import Request from "../../utils/request";
+import Request from "../../../utils/request";
 
-import profile from '../../assets/images/img_profile.png';
+import profile from '../../../assets/images/img_profile.png';
 
 export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModalPhotosOpen}) {
     const pathPicture = myData.picture_profile || "";

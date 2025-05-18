@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
-import axios from 'axios';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { APP_ROUTES, API_ROUTES } from "../../utils/constants"
-import { useAuth } from "../AuthContext";
-import MyProfil from './MyProfil';
+import React from 'react';
+import MyProfile from './Profile/MyProfile';
 
 export default function Dashboard() {
     return (
-        <div className='w-full flex justify-center align-center items-center'>
-            <MyProfil/>
+        <div className='w-full flex flex-col justify-center align-center items-center'>
+            <MyProfile/>
         </div>
     )
 }

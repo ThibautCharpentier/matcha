@@ -83,9 +83,9 @@ export default function Match() {
 										<ReportButton
 											toggleProfile={toggleProfile}
 											switchToggleProfile={switchToggleProfile}
-											matchState={matchState}
-											matchIndexState={matchIndexState}
-											setMatchIndexState={setMatchIndexState}
+											userData={matchState}
+											userIndex={matchIndexState}
+											functionInterface={() => setMatchIndexState(matchIndexState + 1)}
 										/>
 									</div>
 								</>
