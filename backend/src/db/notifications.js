@@ -26,7 +26,7 @@ const getNotifications = async (id) => {
 					WHERE
 						public.interaction.user_id = $1
 						AND public.interaction.target = public.notification.from_id
-						AND public.interaction.action IN ('block', 'unlike')
+						AND public.interaction.action = 'block'
 				)
 		ORDER BY
 			created DESC

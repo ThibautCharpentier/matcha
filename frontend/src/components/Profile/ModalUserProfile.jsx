@@ -67,7 +67,6 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
 	}
 
     useEffect(() => {
-        console.log(reload)
 		axios.get(`${API_ROUTES.GET_INTERACTION}?id_user=${dataUser[0].id}`, {
 			withCredentials: true,
 		})

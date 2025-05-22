@@ -29,10 +29,12 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
                 
                 if (!locationRef.current.includes('/conversation')) {
                     const allLastMessagesNotViewed = res.every(conv => {
-                        const lastMessage = conv.messages[conv.messages.length - 1];
-                        if (lastMessage.sender === idUser)
-                            return false;
-                        return lastMessage.view === false;
+                        if (conv?.messages?.length) {
+                            const lastMessage = conv.messages[conv.messages.length - 1];
+                            if (lastMessage.sender === idUser)
+                                return false;
+                            return lastMessage.view === false;
+                        }
                     });
                     if (allLastMessagesNotViewed && event.data != "[]")
                         setHasNewMessage(true);
