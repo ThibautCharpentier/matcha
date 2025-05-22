@@ -8,8 +8,7 @@ import Request from "../../../utils/request"
 
 export default function BtnDislikeBlockReport({roomSelected, setRoomSelected}) {
     const [activateDots, setActivateDots] = useState(false);
-
-    console.log(roomSelected)
+    
     const handleDislikeBtn = () => {
         Request.deleteMatch(roomSelected.contact_id);
     }
