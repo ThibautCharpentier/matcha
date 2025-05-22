@@ -5,12 +5,14 @@ import PicturesSlider from "./PicturesSlider";
 import UserProfile from "./UserProfile";
 import ReportButton from "./ReportButton";
 import ClipLoader from "react-spinners/ClipLoader";
+import BtnUnlikeBlockReport from "../ActionWithUser/BtnUnlikeBlockReport";
 
 export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProfileUserOpen, dataUser, setDataUser}) {
     const [toggleProfile, setToggleProfile] = useState(false);
     const [isLikeState, setIsLikeState] = useState(null)
     const [reload, setReload] = useState(true)
 
+    console.log(dataUser[0])
     const switchToggleProfile = () => {
 		setToggleProfile((prevState) => !prevState);
 	}
@@ -146,7 +148,14 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                         userIndex={0}
                                     />
                                     <div className="absolute right-1 top-4">
-                                        <ReportButton
+                                    <BtnUnlikeBlockReport 
+                                        idContact={dataUser[0].id}
+                                        functionDeleteContact={() => {
+                                                setIsModalProfileUserOpen(false)
+                                                setDataUser(null)
+                                            }}
+                                    />
+                                        {/* <ReportButton
                                             toggleProfile={toggleProfile}
                                             switchToggleProfile={switchToggleProfile}
                                             userData={dataUser}
@@ -155,7 +164,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                                 setIsModalProfileUserOpen(false)
                                                 setDataUser(null)
                                             }}
-                                        />
+                                        /> */}
                                     </div>
                                 </>
                             :

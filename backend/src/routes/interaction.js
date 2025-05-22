@@ -102,7 +102,7 @@ router.post('/dislike', jwtrequired(), validateDto(TargetDto), async (req, res) 
 		if (res_query && !res_query2 && !res_query3) {
 			await matchs.addUnlikeProfile(req.user_id, target);
 			await notif.addNotif(req.user_id, target, "unlike")
-			if (!chat.getChat(req.user_id, target))
+			if (await chat.getChat(req.user_id, target))
 				await chat.deleteChat(req.user_id, target)
 			await user.changeFamerating(target)
 		}
@@ -161,7 +161,7 @@ router.post('/block', jwtrequired(), validateDto(TargetDto), async (req, res) =>
 		if (!res_query && !res_query2) {
 			await matchs.addBlockProfile(req.user_id, target)
 			await user.changeFamerating(target)
-			if (!chat.getChat(req.user_id, target))
+			if (await chat.getChat(req.user_id, target))
 				await chat.deleteChat(req.user_id, target)
 		}
 	}
@@ -193,7 +193,7 @@ router.post('/report', jwtrequired(), validateDto(TargetDto), async (req, res) =
 			await admin.addReport(req.user_id, target)
 			await matchs.addBlockProfile(req.user_id, target)
 			await user.changeFamerating(target)
-			if (!chat.getChat(req.user_id, target))
+			if (await chat.getChat(req.user_id, target))
 				await chat.deleteChat(req.user_id, target)
 		}
 	}

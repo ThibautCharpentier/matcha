@@ -4,10 +4,11 @@ import profile from '../../../assets/images/img_profile.png';
 import { API_URL } from '../../../utils/constants';
 import InputNewMessage from './InputNewMessage';
 import BackEndMessages from './BackEndMessages';
-import BtnDislikeBlockReport from './BtnDislikeBlockReport';
+import BtnUnlikeBlockReport from '../../ActionWithUser/BtnUnlikeBlockReport';
 
 export default function ConversationMessage({roomSelected, setRoomSelected}) {
 	const pathPicture = API_URL + "/" + roomSelected?.contact_picture_profile;
+	console.log(roomSelected)
 	
 
 	return (
@@ -28,9 +29,13 @@ export default function ConversationMessage({roomSelected, setRoomSelected}) {
 								<p className='self-center '>{roomSelected.contact_firstname} {roomSelected.contact_lastname}</p>
 							</div>
 							<div className='flex items-center mr-2 '>
-								<BtnDislikeBlockReport 
+								<BtnUnlikeBlockReport 
 									roomSelected={roomSelected}
 									setRoomSelected={setRoomSelected}
+									idContact={roomSelected.contact_id}
+									functionDeleteContact={() => {
+										setRoomSelected(null)
+									}}
 								/>
 							</div>
 						</div>	

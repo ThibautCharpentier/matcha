@@ -41,9 +41,11 @@ const checkNewConversations = async (ws) => {
         let res_query = await chat.getAllChatsAndMessagesByUserId(ws.user_id);
         if (!res_query)
             ws.close(4001);
-        if (res_query?.length != ws.chat?.length) {
-            ws.chat = res_query
-            const groupedMessages = groupedMessagesbyIdChat(ws.chat);
+        console.log(res_query?.length)
+        console.log(ws.conversations?.length)
+        if (res_query?.length != ws.conversations?.length) {
+            ws.conversations = res_query;
+            const groupedMessages = groupedMessagesbyIdChat(ws.conversations);
             ws.send(JSON.stringify(groupedMessages));
         }
     }
