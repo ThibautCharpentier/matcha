@@ -32,7 +32,10 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}
 
 	useEffect(() => {
-		if (conversations.length > 0 && conversations.length === contacts.length) {
+		if (conversations.length > 0) {
+			// && conversations.length === contacts.length)
+			console.log("use effect conv recent")
+			console.log(conversations);
 
 			let newRecents = conversations.map((conv) => {
 				const lastMessage = conv.messages?.at(-1); 
@@ -48,7 +51,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					firstname: contact.firstname,
 					lastname: contact.lastname,
 					picture_profil: contact.picture_profil,
-					pathPicture: API_URL + "/" + contact.picture_profil || null,
+					pathPicture: contact.picture_profil || null,
 					lastMessage: truncLastMessage(lastMessage.message),
 					lastMessageSender: lastMessage.sender,
 					viewMessage: lastMessage.view,
@@ -69,6 +72,9 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 				setHasNewMessage(true);
 			else
 				setHasNewMessage(false);
+		}
+		else {
+			setRecentsConversations([]);
 		}
 	}, [conversations])
 
@@ -98,7 +104,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 				${conv.chatId === roomSelected?.room_id ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
 			>
 				<img
-					src={conv.pathPicture || profile}
+					src={conv.pathPicture ? API_URL + "/" + conv.pathPicture : profile}
 					className="w-14 h-14 rounded-full flex-shrink-0 mr-3"
 					style={{ userSelect: 'none' }}
 				/>

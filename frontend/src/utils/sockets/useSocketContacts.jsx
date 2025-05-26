@@ -19,7 +19,9 @@ export const useSocketContacts = (isAuthenticated, setContacts) => {
 
 			socketContactsRef.current.onmessage = (event) => {
 				let res = JSON.parse(event.data);
-				setContacts((prevContacts) => [...prevContacts, ...res])
+				console.log("socket contact")
+				console.log(res);
+				setContacts(res)
 			}
 
 			socketContactsRef.current.onclose = (event) => {
