@@ -9,6 +9,7 @@ import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import ClipLoader from "react-spinners/ClipLoader";
+import BtnReport from "../ActionWithUser/BtnReport";
 
 export default function Match() {
 	const [isSidebarSortAndFilterOpen, setSidebarSortAndFilterOpen] = useState(false);
@@ -80,12 +81,13 @@ export default function Match() {
 										isResearch={isResearch}
 									/>
 									<div className="absolute right-1 top-4">
-										<ReportButton
-											toggleProfile={toggleProfile}
-											switchToggleProfile={switchToggleProfile}
-											userData={matchState}
-											userIndex={matchIndexState}
-											functionInterface={() => setMatchIndexState(matchIndexState + 1)}
+										<BtnReport
+											idContact={matchState[matchIndexState].id}
+											functionDeleteContact={() => {
+                                                switchToggleProfile();
+                                                setMatchIndexState(matchIndexState + 1);
+											}}
+											color="#ffff"
 										/>
 									</div>
 								</>

@@ -8,8 +8,6 @@ import BtnUnlikeBlockReport from '../../ActionWithUser/BtnUnlikeBlockReport';
 
 export default function ConversationMessage({roomSelected, setRoomSelected}) {
 	const pathPicture = API_URL + "/" + roomSelected?.contact_picture_profile;
-	console.log(roomSelected)
-	
 
 	return (
 		<>
@@ -30,12 +28,11 @@ export default function ConversationMessage({roomSelected, setRoomSelected}) {
 							</div>
 							<div className='flex items-center mr-2 '>
 								<BtnUnlikeBlockReport 
-									roomSelected={roomSelected}
-									setRoomSelected={setRoomSelected}
 									idContact={roomSelected.contact_id}
 									functionDeleteContact={() => {
 										setRoomSelected(null)
 									}}
+									color="#000000"
 								/>
 							</div>
 						</div>	

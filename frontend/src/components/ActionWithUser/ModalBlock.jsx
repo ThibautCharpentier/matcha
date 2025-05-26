@@ -4,12 +4,12 @@ import Request from "../../utils/request"
 export default function ModalBlock({ isModalBlockOpen, setIsModalBlockOpen, idContact, functionDeleteContact, setActivateDots }) {
 
     const handleContinueButton = async () => {
-        console.log("handleBtn")
         const res = await Request.blockMatch(idContact);
-        console.log(res);
-        setIsModalBlockOpen(false);
-        setActivateDots(false);
-        functionDeleteContact();
+        if (res.success) {
+            setIsModalBlockOpen(false);
+            setActivateDots(false);
+            functionDeleteContact();
+        }
     }
 
     return (

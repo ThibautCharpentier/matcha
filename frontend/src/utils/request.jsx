@@ -166,7 +166,7 @@ const Request = {
     },
     unlikeMatch: async (id_contact) => {
         const obj = {
-            contactId: id_contact,
+            target: id_contact,
         }
 
         return axios.post(`${API_ROUTES.DISLIKE}`, obj, {
@@ -218,9 +218,9 @@ const Request = {
     },
     reportMatch: async (id_contact) => {
         const obj = {
-            contactId: id_contact,
+            target: id_contact,
         }
-
+    
         return axios.post(`${API_ROUTES.REPORT}`, obj, {
             withCredentials: true,
         })
