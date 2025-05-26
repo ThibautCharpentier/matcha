@@ -277,4 +277,15 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	return res.status(200).json({message: res_query});
 })
 
+router.get('/getrecentsviews', jwtrequired(), async(req, res) => {
+	let res_query;
+	try {
+		res_query = await user.getRecentsViews(req.user_id);
+	}
+	catch (err) {
+		return res.status(400).json({message: err});
+	}
+	return res.status(200).json({message: res_query});
+})
+
 module.exports = router;

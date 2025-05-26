@@ -6,6 +6,7 @@ import ModalHobbies from "../../CompleteProfil/ModalHobbies";
 import ModalPhotos from "./ModalPhotos";
 import Request from "../../../utils/request";
 import { useAuthentified } from "../../AuthentifiedContext";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function MyProfile() {
 	const { data } = useAuthentified()
@@ -31,7 +32,7 @@ export default function MyProfile() {
 
 	return (
 		
-		<div className="flex flex-col">
+		<div className="flex flex-col mt-6">
 			{isModalHobbiesOpen &&
 				<ModalHobbies
 					isOpen={isModalHobbiesOpen}
@@ -49,7 +50,7 @@ export default function MyProfile() {
 					picture_profile={data.picture_profile}
 				/>
 			}
-			{data.firstname != "" && data.lastname != "" && data.age != null && data.famerating != null &&
+			{(data.firstname != "" && data.lastname != "" && data.age != null && data.famerating != null) ?
 				<div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
 					<ToggleProfile toggleProfile={toggleProfile} switchToggleProfile={switchToggleProfile} />
 					{toggleProfile ? (
@@ -57,6 +58,13 @@ export default function MyProfile() {
 					) : (
 						<PicturesSlider userData={data} userIndex={null} />
 					)}
+				</div>
+			:
+				<div className="w-screen max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] flex justify-center items-center">
+					<ClipLoader
+						color="#fff"
+						size={70}
+					/>
 				</div>
 			}
 		</div>

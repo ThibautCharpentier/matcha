@@ -251,4 +251,36 @@ const getProfileUser = async (id, latitude, longitude) => {
 	return res.rows;
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser };
+const getRecentsViews = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`
+		SELECT
+			public.users.id AS id_user,
+			public.users.picture_profile AS picture_profile,
+			created
+		FROM
+			public.view
+		JOIN
+			public.users ON public.view.target = public.users.id
+		WHERE
+			user_id = $1
+			AND created >= CURRENT_DATE - INTERVAL '1 month'
+			AND NOT EXISTS
+				(
+					SELECT 1
+					FROM public.interaction
+					WHERE
+						public.interaction.user_id = $1
+						AND public.interaction.target = public.view.target
+						AND public.interaction.action = 'block'
+				)
+		ORDER BY
+			created DESC
+		LIMIT 10`, [id])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows;
+}
+
+module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser, getRecentsViews };

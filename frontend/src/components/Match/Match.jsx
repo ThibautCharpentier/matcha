@@ -55,67 +55,69 @@ export default function Match() {
 
 	return (
 		<>
-			{matchState != null ?
-				<div className="w-full sm:p-2 mb-[4em] sm:mb-0">
-					<div className="flex flex-col items-center w-full">
-						<MatchParameters 
-							openSidebarSortAndFilter={openSidebarSortAndFilter}
-							openSidebarResearch={openSidebarResearch}
-						/>
-						{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
-						{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
-						{(matchState && matchState[matchIndexState] && <div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
-							{(toggleProfile ?
-								<>
-									<UserProfile
-										userData={matchState}
-										userIndex={matchIndexState}
-									/>
-									<MatchButtons
-										toggleProfile={toggleProfile}
-										switchToggleProfile={switchToggleProfile}
-										matchState={matchState}
-										matchIndexState={matchIndexState}
-										setMatchIndexState={setMatchIndexState}
-										isResearch={isResearch}
-									/>
-									<div className="absolute right-1 top-4">
-										<ReportButton
-											toggleProfile={toggleProfile}
-											switchToggleProfile={switchToggleProfile}
-											userData={matchState}
-											userIndex={matchIndexState}
-											functionInterface={() => setMatchIndexState(matchIndexState + 1)}
-										/>
-									</div>
-								</>
-							:
-								<>
-									<PicturesSlider
-										userData={matchState}
-										userIndex={matchIndexState}
-									/>
-									<MatchButtons
-										toggleProfile={toggleProfile}
-										switchToggleProfile={switchToggleProfile}
-										matchState={matchState}
-										matchIndexState={matchIndexState}
-										setMatchIndexState={setMatchIndexState}
-										isResearch={isResearch}
-									/>
-								</>
-							)}
-						</div>)}
-					</div>
-				</div>
-			:
-				<div className="w-full h-screen flex justify-center items-center">
-					<ClipLoader
-						color="#fff"
-						size={70}
+			<div className="w-full sm:p-2 mb-[4em] sm:mb-0">
+				<div className="flex flex-col items-center w-full">
+					<MatchParameters 
+						openSidebarSortAndFilter={openSidebarSortAndFilter}
+						openSidebarResearch={openSidebarResearch}
 					/>
+					{matchState != null ?
+							<>
+								{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
+								{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
+								{(matchState && matchState[matchIndexState] && <div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
+									{(toggleProfile ?
+										<>
+											<UserProfile
+												userData={matchState}
+												userIndex={matchIndexState}
+											/>
+											<MatchButtons
+												toggleProfile={toggleProfile}
+												switchToggleProfile={switchToggleProfile}
+												matchState={matchState}
+												matchIndexState={matchIndexState}
+												setMatchIndexState={setMatchIndexState}
+												isResearch={isResearch}
+											/>
+											<div className="absolute right-1 top-4">
+												<ReportButton
+													toggleProfile={toggleProfile}
+													switchToggleProfile={switchToggleProfile}
+													userData={matchState}
+													userIndex={matchIndexState}
+													functionInterface={() => setMatchIndexState(matchIndexState + 1)}
+												/>
+											</div>
+										</>
+									:
+										<>
+											<PicturesSlider
+												userData={matchState}
+												userIndex={matchIndexState}
+											/>
+											<MatchButtons
+												toggleProfile={toggleProfile}
+												switchToggleProfile={switchToggleProfile}
+												matchState={matchState}
+												matchIndexState={matchIndexState}
+												setMatchIndexState={setMatchIndexState}
+												isResearch={isResearch}
+											/>
+										</>
+									)}
+								</div>)}
+							</>
+					:
+						<div className="w-screen max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] flex justify-center items-center">
+							<ClipLoader
+								color="#fff"
+								size={70}
+							/>
+						</div>
+					}
 				</div>
-			}
+			</div>
 			<MatchOverlays
 				isSidebarSortAndFilterOpen={isSidebarSortAndFilterOpen}
 				isSidebarResearchOpen={isSidebarResearchOpen}

@@ -77,7 +77,6 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                 setIsLikeState("like")
             else
                 setIsLikeState("unlike")
-
 		})
 		.catch((err) => {
 			console.log(err);

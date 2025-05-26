@@ -28,6 +28,7 @@ export const API_ROUTES = {
 	UPDATE_LOCATION:			`${API_URL}/profile/updatelocation`,
 	GET_GPS:					`${API_URL}/profile/getgps`,
     GET_PROFILE_USER:           `${API_URL}/profile/getprofileuser`,
+	GET_RECENTS_VIEWS:			`${API_URL}/profile/getrecentsviews`,
 	NOTIF_VERIFIED:				`${API_URL}/profile/notifverified`,
 	LIKE:                 		`${API_URL}/interaction/like`,
 	DISLIKE:              		`${API_URL}/interaction/dislike`,
