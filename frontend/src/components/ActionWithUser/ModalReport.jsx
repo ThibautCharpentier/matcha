@@ -22,14 +22,14 @@ export default function ModalReport({ isModalReportOpen, setIsModalReportOpen, i
                 <p>Êtes-vous sûr de vouloir signaler cet utilisateur pour faux profil ? Cet utilisateur sera bloqué.</p>
                 <div className="flex flex-row justify-center items-center mt-4">
                     <button
-                        onClick={() => setIsModalReportOpen(false)}
-                        className="mr-2 px-4 py-2 bg-gray-300 text-white rounded"
+                        onClick={() => setIsModalBlockOpen(false)}
+                        className="mr-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-white rounded"
                     >
                         Annuler
                     </button>
                     <button
                         onClick={handleContinueButton}
-                        className="ml-2 px-4 py-2 bg-pink-300 text-white rounded">
+                        className="ml-2 px-4 py-2 bg-pink-300 hover:bg-pink-400 text-white rounded">
                         Continuer
                     </button>
                 </div>

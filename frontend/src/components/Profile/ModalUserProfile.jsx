@@ -99,16 +99,8 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                 />
             :
                 <>
-                    {dataUser?.[0] && <div className="relative w-full max-w-[400px] max-h-[650px] aspect-[40/65] sm:w-[400px] sm:h-[650px] bg-gray-200 flex flex-col rounded-3xl shadow-lg overflow-hidden">
-                        <div className="flex w-full justify-end items-center max-h-[40px] aspect-[10] sm:h-[40px]">
-                            <div className="flex mx-4">
-                                <svg style={{cursor: 'pointer'}} onClick={() => {
-                                    setDataUser(null)
-                                    setIsModalProfileUserOpen(false)
-                                }} fill="#374151" width="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z" fillRule="evenodd"></path> </g></svg>
-                            </div>
-                        </div>
-                        <div className="w-full rounded-3xl max-h-[60px] aspect-[20/3] sm:h-[60px] justify-center flex items-center">
+                    {dataUser?.[0] && <div className="relative w-full max-w-[400px] max-h-[650px]  sm:w-[400px] sm:h-[650px] bg-gray-200 flex flex-col rounded-3xl shadow-lg overflow-hidden">
+                        <div className="w-full rounded-3xl max-h-[60px] aspect-[20/3]  justify-center flex items-center">
                             <div className="text-gray-500 flex flex-row items-center justify-between sm:w-[60%]">
                                 <span className={`${toggleProfile && "text-gray-900"} pr-3`}>Profil</span>
                                 <button onClick={() => {
@@ -126,6 +118,12 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                 ></div>
                                 </button>
                                 <span className={`${!toggleProfile && "text-gray-900"} pl-3`}>Photos</span>
+                            </div>
+                            <div className="absolute right-0 flex mx-4">
+                                <svg style={{cursor: 'pointer'}} onClick={() => {
+                                    setDataUser(null)
+                                    setIsModalProfileUserOpen(false)
+                                }} fill="#374151" width="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z" fillRule="evenodd"></path> </g></svg>
                             </div>
                         </div>
                         <div className="relative w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-200 flex flex-col rounded-3xl">
