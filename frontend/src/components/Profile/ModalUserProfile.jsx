@@ -74,7 +74,6 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-            console.log(res.data.message);
             if (res.data.message === null)
                 setIsLikeState("nothing")
             else
@@ -110,7 +109,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                     else
                                         switchToggleProfile()
                                 }}
-                                    className="relative w-24 h-8 bg-pink-600 rounded-full"
+                                    className="relative w-24 h-8 bg-[--color-light-pink] rounded-full"
                                 >
                                 <div
                                     className={`absolute top-1 left-1 w-10 h-6 bg-white rounded-full shadow transition-transform duration-300 ${

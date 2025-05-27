@@ -5,7 +5,7 @@ export default function ToggleProfile({toggleProfile, switchToggleProfile}) {
             <div className="text-gray-500 flex flex-row items-center justify-between sm:w-[60%]">
                 <span className={`${toggleProfile && "text-gray-900"} pr-3`}>Profil</span>
                 <button onClick={switchToggleProfile}
-                    className="relative w-24 h-8 bg-pink-600 rounded-full"
+                    className="relative w-24 h-8 bg-[--color-light-pink] rounded-full"
                 >
                 
                 <div

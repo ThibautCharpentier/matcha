@@ -19,17 +19,17 @@ export default function Layout({ children }) {
 					children={children}
 				/>
 				<ToastContainer
+					toastClassName={(context) =>
+						contextClass[context?.type || "default"] +
+						" relative flex p-6 max-w-72 min-h-20 rounded-md justify-between items-center overflow-hidden cursor-pointer"
+					}
 					position="top-right"
-					// autoClose={5000}
+					autoClose={5000}
 					hideProgressBar={false}
 					closeOnClick
 					pauseOnHover
 					draggable
 					theme="colored"
-					toastClassName={(context) =>
-						contextClass[context?.type || "default"] +
-						" relative flex p-3 max-w-72 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
-					}
 				/>
 			</>
 			:

@@ -179,7 +179,7 @@ const Request = {
                 throw error;
             }
             else {
-                showSuccess("Le match a été retiré.")
+                showSuccess("Le like a été retiré.")
                 return {success: true}
             }
         })

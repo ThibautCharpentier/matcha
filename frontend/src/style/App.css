@@ -42,6 +42,14 @@
   --color-dark-green: #b5d8ad;
 }
 
+.pastellightpink {
+	color: var(--color-pastelpink);
+}
+
+.lightpink {
+	color: var(--color-light-pink);
+}
+
 * {
 	font-family: PoppinsRegular;
 }
