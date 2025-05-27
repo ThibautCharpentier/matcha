@@ -35,7 +35,7 @@
 
 :root {
   --color-pastelpink: #F1B5CB;
-  --color-pink:  #d81159;
+  --color-pink:  #d83470;
   --color-light-pink:  #ec80a8;
   --color-lightiest-pink:  #f3c5d6;
   --color-light-green: #bde2b6;
@@ -185,33 +185,33 @@
 } */
 
 .strike {
-    display: block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap; 
+	display: block;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap; 
 }
 
 .strike > span {
-    position: relative;
-    display: inline-block;
+	position: relative;
+	display: inline-block;
 }
 
 .strike > span:before,
 .strike > span:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 9999px;
-    height: 1px;
-    background: rgb(0, 0, 0);
+	content: "";
+	position: absolute;
+	top: 50%;
+	width: 9999px;
+	height: 1px;
+	background: rgb(0, 0, 0);
 }
 
 .strike > span:before {
-    right: 100%;
-    margin-right: 15px;
+	right: 100%;
+	margin-right: 15px;
 }
 
 .strike > span:after {
-    left: 100%;
-    margin-left: 15px;
+	left: 100%;
+	margin-left: 15px;
 }
