@@ -20,7 +20,7 @@ export default function ModalUnlike({ setIsLikeState, isModalUnlikeOpen, setIsMo
                 onClick={() => setIsModalUnlikeOpen(false)}
             ></div>
             <div className="relative bg-white w-3/4 max-w-96 p-6 z-10 rounded-xl shadow-md">
-                <p>Êtes-vous sûr de vouloir de retirer le match ? Cette action est irréversible.</p>
+                <p className='text-center'>Êtes-vous sûr de vouloir de retirer le match ? Cette action est irréversible.</p>
                 <div className="flex flex-row justify-center items-center mt-4">
                     <button
                         onClick={() => setIsModalBlockOpen(false)}

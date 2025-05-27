@@ -19,7 +19,7 @@ export default function ModalReport({ isModalReportOpen, setIsModalReportOpen, i
                 onClick={() => setIsModalReportOpen(false)}
             ></div>
             <div className="relative bg-white w-3/4 max-w-96 p-6 z-10 rounded-xl shadow-md">
-                <p>Êtes-vous sûr de vouloir signaler cet utilisateur pour faux profil ? Cet utilisateur sera bloqué.</p>
+                <p className='text-center'>Êtes-vous sûr de vouloir signaler cet utilisateur pour faux profil ? Cet utilisateur sera bloqué.</p>
                 <div className="flex flex-row justify-center items-center mt-4">
                     <button
                         onClick={() => setIsModalBlockOpen(false)}

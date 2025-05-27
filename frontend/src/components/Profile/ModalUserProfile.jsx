@@ -74,10 +74,11 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
 		.then((res) => {
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-            if (res.data.message == "like")
-                setIsLikeState("like")
+            console.log(res.data.message);
+            if (res.data.message === null)
+                setIsLikeState("nothing")
             else
-                setIsLikeState("unlike")
+                setIsLikeState(res.data.message); // like, unlike, dislike
 
 		})
 		.catch((err) => {
@@ -99,7 +100,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                 />
             :
                 <>
-                    {dataUser?.[0] && <div className="relative w-full max-w-[400px] max-h-[650px]  sm:w-[400px] sm:h-[650px] bg-gray-200 flex flex-col rounded-3xl shadow-lg overflow-hidden">
+                    {dataUser?.[0] && <div className="relative w-full max-w-[400px] bg-gray-200 flex flex-col rounded-3xl shadow-lg overflow-hidden">
                         <div className="w-full rounded-3xl max-h-[60px] aspect-[20/3]  justify-center flex items-center">
                             <div className="text-gray-500 flex flex-row items-center justify-between sm:w-[60%]">
                                 <span className={`${toggleProfile && "text-gray-900"} pr-3`}>Profil</span>
