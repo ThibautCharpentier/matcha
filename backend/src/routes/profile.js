@@ -8,6 +8,7 @@ const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
+const { TargetDto } = require('../dto/target.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const user = require('../db/user');
 const interests = require('../db/interests');
@@ -286,6 +287,18 @@ router.get('/getrecentsviews', jwtrequired(), async(req, res) => {
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});
+})
+
+router.post('/removenotif', jwtrequired(), validateDto(TargetDto), async(req, res) => {
+	const { target } = req.body;
+	try {
+		await notif.deleteNotif(target);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
 })
 
 module.exports = router;

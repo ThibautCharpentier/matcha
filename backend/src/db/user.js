@@ -270,9 +270,9 @@ const getRecentsViews = async (id) => {
 					SELECT 1
 					FROM public.interaction
 					WHERE
-						public.interaction.user_id = $1
-						AND public.interaction.target = public.view.target
-						AND public.interaction.action = 'block'
+						(public.interaction.user_id = $1 AND public.interaction.target = public.view.target AND public.interaction.action = 'block')
+						OR
+						(public.interaction.user_id = public.view.target AND public.interaction.target = $1 AND public.interaction.action = 'block')
 				)
 		ORDER BY
 			created DESC

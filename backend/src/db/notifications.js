@@ -24,13 +24,12 @@ const getNotifications = async (id) => {
 					SELECT 1
 					FROM public.interaction
 					WHERE
-						public.interaction.user_id = $1
-						AND public.interaction.target = public.notification.from_id
-						AND public.interaction.action = 'block'
+						(public.interaction.user_id = $1 AND public.interaction.target = public.notification.from_id AND public.interaction.action = 'block')
+						OR
+						(public.interaction.user_id = public.notification.from_id AND public.interaction.target = $1 AND public.interaction.action = 'block')
 				)
 		ORDER BY
-			created DESC
-		LIMIT 10`
+			created DESC`
 	const res = await client.query(query, [id]);
 	client.release();
 	if (res.rows.length == 0)
@@ -66,4 +65,15 @@ const verifiedNotifs = async (id) => {
 	client.release();
 }
 
-module.exports = { getNotifications, addNotif, verifiedNotifs }
+const deleteNotif = async (id) => {
+	const client = await pool.connect();
+	await client.query(`DELETE FROM public.notification WHERE id = $1`, [id]);
+	client.release();
+}
+
+const deleteAllNotifs = async (user_id, from_id) => {
+	const client = await pool.connect()
+	await client.query(`DELETE FROM public.notification WHERE user_id = $1 AND from_id = $2`, [user_id, from_id])
+}
+
+module.exports = { getNotifications, addNotif, verifiedNotifs, deleteNotif, deleteAllNotifs }

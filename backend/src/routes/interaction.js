@@ -161,6 +161,8 @@ router.post('/block', jwtrequired(), validateDto(TargetDto), async (req, res) =>
 		if (!res_query && !res_query2) {
 			await matchs.addBlockProfile(req.user_id, target)
 			await user.changeFamerating(target)
+			await notif.deleteAllNotifs(req.user_id, target)
+			await notif.deleteAllNotifs(target, req.user_id)
 			if (!chat.getChat(req.user_id, target))
 				await chat.deleteChat(req.user_id, target)
 		}
@@ -193,6 +195,8 @@ router.post('/report', jwtrequired(), validateDto(TargetDto), async (req, res) =
 			await admin.addReport(req.user_id, target)
 			await matchs.addBlockProfile(req.user_id, target)
 			await user.changeFamerating(target)
+			await notif.deleteAllNotifs(req.user_id, target)
+			await notif.deleteAllNotifs(target, req.user_id)
 			if (!chat.getChat(req.user_id, target))
 				await chat.deleteChat(req.user_id, target)
 		}

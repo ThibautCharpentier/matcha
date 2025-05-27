@@ -31,7 +31,7 @@ export default function MyRecentsViews({ getProfileUser }) {
 			<span className='w-full sm:w-[80vw] lg:w-[75vw] font-poppins-medium mb-2 pl-2 text-xl'>Profils vus récemment</span>
 			{hasFetched ?
 				<>
-					{listProfiles && listProfiles.length > 1 ?
+					{listProfiles && listProfiles.length > 0 ?
 						<div className="w-full sm:w-[80vw] lg:w-[75vw]">
 							<AliceCarousel
 								mouseTracking

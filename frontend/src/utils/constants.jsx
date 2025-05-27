@@ -30,6 +30,7 @@ export const API_ROUTES = {
     GET_PROFILE_USER:           `${API_URL}/profile/getprofileuser`,
 	GET_RECENTS_VIEWS:			`${API_URL}/profile/getrecentsviews`,
 	NOTIF_VERIFIED:				`${API_URL}/profile/notifverified`,
+	REMOVE_NOTIF:				`${API_URL}/profile/removenotif`,
 	LIKE:                 		`${API_URL}/interaction/like`,
 	DISLIKE:              		`${API_URL}/interaction/dislike`,
 	BLOCK:                		`${API_URL}/interaction/block`,
