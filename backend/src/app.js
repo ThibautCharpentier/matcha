@@ -78,7 +78,7 @@ websocket.on('connection', async (ws, req) => {
 		const res_query = await user.selectById(ws.user_id);
 		if (!res_query)
 			ws.close(4001);
-		if (res_query.status == 'offline')
+		if (res_query && res_query.status == 'offline')
 			await user.connect(ws.user_id, true);
 	}
 	catch (err) {
@@ -94,7 +94,7 @@ websocket.on('connection', async (ws, req) => {
 			return ;
 		try {
 			const res_query = await user.selectById(ws.user_id);
-			if (res_query.status == 'online')
+			if (res_query && res_query.status == 'online')
 				await user.connect(ws.user_id, false);
 		}
 		catch (err) {
