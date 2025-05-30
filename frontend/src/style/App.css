@@ -112,8 +112,8 @@
 }
 
 .btn-secondary {
-	background-color: #d81159;
-	border: 0 solid #e2e8f0;
+	background-color: #ec80a8;
+	border: 0 solid #ec80a8;
 	border-radius: 1.5rem;
 	box-sizing: border-box;
 	color: #fff;
@@ -135,8 +135,8 @@
 }
 
 .btn-secondary:hover {
-	background-color: #fff;
-	color: #1f1f1f;
+	background-color: #e76e9b;
+	color: #fff;
 }
 
 .btn-match {
