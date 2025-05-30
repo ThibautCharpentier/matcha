@@ -41,7 +41,7 @@ export default function Parameters() {
 	return (
 		<>
 			{(data.username !== "" && data.email !== "" && data.preferences !== "") ? (
-				<div className="w-full min-h-[100dvh] flex flex-col justify-center mb-[4em] sm:mb-0 bg-gray-50 border-gray-300 border-l-[1px]">
+				<div className="w-full min-h-[100dvh] h-full flex flex-col justify-center mb-[4em] sm:mb-0 bg-gray-50 border-gray-300 border-l-[1px]">
 					<div className="flex lg:flex-row flex-col p-2 w-full text-gray-600 ">
 						<div className="flex flex-col lg:w-1/2 p-4 items-start">
 							<h2 className="text-xl mb-2 text-black">Informations personnelles</h2>
@@ -68,20 +68,20 @@ export default function Parameters() {
 						</div>
 						<div className="flex flex-col lg:w-1/2 p-4 items-start border-gray-300 lg:border-l-[1px]">
 							<h2 className="text-xl mb-2 text-black">Paramètres du compte</h2>
-							<div className="mb-4 w-3/4">
+							<div className="mb-4 md:w-3/4 w-full">
 								<UsernameForm data={data} setChangeSettings={setChangeSettings} />
 							</div>
-							<div className="mb-4 w-3/4">
+							<div className="mb-4 md:w-3/4 w-full">
 								<EmailForm data={data} setChangeSettings={setChangeSettings} />
 							</div>
-							<div className="w-3/4">
+							<div className="md:w-3/4  w-full">
 								<PasswordForm setChangeSettings={setChangeSettings} />
 							</div>
 						</div>
 	
 					</div>
 							<button 
-								className="btn-secondary mt-8 self-center"
+								className="btn-secondary mt-8 mb-8 self-center"
 								onClick={handleSave}>
 									Sauvegarder
 							</button>
