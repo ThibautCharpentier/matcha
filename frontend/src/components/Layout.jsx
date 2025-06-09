@@ -5,6 +5,12 @@ import { ToastContainer } from 'react-toastify';
 export default function Layout({ children }) {
 	const { isAuthenticated } = useAuth();
 
+	const contextClass = {
+		success: "bg-[--color-dark-green]",
+		error: "bg-[--color-pink]",
+		default: "bg-[--color-dark-green]",
+	};
+
 	return (
 		<>
 			{isAuthenticated ?
@@ -13,6 +19,10 @@ export default function Layout({ children }) {
 					children={children}
 				/>
 				<ToastContainer
+					toastClassName={(context) =>
+						contextClass[context?.type || "default"] +
+						" relative flex p-6 max-w-72 min-h-20 rounded-md justify-between items-center overflow-hidden cursor-pointer"
+					}
 					position="top-right"
 					autoClose={5000}
 					hideProgressBar={false}
@@ -21,7 +31,7 @@ export default function Layout({ children }) {
 					draggable
 					theme="colored"
 				/>
-			</>	
+			</>
 			:
 			<>
 				<header></header>

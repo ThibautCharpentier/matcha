@@ -84,8 +84,8 @@ export default function CompleteProfil() {
             <div className="absolute top-0 w-full">
                 <div className="bg-gray-300 h-1">
                     <div
-                        className="bg-[--color-pink] h-1 rounded-full transition-all duration-500 ease-in-out"  // Ajout de la transition
-                        style={{ width: `${((step - 1) / 5) * 100}%` }}  // Dynamiser la largeur en fonction de la progression
+                        className="bg-[--color-pink] h-1 rounded-full transition-all duration-500 ease-in-out"
+                        style={{ width: `${((step - 1) / 5) * 100}%` }}
                     >
                     </div>
                 </div>

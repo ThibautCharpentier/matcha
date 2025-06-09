@@ -96,7 +96,7 @@ export default function LocationForm({ data }) {
 					/>
 					<LocationMarker position={position} setPosition={setPosition} setVerified={setVerified}/>
 				</MapContainer>
-				{verified ? 
+				{/* {verified ? 
 					<button className="btn mt-3 flex self-center justify-center items-center bg-[--color-pink] w-80 h-12 p-2" disabled>
 						<svg height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
 							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -119,7 +119,7 @@ export default function LocationForm({ data }) {
 							</button>
 						}
 					</>
-				}
+				} */}
 				{errState != "" && (
 				<p className=" text-red-600 text-sm text-center">{errState}</p>
 				)}

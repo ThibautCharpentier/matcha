@@ -18,13 +18,11 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
             const imageUrl = reader.result?.toString() || "";
             imageElement.src = imageUrl;
 
-            // Gestion des erreurs de chargement de l'image
             imageElement.addEventListener("error", () => {
                 setError("An error occurred while loading the image.");
                 setImgSrc("");
             });
     
-            // Vérification des dimensions une fois l'image chargée
             imageElement.addEventListener("load", (e) => {
                 const { naturalWidth, naturalHeight } = e.currentTarget;
                 if (!naturalWidth || !naturalHeight) {
@@ -42,7 +40,6 @@ export default function InputSelectPicture({onAddCroppedImage, onRemoveImage, in
             });
         });
 
-        // Gestion des erreurs de lecture du fichier
         reader.addEventListener("error", () => {
             setError("An error occurred while reading the file.");
         });

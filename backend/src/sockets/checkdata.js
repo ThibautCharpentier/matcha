@@ -30,11 +30,9 @@ const checkNewData = async (ws) => {
 				ws.data[item] = res_query[item];
 			}
 			else if (item == "pictures") {
-				if (ws.data[item] && res_query[item] && res_query[item].length != ws.data[item].length) {
+				if (!ws.data[item] || (ws.data[item] && res_query[item] && res_query[item].length != ws.data[item].length)) {
 					new_data = true;
-					ws.data[item].length = 0
-					for (let i in res_query[item])
-						ws.data[item][i] = res_query[item][i];
+					ws.data[item] = res_query[item]
 				}
 				else {
 					for (let i in res_query[item]) {

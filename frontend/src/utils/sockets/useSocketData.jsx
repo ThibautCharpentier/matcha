@@ -23,6 +23,7 @@ export const useSocketData = (isAuthenticated, setData) => {
 					username: res.username,
 					firstname: res.firstname,
 					lastname: res.lastname,
+					gender: res.gender,
 					age: res.age,
 					email: res.email,
 					preferences: res.preferences,

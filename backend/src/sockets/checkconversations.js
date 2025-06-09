@@ -6,6 +6,8 @@ const firstSelect = async (ws) => {
         if (!res_query)
             ws.close(4001);
         ws.conversations = res_query
+        const groupedMessages = groupedMessagesbyIdChat(ws.conversations);
+        ws.send(JSON.stringify(groupedMessages));
     }
     catch (err) {
         console.log(err);
@@ -41,9 +43,9 @@ const checkNewConversations = async (ws) => {
         let res_query = await chat.getAllChatsAndMessagesByUserId(ws.user_id);
         if (!res_query)
             ws.close(4001);
-        if (res_query?.length != ws.chat?.length) {
-            ws.chat = res_query
-            const groupedMessages = groupedMessagesbyIdChat(ws.chat);
+        if (res_query.length != ws.conversations?.length) {
+            ws.conversations = res_query;
+            const groupedMessages = groupedMessagesbyIdChat(ws.conversations);
             ws.send(JSON.stringify(groupedMessages));
         }
     }
@@ -57,7 +59,6 @@ const checkConversations = async (ws) => {
     if (ws.conversations == null) {
         ws.conversations = [];
         await firstSelect(ws);
-        ws.send(JSON.stringify(ws.conversations));
     }
     else
         await checkNewConversations(ws);

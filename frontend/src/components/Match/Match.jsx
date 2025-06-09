@@ -9,6 +9,7 @@ import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import ClipLoader from "react-spinners/ClipLoader";
+import BtnReport from "../ActionWithUser/BtnReport";
 
 export default function Match() {
 	const [isSidebarSortAndFilterOpen, setSidebarSortAndFilterOpen] = useState(false);

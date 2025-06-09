@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import BeatLoader from "react-spinners/BeatLoader";
 
-export default function PasswordForm() {
+export default function PasswordForm({setChangeSettings}) {
 	const [inputsStates, setInputsStates] = useState({
 		password: "",
 		confirmPassword: "",
@@ -18,6 +18,36 @@ export default function PasswordForm() {
 	{
 		setIsPasswordVisible((prevState) => !prevState);
 	}
+
+	useEffect(() => {
+		if (inputsStates.password.length > 0) {
+			setChangeSettings(prev => ({
+				...prev,
+				password: inputsStates.password,
+			}));
+		}
+		else {
+			setChangeSettings(prev => ({
+				...prev,
+				password: null,
+			}));
+		}
+	}, [inputsStates.password])
+
+	useEffect(() => {
+		if (inputsStates.confirmPassword.length > 0) {
+			setChangeSettings(prev => ({
+				...prev,
+				confirmPassword: inputsStates.confirmPassword,
+			}));
+		}
+		else {
+			setChangeSettings(prev => ({
+				...prev,
+				confirmPassword: null,
+			}));
+		}
+	}, [inputsStates.confirmPassword])
 
 	function handleSubmit(e) {
 		e.preventDefault()
@@ -81,7 +111,7 @@ export default function PasswordForm() {
 			<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
 				<div className="flex items-center space-x-2">
 					<div className="w-full">
-						<label className="font-poppins-medium" htmlFor="password">Nouveau mot de passe</label>
+						<label className="font-poppins-light" htmlFor="password">Nouveau mot de passe</label>
 						<div className="relative">
 							<input
 							className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
@@ -104,7 +134,7 @@ export default function PasswordForm() {
 								)}
 							</button>
 						</div>
-						<label className="mt-3 font-poppins-medium" htmlFor="confirmPassword">Confirmer mot de passe</label>
+						<label className="mt-4 flex font-poppins-light" htmlFor="confirmPassword">Confirmer mot de passe</label>
 						<div className="relative">
 							<input
 							className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
@@ -129,28 +159,6 @@ export default function PasswordForm() {
 							</button>
 						</div>
 					</div>
-					{verified ? 
-						<button className="btn flex justify-center items-center bg-[--color-pink] w-40 h-12 p-2" disabled>
-							<svg height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
-								<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-								<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-								<g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"></path> </g>
-							</svg>
-						</button>
-					:
-						<>
-						{hasSubmit ?
-							<button className="btn flex justify-center items-center w-40 h-12 p-2 bg-[--color-pink]" disabled>
-								<BeatLoader
-									color="#fff"
-									size={9}
-								/>
-							</button>
-						:
-							<button className="btn flex justify-center items-center w-40 h-12 p-2">Envoyer</button>
-						}
-						</>
-					}
 				</div>
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>

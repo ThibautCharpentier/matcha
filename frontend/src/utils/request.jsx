@@ -164,12 +164,12 @@ const Request = {
             return {success: false}
         })
     },
-    deleteMatch: async (id_contact) => {
+    unlikeMatch: async (id_contact) => {
         const obj = {
-            contactId: id_contact,
+            target: id_contact,
         }
 
-        return axios.patch(`${API_ROUTES.DISLIKE}`, obj, {
+        return axios.post(`${API_ROUTES.DISLIKE}`, obj, {
             withCredentials: true,
         })
         .then((res) => {
@@ -179,7 +179,7 @@ const Request = {
                 throw error;
             }
             else {
-                showSuccess("Le match a été retiré.")
+                showSuccess("Le like a été retiré.")
                 return {success: true}
             }
         })
@@ -192,10 +192,10 @@ const Request = {
     },
     blockMatch: async (id_contact) => {
         const obj = {
-            contactId: id_contact,
+            target: id_contact,
         }
 
-        return axios.patch(`${API_ROUTES.BLOCK}`, obj, {
+        return axios.post(`${API_ROUTES.BLOCK}`, obj, {
             withCredentials: true,
         })
         .then((res) => {
@@ -218,10 +218,10 @@ const Request = {
     },
     reportMatch: async (id_contact) => {
         const obj = {
-            contactId: id_contact,
+            target: id_contact,
         }
-
-        return axios.patch(`${API_ROUTES.REPORT}`, obj, {
+    
+        return axios.post(`${API_ROUTES.REPORT}`, obj, {
             withCredentials: true,
         })
         .then((res) => {

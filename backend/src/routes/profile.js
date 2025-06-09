@@ -10,6 +10,9 @@ const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { TargetDto } = require('../dto/target.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
+const { UpdateFirstnameDto } = require('../dto/updatefirstname.dto');
+const { UpdateLastnameDto } = require('../dto/updatelastname.dto');
+const { UpdateGenderDto } = require('../dto/updategender.dto');
 const user = require('../db/user');
 const interests = require('../db/interests');
 const utils = require('../utils/utils');
@@ -37,6 +40,30 @@ router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), a
 	return res.status(200).json({message: 'OK'});
 });
 
+router.patch('/updatefirstname', jwtrequired(), validateDto(UpdateFirstnameDto), async (req, res) => {
+	const { firstname } = req.body;
+	try {
+		await user.changeFirstname(req.user_id, firstname);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
+router.patch('/updatelastname', jwtrequired(), validateDto(UpdateLastnameDto), async (req, res) => {
+	const { lastname } = req.body;
+	try {
+		await user.changeLastname(req.user_id, lastname);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
 router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (req, res) => {
 	const { email } = req.body;
 	try {
@@ -44,6 +71,18 @@ router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (
 		if (res_query && res_query.id != req.user_id)
 			return res.status(400).json({message: 'Email already exists'});
 		await mail.sendValidateEmail(req.user_id, email);
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
+router.patch('/updategender', jwtrequired(), validateDto(UpdateGenderDto), async (req, res) => {
+	const { gender } = req.body;
+	try {
+		await user.changeGender(req.user_id, gender);
 	}
 	catch (err) {
 		console.log(err);
@@ -165,7 +204,6 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
         console.error(err);
         return res.status(400).json({ message: 'Invalid data' });
     }
-
     return res.status(200).json({ message: 'OK' });
 });
 
@@ -244,7 +282,7 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
 
 		let imagesToDelete
 		if (res_query.pictures)
-        	imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
+			imagesToDelete = res_query.pictures.filter(imagePath => !finalPictures.includes(imagePath) && imagePath !== null);
 		else
 			imagesToDelete = []
 

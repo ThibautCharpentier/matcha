@@ -13,7 +13,7 @@ export default function InputPicture({handleAddCroppedImage, handleDeleteImage, 
     useEffect(() => {
         if (images[index] != null) {
             if (typeof images[index] === "string") {
-                setImage(API_URL + "/" + images[index]); // URL
+                setImage(API_URL + "/" + images[index])
             } else {
                 const objectURL = URL.createObjectURL(images[index]);
                 setImage(objectURL);

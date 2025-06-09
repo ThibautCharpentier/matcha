@@ -40,6 +40,18 @@ const changeEmail = async (id, email) => {
 	client.release();
 }
 
+const changeFirstname = async (id, firstname) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.users SET firstname = $1 WHERE id = $2`, [firstname, id]);
+	client.release();
+}
+
+const changeLastname = async (id, lastname) => {
+	const client = await pool.connect();
+	await client.query(`UPDATE public.users SET lastname = $1 WHERE id = $2`, [lastname, id]);
+	client.release();
+}
+
 const changePreferences = async (id, preferences) => {
 	const client = await pool.connect();
 	await client.query(`UPDATE public.users SET preferences = $1 WHERE id = $2`, [preferences, id]);
@@ -142,7 +154,7 @@ const selectById = async (id) => {
 
 const getData = async (id) => {
 	const client = await pool.connect();
-	const res = await client.query(`SELECT username, firstname, lastname, birthdate, email, preferences, bio, picture_profile, pictures, famerating, gps, latitude, longitude, city FROM public.users WHERE id = $1`, [id]);
+	const res = await client.query(`SELECT username, firstname, lastname, birthdate, email, gender, preferences, bio, picture_profile, pictures, famerating, gps, latitude, longitude, city FROM public.users WHERE id = $1`, [id]);
 	client.release();
 	if (res.rows.length == 0)
 		return null;
@@ -283,4 +295,4 @@ const getRecentsViews = async (id) => {
 	return res.rows;
 }
 
-module.exports = { insert, validateEmail, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio,addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests,removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser, getRecentsViews };
+module.exports = { insert, validateEmail, changeFirstname, changeLastname, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio, addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests, removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser, getRecentsViews };
