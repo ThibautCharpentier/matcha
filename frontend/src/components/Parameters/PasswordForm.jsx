@@ -1,114 +1,19 @@
-import { useState, useEffect } from "react";
-import DOMPurify from 'dompurify';
-import axios from 'axios';
-import { API_ROUTES } from "../../utils/constants";
-import BeatLoader from "react-spinners/BeatLoader";
+import { useState } from "react";
 
-export default function PasswordForm({setChangeSettings}) {
+export default function PasswordForm({setChangeSettings, errState}) {
 	const [inputsStates, setInputsStates] = useState({
 		password: "",
 		confirmPassword: "",
 	});
-	const [verified, setVerified] = useState(false);
-	const [errState, setErrState] = useState("");
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [hasSubmit, setHasSumit] = useState(false);
 
-	function togglePasswordVisibility()
-	{
+	function togglePasswordVisibility() {
 		setIsPasswordVisible((prevState) => !prevState);
-	}
-
-	useEffect(() => {
-		if (inputsStates.password.length > 0) {
-			setChangeSettings(prev => ({
-				...prev,
-				password: inputsStates.password,
-			}));
-		}
-		else {
-			setChangeSettings(prev => ({
-				...prev,
-				password: null,
-			}));
-		}
-	}, [inputsStates.password])
-
-	useEffect(() => {
-		if (inputsStates.confirmPassword.length > 0) {
-			setChangeSettings(prev => ({
-				...prev,
-				confirmPassword: inputsStates.confirmPassword,
-			}));
-		}
-		else {
-			setChangeSettings(prev => ({
-				...prev,
-				confirmPassword: null,
-			}));
-		}
-	}, [inputsStates.confirmPassword])
-
-	function handleSubmit(e) {
-		e.preventDefault()
-
-		if (validationCheck()) {
-			setHasSumit(true)
-			const obj = {
-				password: DOMPurify.sanitize(inputsStates.password),
-			}
-
-			axios.patch(API_ROUTES.UPDATE_PASSWORD, obj, {
-				withCredentials: true,
-			})
-			.then((res) => {
-				if (res.status != 200)
-					throw new Error('Une erreur est survenue');
-				setVerified(true);
-				setInputsStates({
-					password: "",
-					confirmPassword: "",
-				})
-			})
-			.catch((err) => {
-				setErrState("Formulaire invalide");
-			})
-			.finally(() => {
-				setHasSumit(false)
-			})
-		}
-	}
-
-	function validationCheck() {
-		const areValid = {
-			password: false,
-			confirmPassword: false
-		}
-
-		if (inputsStates.password.length < 10) {
-			setErrState("Votre mot de passe doit contenir au moins 10 caractères")
-			return false
-		}
-		else {
-			areValid.password = true
-			setErrState("")
-		}
-
-		if (inputsStates.confirmPassword !== inputsStates.password) {
-			setErrState("Les mots de passe ne correspondent pas")
-			return false
-		}
-		else {
-			areValid.confirmPassword = true
-			setErrState("")
-		}
-
-		return true
 	}
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
+			<div className="flex flex-col mt-6">
 				<div className="flex items-center space-x-2">
 					<div className="w-full">
 						<label className="font-poppins-light" htmlFor="password">Nouveau mot de passe</label>
@@ -122,8 +27,19 @@ export default function PasswordForm({setChangeSettings}) {
 							autoComplete="new-password"
 							value={inputsStates.password}
 							onChange={(e) => {
+								if (e.target.value.length > 0) {
+									setChangeSettings(prev => ({
+										...prev,
+										password: e.target.value,
+									}));
+								}
+								else {
+									setChangeSettings(prev => ({
+										...prev,
+										password: null,
+									}));
+								}
 								setInputsStates({...inputsStates, password: e.target.value})
-								setVerified(false)
 							}}
 							/>
 							<button type="button" onClick={togglePasswordVisibility} className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-700">
@@ -145,8 +61,19 @@ export default function PasswordForm({setChangeSettings}) {
 							autoComplete="new-password"
 							value={inputsStates.confirmPassword}
 							onChange={(e) => {
+								if (e.target.value.length > 0) {
+									setChangeSettings(prev => ({
+										...prev,
+										confirmPassword: e.target.value,
+									}));
+								}
+								else {
+									setChangeSettings(prev => ({
+										...prev,
+										confirmPassword: null,
+									}));
+								}
 								setInputsStates({...inputsStates, confirmPassword: e.target.value})
-								setVerified(false)
 							}}
 							onPaste={(e) => e.preventDefault()}
 							/>
@@ -163,7 +90,7 @@ export default function PasswordForm({setChangeSettings}) {
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>
 				)}
-			</form>
+			</div>
 		</>
 	)
 }

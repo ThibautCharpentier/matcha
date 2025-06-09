@@ -1,18 +1,7 @@
-import { useState, useEffect } from "react";
-import DOMPurify from 'dompurify';
-import axios from 'axios';
-import { API_ROUTES } from "../../utils/constants";
-import BeatLoader from "react-spinners/BeatLoader";
+import { useState } from "react";
 
-export default function GenderForm({ data, setChangeSettings }) {
+export default function GenderForm({ data, setChangeSettings, errState }) {
 	const [inputState, setInputState] = useState(data.gender);
-	const [verified, setVerified] = useState(false);
-	const [errState, setErrState] = useState("");
-	const [hasSubmit, setHasSumit] = useState(false);
-
-	useEffect(() => {
-		setInputState(data.gender)
-    }, [data]);
 
 	function handleInputChange(e) {
 		setInputState(e.target.value);
@@ -30,40 +19,9 @@ export default function GenderForm({ data, setChangeSettings }) {
 		}
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault()
-
-		if (inputState == "")
-		{
-			setErrState("Veuillez sélectionner un champ");
-			return ;
-		}
-		setErrState("")
-		setHasSumit(true)
-
-		const obj = {
-			gender: DOMPurify.sanitize(inputState),
-		}
-
-		axios.patch(API_ROUTES.UPDATE_GENDER, obj, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-			setVerified(true);
-		})
-		.catch((err) => {
-			setErrState("Formulaire invalide");
-		})
-		.finally(() => {
-			setHasSumit(false)
-		})
-	}
-
 	return (
 		<>
-			<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
+			<div className="flex flex-col mt-6">
 				<p className="font-poppins-light">Je suis</p>
 				<div className="flex items-center space-x-2">
 					<div className="w-full">
@@ -72,7 +30,6 @@ export default function GenderForm({ data, setChangeSettings }) {
 						name="gender"
 						value={inputState}
 						onChange={handleInputChange}
-						onFocus={() => setVerified(false)}
 					>
 						<option value="man">Un homme</option>
 						<option value="woman">Une femme</option>
@@ -82,7 +39,7 @@ export default function GenderForm({ data, setChangeSettings }) {
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>
 				)}
-			</form>
+			</div>
 		</>
 	)
 }

@@ -1,32 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 
-export default function GpsForm({ data, setChangeSettings }) {
+export default function GpsForm({ data }) {
 	const [inputState, setInputState] = useState(data.gps);
 	const [errState, setErrState] = useState("");
 
-	useEffect(() => {
-		setInputState(data.gps)
-    }, [data]);
-
-	useEffect(() => {
-		if (inputState != data.gps) {
-			setChangeSettings(prev => ({
-				...prev,
-				gps: inputState,
-			}));	
-		}
-		else {
-			setChangeSettings(prev => ({
-				...prev,
-				gps: null,
-			}));	
-		}
-	}, [inputState])
-
-	function toggleInputState()
-	{
+	function toggleInputState() {
 		setInputState((prevState) => !prevState);
 	}
 
@@ -51,7 +31,7 @@ export default function GpsForm({ data, setChangeSettings }) {
 
 	return (
 		<>
-			<form action="" className="flex flex-col mt-6">
+			<div className="flex flex-col mt-6">
 				<div className="flex">
 					<input className="mr-4"
 					type="checkbox"
@@ -67,7 +47,7 @@ export default function GpsForm({ data, setChangeSettings }) {
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>
 				)}
-			</form>
+			</div>
 		</>
 	)
 }

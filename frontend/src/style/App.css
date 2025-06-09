@@ -185,13 +185,6 @@
 	touch-action: manipulation;
 }
 
-/* @media (min-width: 768px) {
-  .btn {
-	font-size: 1.125rem;
-	padding: 1rem 2rem;
-  }
-} */
-
 .strike {
 	display: block;
 	text-align: center;

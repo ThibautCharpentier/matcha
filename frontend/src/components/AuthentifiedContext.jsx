@@ -71,7 +71,6 @@ export default function AuthentifiedProvider({ children }) {
 
 	return (
 		<>
-			{/* 'flex flex-row' */}
 			{isCompleteProfile != null &&
 				<div className={`${isCompleteProfile && 'flex'}`}>
 					{isCompleteProfile ?
