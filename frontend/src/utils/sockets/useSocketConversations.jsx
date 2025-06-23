@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { WS_URL } from '../constants';
+import { useAuthentified } from "../../components/AuthentifiedContext"
 
 export const useSocketConversations = (isAuthenticated, setConversations, setHasNewMessage, idUser) => {
     const socketConversationsRef = useRef(null);
@@ -10,10 +11,16 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
     const locationRef = useRef(location.pathname);
 
     useEffect(() => {
+
+    })
+
+    useEffect(() => {
         locationRef.current = location.pathname;
     }, [location.pathname])
 
     useEffect(() => {
+        if (!isAuthenticated || !idUser) return;
+        
         if (isAuthenticated && socketConversationsRef.current == null) {
             socketConversationsRef.current = new WebSocket(WS_URL);
 
@@ -31,13 +38,19 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
                     const allLastMessagesNotViewed = res.every(conv => {
                         if (conv?.messages?.length) {
                             const lastMessage = conv.messages[conv.messages.length - 1];
-                            if (lastMessage.sender === idUser)
+                            console.log(lastMessage)
+                            console.log(idUser)
+                            if (lastMessage.sender == idUser) {
+                                console.log(lastMessage)
                                 return false;
-                            return lastMessage.view === false;
+                            }
+                            return lastMessage.view == false;
                         }
                     });
-                    if (allLastMessagesNotViewed && event.data != "[]")
+                    if (allLastMessagesNotViewed) {
+                        console.log("alors")
                         setHasNewMessage(true);
+                    }
                 }
                 setConversations(res);
             }
@@ -58,7 +71,6 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
             if (socketConversationsRef.current && (socketConversationsRef.current.readyState === WebSocket.OPEN || socketConversationsRef.current.readyState === WebSocket.CLOSING))
                 socketConversationsRef.current.close();
         };
-    }, [isAuthenticated, closeState])
+    }, [isAuthenticated, closeState, idUser])
 }
 
-export default useSocketConversations;
