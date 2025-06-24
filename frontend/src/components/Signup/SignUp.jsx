@@ -32,7 +32,7 @@ export default function SignUp() {
 		server: ""
 	});
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [hasSubmit, setHasSumit] = useState(false);
+	const [hasSubmit, setHasSubmit] = useState(false);
 
 	function togglePasswordVisibility() {
 		setIsPasswordVisible((prevState) => !prevState);
@@ -42,7 +42,7 @@ export default function SignUp() {
 		e.preventDefault()
 
 		if (validationCheck()) {
-			setHasSumit(true)
+			setHasSubmit(true)
 			const obj = {
 				username: DOMPurify.sanitize(inputsStates.username),
 				firstname: DOMPurify.sanitize(inputsStates.name),
@@ -69,7 +69,7 @@ export default function SignUp() {
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
 			.finally(() => {
-				setHasSumit(false)
+				setHasSubmit(false)
 			})
 		}
 	}

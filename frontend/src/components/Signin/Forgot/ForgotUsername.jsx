@@ -14,13 +14,13 @@ export default function ForgotUsername({changeState}) {
 		server: "",
 	});
 	const [returnMessage, setReturnMessage] = useState("");
-	const [hasSubmit, setHasSumit] = useState(false);
+	const [hasSubmit, setHasSubmit] = useState(false);
 
 	function handleSubmit(e) {
 		e.preventDefault()
 
 		if (validationCheck()) {
-			setHasSumit(true)
+			setHasSubmit(true)
 			const obj = {
 				email: DOMPurify.sanitize(inputsStates.email),
 			}
@@ -41,7 +41,7 @@ export default function ForgotUsername({changeState}) {
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
 			.finally(() => {
-				setHasSumit(false)
+				setHasSubmit(false)
 			});
 		}
 	}

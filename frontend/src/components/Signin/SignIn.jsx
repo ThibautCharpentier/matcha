@@ -24,14 +24,14 @@ export default function SignIn() {
 	const [isForgotPassword, setIsForgotPassword] = useState(false);
 	const [isForgotUsername, setIsForgotUsername] = useState(false);
 	const [isSignIn, setIsSignIn] = useState(true);
-	const [hasSubmit, setHasSumit] = useState(false);
+	const [hasSubmit, setHasSubmit] = useState(false);
 	const { login } = useAuth();
 
 	async function handleSubmit(e) {
 		e.preventDefault()
 
 		if (validationCheck()) {
-			setHasSumit(true)
+			setHasSubmit(true)
 			const obj = {
 				username: DOMPurify.sanitize(inputsStates.username),
 				password: DOMPurify.sanitize(inputsStates.password),
@@ -52,7 +52,7 @@ export default function SignIn() {
                 else
                     setShowValidation(state => ({ ...state, server: "Formulaire invalide" }));
             } finally {
-				setHasSumit(false)
+				setHasSubmit(false)
 			}
         }
     }

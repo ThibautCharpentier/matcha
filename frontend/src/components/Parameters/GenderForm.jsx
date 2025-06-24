@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function GenderForm({ data, setChangeSettings, errState }) {
+export default function GenderForm({ data, setChangeSettings, errState, setVerified }) {
 	const [inputState, setInputState] = useState(data.gender);
 
 	function handleInputChange(e) {
@@ -30,6 +30,7 @@ export default function GenderForm({ data, setChangeSettings, errState }) {
 						name="gender"
 						value={inputState}
 						onChange={handleInputChange}
+						onFocus={() => setVerified(false)}
 					>
 						<option value="man">Un homme</option>
 						<option value="woman">Une femme</option>

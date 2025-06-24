@@ -1,18 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { validateDto } = require('../dto/validatedto');
-const { UpdateUsernameDto } = require('../dto/updateusername.dto');
-const { UpdateEmailDto } = require('../dto/updateemail.dto');
-const { UpdatePreferencesDto } = require('../dto/updatepreferences.dto');
 const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { TargetDto } = require('../dto/target.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
-const { UpdateFirstnameDto } = require('../dto/updatefirstname.dto');
-const { UpdateLastnameDto } = require('../dto/updatelastname.dto');
-const { UpdateGenderDto } = require('../dto/updategender.dto');
+const { UpdateParametersDto } = require('../dto/updateparameters.dto');
 const user = require('../db/user');
 const interests = require('../db/interests');
 const utils = require('../utils/utils');
@@ -24,72 +19,6 @@ const { jwtrequired } = require('../config/jwt');
 const router = express.Router();
 
 dotenv.config();
-
-router.patch('/updateusername', jwtrequired(), validateDto(UpdateUsernameDto), async (req, res) => {
-	const { username } = req.body;
-	try {
-		const res_query = await user.selectByUsername(username);
-		if (res_query && res_query.id != req.user_id)
-			return res.status(400).json({message: 'Username already exists'});
-		await user.changeUsername(req.user_id, username);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
-router.patch('/updatefirstname', jwtrequired(), validateDto(UpdateFirstnameDto), async (req, res) => {
-	const { firstname } = req.body;
-	try {
-		await user.changeFirstname(req.user_id, firstname);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
-router.patch('/updatelastname', jwtrequired(), validateDto(UpdateLastnameDto), async (req, res) => {
-	const { lastname } = req.body;
-	try {
-		await user.changeLastname(req.user_id, lastname);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
-router.patch('/updateemail', jwtrequired(), validateDto(UpdateEmailDto), async (req, res) => {
-	const { email } = req.body;
-	try {
-		const res_query = await user.selectByEmail(email);
-		if (res_query && res_query.id != req.user_id)
-			return res.status(400).json({message: 'Email already exists'});
-		await mail.sendValidateEmail(req.user_id, email);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
-router.patch('/updategender', jwtrequired(), validateDto(UpdateGenderDto), async (req, res) => {
-	const { gender } = req.body;
-	try {
-		await user.changeGender(req.user_id, gender);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
 
 router.get('/verifyemail', async (req, res) => {
 	let userId;
@@ -112,30 +41,6 @@ router.get('/verifyemail', async (req, res) => {
 	return res.status(200).json({message: 'OK'});
 });
 
-router.patch('/updatepassword', jwtrequired(), validateDto(ChangePasswordDto), async (req, res) => {
-	const { password } = req.body;
-	try {
-		await user.changePassword(req.user_id, password);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
-router.patch('/updatepreferences', jwtrequired(), validateDto(UpdatePreferencesDto), async (req, res) => {
-	const { preferences } = req.body;
-	try {
-		await user.changePreferences(req.user_id, preferences);
-	}
-	catch (err) {
-		console.log(err);
-		return res.status(400).json({message: 'Invalid data'});
-	}
-	return res.status(200).json({message: 'OK'});
-});
-
 router.patch('/updategps', jwtrequired(), validateDto(UpdateGpsDto), async (req, res) => {
 	const { gps } = req.body;
 	try {
@@ -152,6 +57,41 @@ router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), a
 	const { lat, lng, city } = req.body;
 	try {
 		await user.changeLocation(req.user_id, { lat, lng, city });
+	}
+	catch (err) {
+		console.log(err);
+		return res.status(400).json({message: 'Invalid data'});
+	}
+	return res.status(200).json({message: 'OK'});
+});
+
+router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto), async (req, res) => {
+	const { firstname, lastname, gender, preferences, username, email, password, lat, lng, city } = req.body;
+	try {
+		if (username) {
+			const res_query = await user.selectByUsername(username);
+			if (res_query && res_query.id != req.user_id)
+				return res.status(400).json({message: 'Username already exists'});
+			await user.changeUsername(req.user_id, username);
+		}
+		if (email) {
+			const res_query = await user.selectByEmail(email);
+			if (res_query && res_query.id != req.user_id)
+				return res.status(400).json({message: 'Email already exists'});
+			await mail.sendValidateEmail(req.user_id, email);
+		}
+		if (firstname)
+			await user.changeFirstname(req.user_id, firstname);
+		if (lastname)
+			await user.changeLastname(req.user_id, lastname);
+		if (gender)
+			await user.changeGender(req.user_id, gender);
+		if (preferences)
+			await user.changePreferences(req.user_id, preferences);
+		if (password)
+			await user.changePassword(req.user_id, password);
+		if (lat && lng && city)
+			await user.changeLocation(req.user_id, { lat, lng, city });
 	}
 	catch (err) {
 		console.log(err);

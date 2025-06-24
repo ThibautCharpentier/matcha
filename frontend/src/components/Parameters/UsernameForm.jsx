@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function UsernameForm({ data, setChangeSettings, errState }) {
+export default function UsernameForm({ data, setChangeSettings, errState, verified, setVerified }) {
 	const [inputState, setInputState] = useState("");
+
+	useEffect(() => {
+		if (verified)
+			setInputState("")
+    }, [verified]);
 
 	return (
 		<>
@@ -16,6 +21,7 @@ export default function UsernameForm({ data, setChangeSettings, errState }) {
 					autoComplete="username"
 					value={inputState}
 					onChange={(e) => {
+						setVerified(false)
 						if (e.target.value.length > 0)
 							setChangeSettings(prev => ({
 								...prev,

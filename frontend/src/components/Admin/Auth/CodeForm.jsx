@@ -6,14 +6,14 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 export default function CodeForm({ setToken, idAdmin }) {
     const [inputState, setInputState] = useState("")
-    const [hasSubmit, setHasSumit] = useState(false);
+    const [hasSubmit, setHasSubmit] = useState(false);
     const [errState, setErrState] = useState("");
 
     async function handleSubmit(e) {
         e.preventDefault()
 
         if (validationCheck()) {
-			setHasSumit(true)
+			setHasSubmit(true)
 			const obj = {
                 id: idAdmin.current,
 				code: DOMPurify.sanitize(inputState),
@@ -30,7 +30,7 @@ export default function CodeForm({ setToken, idAdmin }) {
                 else
 					setErrState("Formulaire invalide");
             } finally {
-				setHasSumit(false)
+				setHasSubmit(false)
 			}
         }
     }

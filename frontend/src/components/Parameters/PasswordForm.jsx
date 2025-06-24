@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function PasswordForm({setChangeSettings, errState}) {
+export default function PasswordForm({setChangeSettings, errState, verified, setVerified}) {
 	const [inputsStates, setInputsStates] = useState({
 		password: "",
 		confirmPassword: "",
@@ -10,6 +10,15 @@ export default function PasswordForm({setChangeSettings, errState}) {
 	function togglePasswordVisibility() {
 		setIsPasswordVisible((prevState) => !prevState);
 	}
+
+	useEffect(() => {
+		if (verified) {
+			setInputsStates({
+				password: "",
+				confirmPassword: "",
+			})
+		}
+    }, [verified]);
 
 	return (
 		<>
@@ -27,6 +36,7 @@ export default function PasswordForm({setChangeSettings, errState}) {
 							autoComplete="new-password"
 							value={inputsStates.password}
 							onChange={(e) => {
+								setVerified(false)
 								if (e.target.value.length > 0) {
 									setChangeSettings(prev => ({
 										...prev,
@@ -61,6 +71,7 @@ export default function PasswordForm({setChangeSettings, errState}) {
 							autoComplete="new-password"
 							value={inputsStates.confirmPassword}
 							onChange={(e) => {
+								setVerified(false)
 								if (e.target.value.length > 0) {
 									setChangeSettings(prev => ({
 										...prev,

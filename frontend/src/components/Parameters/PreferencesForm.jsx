@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function PreferencesForm({ data, setChangeSettings, errState }) {
+export default function PreferencesForm({ data, setChangeSettings, errState, setVerified }) {
 	const [inputState, setInputState] = useState(data.preferences);
 
 	function handleInputChange(e) {
@@ -30,6 +30,7 @@ export default function PreferencesForm({ data, setChangeSettings, errState }) {
 						name="preferences"
 						value={inputState}
 						onChange={handleInputChange}
+						onFocus={() => setVerified(false)}
 					>
 						<option value="men">Les Hommes</option>
 						<option value="women">Les Femmes</option>

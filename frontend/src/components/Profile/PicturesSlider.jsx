@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { API_URL} from "../../utils/constants";
@@ -5,6 +6,8 @@ import { API_URL} from "../../utils/constants";
 import avatar from '../../assets/images/img_avatar.png';
 
 export default function PicturesSlider({userData, userIndex}) {
+	const [selectedIndex, setSelectedIndex] = useState(0);
+
 	let data
 	let pictures
 	if (userIndex === null) {
@@ -15,6 +18,10 @@ export default function PicturesSlider({userData, userIndex}) {
 		data = userData[userIndex]
 		pictures = userData[userIndex]?.pictures || [];
 	}
+
+	useEffect(() => {
+		setSelectedIndex(0);
+	}, [userData, userIndex]);
 	
 	return (
 		<div className="relative slider-container w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] rounded-3xl">
@@ -24,6 +31,8 @@ export default function PicturesSlider({userData, userIndex}) {
 				transitionTime={100}
 				showIndicators={false}
 				emulateTouch={true}
+				selectedItem={selectedIndex}
+				onChange={setSelectedIndex}
 			>
 				{pictures.length > 0 ? 
 					pictures.map((picture, index) => (

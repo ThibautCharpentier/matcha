@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EmailForm({ data, setChangeSettings, errState, verified }) {
+export default function EmailForm({ data, setChangeSettings, errState, verified, setVerified }) {
 	const [inputState, setInputState] = useState("");
 
 	return (
@@ -16,6 +16,7 @@ export default function EmailForm({ data, setChangeSettings, errState, verified 
 					autoComplete="email"
 					value={inputState}
 					onChange={(e) => {
+						setVerified(false)
 						if (e.target.value.length > 0)
 							setChangeSettings(prev => ({
 								...prev,
@@ -34,7 +35,7 @@ export default function EmailForm({ data, setChangeSettings, errState, verified 
 				{errState != "" && (
 				<p className=" text-red-600 text-sm ">{errState}</p>
 				)}
-				{verified != "" && (
+				{verified != "" && inputState != "" && (
 				<p className="text-sm">Un mail de validation a été envoyé à votre nouvelle adresse</p>
 				)}
 			</div>

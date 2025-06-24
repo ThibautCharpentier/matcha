@@ -19,7 +19,7 @@ export default function TokenPassword() {
 		password: "",
 		server: "",
 	});
-	const [hasSubmit, setHasSumit] = useState(false);
+	const [hasSubmit, setHasSubmit] = useState(false);
 
 	function togglePasswordVisibility()
 	{
@@ -30,7 +30,7 @@ export default function TokenPassword() {
 		e.preventDefault()
 
 		if (validationCheck()) {
-			setHasSumit(true)
+			setHasSubmit(true)
 			const obj = {
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
@@ -51,7 +51,7 @@ export default function TokenPassword() {
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
 			.finally(() => {
-				setHasSumit(false)
+				setHasSubmit(false)
 			})
 		}
 	}

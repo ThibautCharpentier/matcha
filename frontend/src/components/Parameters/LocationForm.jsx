@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-function LocationMarker({position, setPosition, setChangeSettings}) {
+function LocationMarker({position, setPosition, setChangeSettings, setVerified}) {
 	const map = useMapEvents({
         click(e) {
             setPosition(e.latlng);
@@ -10,6 +10,7 @@ function LocationMarker({position, setPosition, setChangeSettings}) {
 				...prev,
 				position: e.latlng,
 			}));
+			setVerified(false)
         },
 		locationfound(e) {
 			map.flyTo(e.latlng, map.getZoom())
@@ -27,7 +28,7 @@ function LocationMarker({position, setPosition, setChangeSettings}) {
     );
 }
 
-export default function LocationForm({ data, setChangeSettings, errState }) {
+export default function LocationForm({ data, setChangeSettings, errState, setVerified }) {
 	const [position, setPosition] = useState(
         data.latitude && data.longitude ? { lat: data.latitude, lng: data.longitude } : null
     );
@@ -40,7 +41,7 @@ export default function LocationForm({ data, setChangeSettings, errState }) {
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					/>
-					<LocationMarker position={position} setPosition={setPosition} setChangeSettings={setChangeSettings}/>
+					<LocationMarker position={position} setPosition={setPosition} setChangeSettings={setChangeSettings} setVerified={setVerified}/>
 				</MapContainer>
 				{errState != "" && (
 				<p className=" text-red-600 text-sm text-center">{errState}</p>
