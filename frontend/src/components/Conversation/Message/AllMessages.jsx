@@ -14,7 +14,9 @@ export default function AllMessages({ roomId, roomSelected}) {
     const oldRoomIdref= useRef(-1);
     const [autoScroll, setAutoScroll] = useState(true);
     const [notifNewMessage, setNotifNewMessage] = useState(false);
-    let lastDate = null;
+    const [messageLimit, setMessageLimit] = useState(30);
+    const previousScrollHeightRef = useRef(0);
+
 
     const handleScroll = () => {
         const container = messagesContainerRef.current;
@@ -22,6 +24,14 @@ export default function AllMessages({ roomId, roomSelected}) {
         
         const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 50;
         setAutoScroll(isAtBottom);
+
+        if (container.scrollTop === 0) {
+            previousScrollHeightRef.current = container.scrollHeight;
+            setMessageLimit(prev => {
+                const total = conversation.length;
+                return prev + 30 > total ? total : prev + 30;
+            });
+        }
     };
 
     function markLastMessageAsViewed(conversations, targetChatId) {
@@ -43,6 +53,18 @@ export default function AllMessages({ roomId, roomSelected}) {
         };
         });
     }
+
+    useEffect(() => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+
+        const newScrollHeight = container.scrollHeight;
+        const scrollDifference = newScrollHeight - previousScrollHeightRef.current;
+
+        if (scrollDifference > 0) {
+            container.scrollTop = scrollDifference;
+        }
+    }, [messageLimit]);
     
     useEffect(() => {
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
@@ -95,13 +117,19 @@ export default function AllMessages({ roomId, roomSelected}) {
         }
     }, [conversation]);
 
+
     return (
         <>
             <div
                 ref={messagesContainerRef}
                 className='flex flex-col overflow-y-auto h-full px-2 pr-0 relative'
             >
-                {conversation.map((message, index) => {
+            {(() => {
+                let lastDate = null;
+                const totalMessages = conversation.length;
+                const limitedMessages = conversation.slice(-Math.min(messageLimit, totalMessages));
+
+                return limitedMessages.map((message, index) => {
                     const dateObj = new Date(message.created);
                     const messageDate = dateObj.toLocaleDateString('fr-FR', {
                         weekday: 'long',
@@ -111,7 +139,7 @@ export default function AllMessages({ roomId, roomSelected}) {
                     });
                     const showDate = messageDate !== lastDate;
                     lastDate = messageDate;
-
+                
                     return (
                         <div key={index}>
                             {showDate && (
@@ -124,7 +152,8 @@ export default function AllMessages({ roomId, roomSelected}) {
                             )}
                         </div>
                     );
-                })}
+                });
+            })()}
                 <div ref={messagesEndRef} />
             </div>
             <BackEndMessages

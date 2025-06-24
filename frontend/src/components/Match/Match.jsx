@@ -63,7 +63,7 @@ export default function Match() {
 						openSidebarResearch={openSidebarResearch}
 					/>
 					{matchState != null ?
-							<>
+							<div className="sm:mt-6">
 								{(matchState && !matchState[matchIndexState] && !isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Pas de suggestion pour le moment, revenez plus tard !</p>)}
 								{(matchState && !matchState[matchIndexState] && isResearch && <p className="mt-8 text-xl text-center font-poppins-bold">Aucun profil correspondant à votre recherche !</p>)}
 								{(matchState && matchState[matchIndexState] && <div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
@@ -108,7 +108,7 @@ export default function Match() {
 										</>
 									)}
 								</div>)}
-							</>
+							</div>
 					:
 						<div className="w-screen max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] flex justify-center items-center">
 							<ClipLoader

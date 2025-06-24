@@ -11,7 +11,6 @@ export default function BtnUnlikeBlockReport({isLikeState, setIsLikeState, idCon
     const [isModalBlockOpen, setIsModalBlockOpen ] = useState(false);
     const [isModalReportOpen, setIsModalReportOpen ] = useState(false);
 
-    console.log(isLikeState);
     function likeMatch() {
 		const obj = {
 			target: idContact

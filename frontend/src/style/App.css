@@ -34,12 +34,12 @@
 }
 
 :root {
-  --color-pastelpink: #F1B5CB;
-  --color-pink:  #d83470;
-  --color-light-pink:  #ec80a8;
-  --color-lightiest-pink:  #f3c5d6;
-  --color-light-green: #bde2b6;
-  --color-dark-green: #b5d8ad;
+	--color-pastelpink: #F1B5CB;
+	--color-pink:  #d83470;
+	--color-light-pink:  #ec80a8;
+	--color-lightiest-pink:  #f3c5d6;
+	--color-light-green: #bde2b6;
+	--color-dark-green: #b5d8ad;
 }
 
 .pastellightpink {
@@ -59,56 +59,56 @@
 }
 
 .font-poppins-thin {
-  font-family: PoppinsThin;
+	font-family: PoppinsThin;
 }
 
 .font-poppins-light {
-  font-family: PoppinsLight;
+	font-family: PoppinsLight;
 }
 
 .font-poppins-black {
-  font-family: PoppinsBlack;
+	font-family: PoppinsBlack;
 }
 
 .font-poppins-regular {
-  font-family: PoppinsRegular;
+	font-family: PoppinsRegular;
 }
 
 .font-poppins-bold {
-  font-family: PoppinsBold;
+	font-family: PoppinsBold;
 }
 
 .font-poppins-medium {
-  font-family: PoppinsMedium;
+	font-family: PoppinsMedium;
 }
 
 /* CSS */
 .btn {
-  background-color: #fff;
-  border: 0 solid #e2e8f0;
-  border-radius: 1.5rem;
-  box-sizing: border-box;
-  color: #1f1f1f;
-  cursor: pointer;
-  display: inline-block;
-  font-family: PoppinsLight;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1;
-  padding: 1rem 1.6rem;
-  text-align: center;
-  text-decoration: none #0d172a solid;
-  text-decoration-thickness: auto;
-  transition: all .1s cubic-bezier(.4, 0, .2, 1);
-  box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+	background-color: #fff;
+	border: 0 solid #e2e8f0;
+	border-radius: 1.5rem;
+	box-sizing: border-box;
+	color: #1f1f1f;
+	cursor: pointer;
+	display: inline-block;
+	font-family: PoppinsLight;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1;
+	padding: 1rem 1.6rem;
+	text-align: center;
+	text-decoration: none #0d172a solid;
+	text-decoration-thickness: auto;
+	transition: all .1s cubic-bezier(.4, 0, .2, 1);
+	box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
 }
 
 .btn:hover {
-  background-color: #d81159;
-  color: #fff;
+	background-color: #d2eccd;
+	color: #1f1f1f;;
 }
 
 .btn-secondary {

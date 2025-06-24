@@ -34,12 +34,12 @@ export default function ReportList({ token }) {
         <>
             {reportState != null ?
                 <div className="flex justify-center">
-                    <div className="flex flex-col p-2 mt-6 bg-gray-400 rounded-2xl">
+                    <div className="flex flex-col p-8 mt-6 bg-gray-400 rounded-2xl">
                         {(reportState && !reportState[reportIndexState] && <h1 className="text-xl text-center font-poppins-bold text-gray-50">Pas de compte signalé pour le moment</h1>)}
                         {(reportState && reportState[reportIndexState] && 
                             <>
                                 <h1 className="text-xl text-center font-poppins-bold text-gray-50">Voici la liste des comptes signalés :</h1>
-                                <span className="mt-6 text-center font-poppins-bold text-gray-50">Ce compte a été signalé <span className="font-bold">{reportState[reportIndexState].nb_report}</span> fois</span>
+                                <span className="mt-6 mb-2 text-center font-poppins-bold text-gray-50">Ce compte a été signalé <span className="font-bold">{reportState[reportIndexState].nb_report}</span> fois</span>
                                 <div className="relative w-full max-w-[400px] max-h-[610px] aspect-[40/61] sm:w-[400px] sm:h-[610px] bg-gray-200 flex flex-col rounded-3xl">
                                     {(toggleProfile ?
                                         <>

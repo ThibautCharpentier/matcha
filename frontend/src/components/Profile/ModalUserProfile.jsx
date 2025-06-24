@@ -108,7 +108,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                     else
                                         switchToggleProfile()
                                 }}
-                                    className="relative w-24 h-8 bg-[--color-light-pink] rounded-full"
+                                    className="relative w-24 h-8 bg-[--color-dark-green] rounded-full"
                                 >
                                 <div
                                     className={`absolute top-1 left-1 w-10 h-6 bg-white rounded-full shadow transition-transform duration-300 ${

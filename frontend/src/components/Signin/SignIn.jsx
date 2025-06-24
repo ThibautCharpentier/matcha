@@ -127,7 +127,7 @@ export default function SignIn() {
 						<p className="text-center text-red-600 text-sm mt-4">{showValidation.server}</p>
 					)}
 					{hasSubmit ?
-						<button className="btn mt-6 bg-[--color-pink]" disabled>
+						<button className="btn mt-6 bg-[--color-light-green]" disabled>
 							<BeatLoader
 								color="#fff"
 								size={9}
