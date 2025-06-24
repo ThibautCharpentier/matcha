@@ -33,8 +33,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 
 	useEffect(() => {
 		if (conversations.length > 0) {
-			console.log("use effect conv recent")
-			console.log(conversations);
 
 			let newRecents = conversations.map((conv) => {
 				const lastMessage = conv.messages?.at(-1); 

@@ -179,7 +179,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				<div className="border-solid border-gray-300 bg-white border-[1px] rounded-xl p-1 h-20" style={{overflowY: 'auto'}}>
 					<div className="text-xs flex flex-wrap gap-1">
 						{selectTags && selectTags.map((tag, index) => (
-							<div style={{cursor: "pointer"}}  onClick={() => handleRemoveTags(tag)} key={index} className="bg-[#d81159] rounded-3xl p-1 text-white">#{tag}</div>
+							<div style={{cursor: "pointer"}}  onClick={() => handleRemoveTags(tag)} key={index} className="bg-[--color-light-green] hover:bg-[--color-dark-green] rounded-3xl p-1 text-black">#{tag}</div>
 						))}
 					</div>
 				</div>

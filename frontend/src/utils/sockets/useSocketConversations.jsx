@@ -33,22 +33,17 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
 
             socketConversationsRef.current.onmessage = (event) => {
                 const res = JSON.parse(event.data);
-                
-                if (!locationRef.current.includes('/conversation')) {
-                    const allLastMessagesNotViewed = res.every(conv => {
+
+                if (!locationRef.current.includes('/conversation') && res.length > 0) {
+                    const allLastMessagesViewed = res.every(conv => {
                         if (conv?.messages?.length) {
                             const lastMessage = conv.messages[conv.messages.length - 1];
-                            console.log(lastMessage)
-                            console.log(idUser)
-                            if (lastMessage.sender == idUser) {
-                                console.log(lastMessage)
-                                return false;
-                            }
-                            return lastMessage.view == false;
+                            if (lastMessage.sender == idUser)
+                                return true;
+                            return lastMessage.view != false;
                         }
                     });
-                    if (allLastMessagesNotViewed) {
-                        console.log("alors")
+                    if (!allLastMessagesViewed) {
                         setHasNewMessage(true);
                     }
                 }

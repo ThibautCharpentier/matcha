@@ -8,6 +8,7 @@ import { useSocketData } from "../utils/sockets/useSocketData";
 import { useSocketNotifs } from "../utils/sockets/useSocketNotifs";
 import { useSocketContacts } from "../utils/sockets/useSocketContacts";
 import { useSocketConversations } from "../utils/sockets/useSocketConversations"
+import { ToastContainer } from 'react-toastify';
 
 const AuthentifiedContext = createContext();
 
@@ -38,6 +39,11 @@ export default function AuthentifiedProvider({ children }) {
 	const [conversations, setConversations] = useState([]);
 	const [idUser, setIdUser] = useState(null);
 
+	const contextClass = {
+		success: "bg-[--color-dark-green]",
+		error: "bg-[--color-pink]",
+		default: "bg-[--color-dark-green]",
+	};
 
     const profileComplete = () => {
         setIsCompleteProfile(true);
@@ -84,6 +90,19 @@ export default function AuthentifiedProvider({ children }) {
 					<AuthentifiedContext.Provider value={{data, notifs, conversations, setConversations, contacts, hasNewNotif, setHasNewNotif, isCompleteProfile, profileComplete, idUser, hasNewMessage, setHasNewMessage}}>
 						<main className='w-full'>
 							{children}
+							<ToastContainer
+								toastClassName={(context) =>
+									contextClass[context?.type || "default"] +
+									" relative flex p-6 max-w-72 min-h-20 rounded-md justify-between items-center overflow-hidden cursor-pointer"
+								}
+								position="top-right"
+								autoClose={5000}
+								hideProgressBar={false}
+								closeOnClick
+								pauseOnHover
+								draggable
+								theme="colored"
+							/>
 						</main>
 					</AuthentifiedContext.Provider>
 				</div>
