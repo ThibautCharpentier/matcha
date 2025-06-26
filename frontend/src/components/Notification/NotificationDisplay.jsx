@@ -50,8 +50,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -72,8 +72,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -94,8 +94,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> <b>match</b> avec vous</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> <b>match</b> avec vous</p>
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">

@@ -21,9 +21,9 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModal
 	return (
 		<div className="w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl max-h-[185px] aspect-[400/185] sm:h-[185px]">
-				<div className="flex flex-row space-x-3">
+				<div className="flex flex-row space-x-6 p-4">
 					<div 
-						className="relative w-[37.5%] h-auto m-4 border-2 border-white rounded-full"
+						className="relative w-[37.5%] h-auto border-2 border-white rounded-full"
 						onClick={() => setIsModalPhotosOpen(true)}
 					>
 						{pathPicture != "" ?
@@ -37,8 +37,8 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModal
 							</svg>
 						</div>
 					</div>
-					<div className="flex flex-col items-start justify-center text-white text-sm">
-						<div>{myData.firstname} {myData.lastname}</div>
+					<div className="flex flex-col items-start justify-center text-white text-sm w-0 flex-grow">
+						<div className="break-all whitespace-normal">{myData.firstname} {myData.lastname}</div>
 						<div>{myData.age} ans</div>
 						{myData.gps && <div>{myData.city}</div>}
 						<div className="flex space-x-1 flex-row mt-3">

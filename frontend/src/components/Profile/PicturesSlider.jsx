@@ -50,10 +50,14 @@ export default function PicturesSlider({userData, userIndex}) {
 				</div>
 				}
 			</Carousel>
-			<div className="absolute flex bottom-0 max-h-[80px] sm:h-[80px] w-full aspect-[5] bg-gray-800 bg-opacity-50 rounded-b-3xl text-white flex-col items-start justify-center px-6">
-				<div className="font-bold text-lg sm:text-xl">{data.firstname} {data.lastname}, {data.age} ans</div>
+			<div className="absolute bottom-0 left-0 right-0 bg-gray-800 bg-opacity-50 rounded-b-3xl text-white flex flex-col items-start justify-center px-6 py-3 space-y-1">
+				<div className="font-bold text-lg sm:text-xl break-words whitespace-normal w-full">
+					{data.firstname} {data.lastname}, {data.age} ans
+				</div>
 				{data.distance != null && data.distance != undefined && (
-					<div className="text-base sm:text-lg">{data.city}, {data.distance} km</div>
+				<div className="text-base sm:text-lg break-words whitespace-normal w-full">
+					{data.city}, {data.distance} km
+				</div>
 				)}
 			</div>
 		</div>
