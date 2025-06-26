@@ -3,12 +3,12 @@ const { IsString, MinLength, IsIn, Length, IsEmail, IsNumber, IsOptional} = requ
 class UpdateParametersDto {
     @IsOptional()
     @IsString()
-    @MinLength(1)
+    @Length(1, 20)
     firstname;
 
     @IsOptional()
     @IsString()
-    @MinLength(1)
+    @Length(1, 20)
     lastname;
 
     @IsOptional()
@@ -32,8 +32,8 @@ class UpdateParametersDto {
 
     @IsOptional()
     @IsString()
-  	@MinLength(10)
-  	password;
+    @MinLength(10)
+    password;
 
     @IsOptional()
     @IsNumber({ maxDecimalPlaces: 6 })

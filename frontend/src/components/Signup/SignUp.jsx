@@ -93,6 +93,8 @@ export default function SignUp() {
 
 		if (inputsStates.name.length == 0)
 			setShowValidation(state => ({...state, name: "Ce champ ne peut pas être vide"}))
+		else if (inputsStates.name.length > 20)
+			setShowValidation(state => ({...state, name: "Votre prénom doit contenir 20 caractères maximum"}))
 		else {
 			areValid.name = true
 			setShowValidation(state => ({...state, name: ""}))
@@ -100,6 +102,8 @@ export default function SignUp() {
 
 		if (inputsStates.lastname.length == 0)
 			setShowValidation(state => ({...state, lastname: "Ce champ ne peut pas être vide"}))
+		else if (inputsStates.lastname.length > 20)
+			setShowValidation(state => ({...state, lastname: "Votre nom doit contenir 20 caractères maximum"}))
 		else {
 			areValid.lastname = true
 			setShowValidation(state => ({...state, lastname: ""}))

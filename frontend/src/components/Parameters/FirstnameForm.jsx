@@ -11,7 +11,7 @@ export default function FirstnameForm({ data, setChangeSettings, errState, verif
 	return (
 		<>
 			<div className="flex flex-col mt-6 w-1/2">
-				<label className="font-poppins-light" htmlFor="firstname">Prénom</label>
+				<label className="font-poppins-light" htmlFor="firstname">Prénom{" "}<span className="text-sm font-poppins-light">(20 caractères max)</span></label>
 				<div className="flex items-center space-x-2">
 					<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 					placeholder={data.firstname === "" ? "Entrez votre prénom" : data.firstname}
@@ -22,10 +22,11 @@ export default function FirstnameForm({ data, setChangeSettings, errState, verif
 					value={inputState}
 					onChange={(e) => {
 						setVerified(false)
-						if (e.target.value.length > 0)
+						const cleanValue = e.target.value.trimStart().replace(/\s{2,}/g, ' ');
+						if (cleanValue.length > 0)
 							setChangeSettings(prev => ({
 								...prev,
-								firstname: e.target.value
+								firstname: cleanValue
 							}));
 						else {
 							setChangeSettings(prev => ({
@@ -33,7 +34,7 @@ export default function FirstnameForm({ data, setChangeSettings, errState, verif
 								firstname: null,
 							}));
 						}
-						setInputState(e.target.value)
+						setInputState(cleanValue)
 					}}
 					/>
 				</div>

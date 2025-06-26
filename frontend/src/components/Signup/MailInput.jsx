@@ -11,7 +11,7 @@ export default function MailInput({inputsStates, setInputsStates, showValidation
 				placeholder="Entrez une adresse mail"
 				autoComplete="email"
 				value={inputsStates.mail}
-				onChange={e => setInputsStates({...inputsStates, mail: e.target.value})}
+				onChange={e => setInputsStates({...inputsStates, mail: e.target.value.trimStart()})}
 			/>
 			{showValidation.mail != "" && (
 			<p className=" text-red-600 text-sm ">{showValidation.mail}</p>

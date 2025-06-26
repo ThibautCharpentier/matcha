@@ -6,11 +6,11 @@ class SignupDto {
 	username;
 
   	@IsString()
-  	@MinLength(1)
+  	@Length(1, 20)
   	firstname;
 
   	@IsString()
-  	@MinLength(1)
+  	@Length(1, 20)
   	lastname;
 
   	@IsEmail()
