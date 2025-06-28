@@ -23,13 +23,13 @@ export default function ModifyProfile({myData, setIsModalHobbiesOpen, setIsModal
 			<div className="bg-gray-700 rounded-3xl max-h-[185px] aspect-[400/185] sm:h-[185px]">
 				<div className="flex flex-row space-x-6 p-4">
 					<div 
-						className="relative w-[37.5%] h-auto border-2 border-white rounded-full"
+						className="relative w-[37.5%] flex justify-center items-center"
 						onClick={() => setIsModalPhotosOpen(true)}
 					>
 						{pathPicture != "" ?
-							<img src={`${API_URL}/${pathPicture}`} className="rounded-full" style={{userSelect: 'none'}}/>
+							<img src={`${API_URL}/${pathPicture}`} className="border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
 						:
-							<img src={profile} className="rounded-full" style={{userSelect: 'none'}}/>
+							<img src={profile} className="border-2 border-white rounded-full" style={{userSelect: 'none'}}/>
 						}
 						<div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
 							<svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

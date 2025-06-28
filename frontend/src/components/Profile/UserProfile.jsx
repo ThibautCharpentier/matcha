@@ -25,22 +25,24 @@ export default function UserProfile({userData, userIndex}) {
 	return (
 		<div className="w-full max-w-[400px] max-h-[550px] aspect-[8/11] sm:w-[400px] sm:h-[550px] bg-gray-700 flex flex-col rounded-3xl">
 			<div className="bg-gray-700 rounded-3xl">
-				<div className="flex flex-row space-x-6 p-4">
-					{picture != "" ?
-						<img
-							src={`${API_URL}/${picture}`}
-							className="w-[37.5%] h-auto border-2 border-white rounded-full"
-							style={{userSelect: 'none'}}
-							alt="Photo de profil"
-						/>
-					:
-						<img
-							src={profile}
-							className="w-[37.5%] h-auto m-4 border-2 border-white rounded-full"
-							style={{userSelect: 'none'}}
-							alt="Photo de profil"
-						/>
-					}
+				<div className="flex flex-row space-x-6 p-4 ">
+					<div className="w-[37.5%] flex justify-center items-center">
+						{picture != "" ?
+							<img
+								src={`${API_URL}/${picture}`}
+								className="border-2 border-white rounded-full"
+								style={{userSelect: 'none'}}
+								alt="Photo de profil"
+							/>
+						:
+							<img
+								src={profile}
+								className="m-4 border-2 border-white rounded-full"
+								style={{userSelect: 'none'}}
+								alt="Photo de profil"
+							/>
+						}
+					</div>
 					<div className="flex flex-col items-start justify-center text-white text-sm w-0 flex-grow">
 						<div className="break-all whitespace-normal">{userData[userIndex].firstname} {userData[userIndex].lastname}</div>
 						<div>{userData[userIndex].age} ans</div>
