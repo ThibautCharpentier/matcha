@@ -2,7 +2,7 @@ export default function NameInput({inputsStates, setInputsStates, showValidation
 
 	return (
 	<>
-		<label className="mt-3 sm font-poppins-medium" htmlFor="name">Prénom{" "} <span className="text-sm">(20 caractères max)</span></label>
+		<label className="mt-3 sm font-poppins-medium" htmlFor="name">Prénom{" "} <span className="text-sm">(maximun 20 caractères)</span></label>
 		<input
 		className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 		type="text"

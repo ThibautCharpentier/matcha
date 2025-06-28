@@ -25,7 +25,7 @@ export default function PasswordForm({setChangeSettings, errState, verified, set
 			<div className="flex flex-col mt-6">
 				<div className="flex items-center space-x-2">
 					<div className="w-full">
-						<label className="font-poppins-light" htmlFor="password">Nouveau mot de passe{" "}<span className="text-sm font-poppins-light">(minimum 10 caractères)</span></label>
+						<label className="font-poppins-light" htmlFor="password">Nouveau mot de passe{" "}<span className="text-xs font-poppins-light">(minimum 10 caractères)</span></label>
 						<div className="relative">
 							<input
 							className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
