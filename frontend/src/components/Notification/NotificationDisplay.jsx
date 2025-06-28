@@ -39,8 +39,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 			{notifs && notifs.map((notif, index) => (
 				(filterNotif === "vues" || filterNotif === "tout") && notif.action == "view" && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
@@ -61,8 +61,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 				) ||
 				(filterNotif === "likes" || filterNotif === "tout") && notif.action == "like" && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
@@ -83,8 +83,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 				) ||
 				(filterNotif === "matchs" || filterNotif === "tout") && notif.action == "match" && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
