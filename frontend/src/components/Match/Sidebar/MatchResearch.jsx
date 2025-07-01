@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuthentified } from "../../AuthentifiedContext";
 import axios from 'axios';
 import { API_ROUTES } from "../../../utils/constants";
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
@@ -26,6 +27,7 @@ function LocationMarker({position, setPosition}) {
 }
 
 export default function MatchResearch({closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch}) {
+	const { data } = useAuthentified();
 	const [filterAge, setFilterAge] = useState("");
 	const [filterLocation, setFilterLocation] = useState("");
 	const [filterFameRating, setFameRating] = useState("");
@@ -141,7 +143,20 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 	}
 
 	function handleSubmit() {
-		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${parseFloat(position.lat.toFixed(6))}&lng=${parseFloat(position.lng.toFixed(6))}&tags=${selectTags}&sort=${sortParameters()}&filter=${filterParameters()}`, {
+		let positionToSend
+		if (!position) {
+			positionToSend = {
+				lat: data.latitude,
+				lng: data.longitude
+			}
+		}
+		else {
+			positionToSend = {
+				lat: parseFloat(position.lat.toFixed(6)),
+				lng: parseFloat(position.lng.toFixed(6))
+			}
+		}
+		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${positionToSend.lat}&lng=${positionToSend.lng}&tags=${selectTags}&sort=${sortParameters()}&filter=${filterParameters()}`, {
 			withCredentials: true,
 		})
 		.then((res) => {

@@ -33,7 +33,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 
 	useEffect(() => {
 		if (conversations.length > 0) {
-
 			let newRecents = conversations.map((conv) => {
 				const lastMessage = conv.messages?.at(-1); 
 				const contactId = conv.user1 === idUser ? conv.user2 : conv.user1;
@@ -57,18 +56,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			}).filter(Boolean); 
 			newRecents.sort((a, b) => b.lastDate - a.lastDate);
 			setRecentsConversations(newRecents);
-
-			const allLastMessagesNotViewed = newRecents.every(conv => {
-				if (conv.chatId === roomSelected?.room_id)
-					return false
-				else if (conv.lastMessageSender === idUser)
-					return false;
-				return conv.viewMessage === false
-			});
-			if (allLastMessagesNotViewed)
-				setHasNewMessage(true);
-			else
-				setHasNewMessage(false);
 		}
 		else {
 			setRecentsConversations([]);

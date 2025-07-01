@@ -210,12 +210,6 @@ const removeInterestsNotInTab = async (userId, interestsId) => {
 	client.release();
 }
 
-const addUserInterest = async (userId, interestId) => {
-    const client = await pool.connect();
-	await client.query(`INSERT INTO public.user_interest (user_id, interest) VALUES ($1, $2) ON CONFLICT (user_id, interest) DO NOTHING`, [userId, interestId])
-	client.release();
-}
-
 const addAllUserInterests = async (userId, interestsId) => {
     const client = await pool.connect();
 	await client.query(`INSERT INTO public.user_interest (user_id, interest)
@@ -295,4 +289,4 @@ const getRecentsViews = async (id) => {
 	return res.rows;
 }
 
-module.exports = { insert, validateEmail, changeFirstname, changeLastname, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio, addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests, removeInterestsNotInTab, addUserInterest, addAllUserInterests, getProfileUser, getRecentsViews };
+module.exports = { insert, validateEmail, changeFirstname, changeLastname, changeUsername, changeFamerating, changeEmail, changePreferences, changeGps, changeLocation, changePassword, changeGender, changeBirthdate, changeBio, addProfilPicture, addPicture, updatePictures, connect, selectByUsername, selectByEmail, selectById, getData, getNameInterestsById, getGps, getInterestsId, removeAllInterests, removeInterestsNotInTab, addAllUserInterests, getProfileUser, getRecentsViews };

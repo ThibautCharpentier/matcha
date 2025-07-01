@@ -59,7 +59,7 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 						</div>
 					</div>
 				) ||
-				(filterNotif === "likes" || filterNotif === "tout") && notif.action == "like" && (
+				(filterNotif === "likes" || filterNotif === "tout") && (notif.action == "like" || notif.action == "unlike") && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
 						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
 							<div className="relative">
@@ -72,7 +72,7 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
+						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>{notif.action}</b> votre profil</p>
 						<div className="w-[33%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>

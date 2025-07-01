@@ -3,13 +3,12 @@ import MatchButtons from "./MatchButtons";
 import MatchParameters from "./MatchParameters";
 import PicturesSlider from "../Profile/PicturesSlider";
 import UserProfile from "../Profile/UserProfile";
-import ReportButton from "../Profile/ReportButton";
 import MatchOverlays from "./MatchOverlays";
 import MatchSidebar from "./Sidebar/MatchSidebar";
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import ClipLoader from "react-spinners/ClipLoader";
-import BtnReport from "../ActionWithUser/BtnReport";
+import BtnUnlikeBlockReport from "../ActionWithUser/BtnUnlikeBlockReport";
 
 export default function Match() {
 	const [isSidebarSortAndFilterOpen, setSidebarSortAndFilterOpen] = useState(false);
@@ -82,12 +81,14 @@ export default function Match() {
 												isResearch={isResearch}
 											/>
 											<div className="absolute right-1 top-4">
-												<ReportButton
-													toggleProfile={toggleProfile}
-													switchToggleProfile={switchToggleProfile}
-													userData={matchState}
-													userIndex={matchIndexState}
-													functionInterface={() => setMatchIndexState(matchIndexState + 1)}
+												<BtnUnlikeBlockReport
+													isLikeState={'unlike'}
+													idContact={matchState[matchIndexState].id}
+													functionDeleteContact={() => {
+														switchToggleProfile()
+														setMatchIndexState(matchIndexState + 1)
+													}}
+													color="#ffffff"
 												/>
 											</div>
 										</>

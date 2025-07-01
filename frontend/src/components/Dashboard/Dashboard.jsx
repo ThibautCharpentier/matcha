@@ -35,6 +35,9 @@ export default function Dashboard() {
                 setIsModalProfileUserOpen={setIsModalProfileUserOpen}
                 dataUser={dataUser}
                 setDataUser={setDataUser}
+                functionDeleteContact={() => {
+                    setIsModalProfileUserOpen(false)
+                }}
             />}
         </div>
     )

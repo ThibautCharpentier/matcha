@@ -22,37 +22,59 @@ import Parameters from "./components/Parameters/Parameters"
 import CompleteProfile from "./components/CompleteProfil/CompleteProfil"
 import Admin from "./components/Admin/Admin"
 import { AuthProvider } from "./components/AuthContext"
+import Error404 from "./components/Error404"
 
 function AppRoutes() {
 	const location = useLocation()
 
+	const validPaths = [
+		APP_ROUTES.WELCOME,
+		APP_ROUTES.SIGN_IN,
+		APP_ROUTES.SIGN_UP,
+		APP_ROUTES.DASHBOARD,
+		APP_ROUTES.MATCH,
+		APP_ROUTES.CONVERSATION,
+		APP_ROUTES.NOTIFICATION,
+		APP_ROUTES.COMPLETE_PROFILE,
+		APP_ROUTES.PARAMETERS,
+	];
+
 	return (
 		<>
-			{location.pathname == "/admin" ?
+			{location.pathname == "/admin" ? (
 				<Routes>
 					<Route exact path={ APP_ROUTES.ADMIN } element={<Admin />} />
 				</Routes>
-			:
-				<AuthProvider>
-					<AnimationBackground />
-					<Layout>
+			) : (
+				validPaths.includes(location.pathname) ? (
+					<AuthProvider>
+						<AnimationBackground />
+						<Layout>
+							<Routes>
+								<Route exact path={ APP_ROUTES.WELCOME } element={<NoAuthRoute element={<Welcome />} />} />
+								<Route exact path={ APP_ROUTES.SIGN_IN } element={<NoAuthRoute element={<SignIn />} />} />
+								<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
+								<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={<Dashboard />} />} />
+								<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={<Match />} />} />
+								<Route exact path={ APP_ROUTES.CONVERSATION } element={<AuthRoute element={<Conversation />} />} />
+								<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={<Notification />} />} />
+								<Route exact path={APP_ROUTES.COMPLETE_PROFILE} element={<CompleteProfileRoute element={<CompleteProfile />} />} />
+								<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={<Parameters />} />} />
+							</Routes>
+						</Layout>
+					</AuthProvider>
+				) : (
+					<>
+						<AnimationBackground />
 						<Routes>
-							<Route exact path={ APP_ROUTES.WELCOME } element={<NoAuthRoute element={<Welcome />} />} />
-							<Route exact path={ APP_ROUTES.SIGN_IN } element={<NoAuthRoute element={<SignIn />} />} />
-							<Route exact path={ APP_ROUTES.SIGN_UP } element={<NoAuthRoute element={<SignUp />} />} />
 							<Route exact path={ APP_ROUTES.TOKEN_MAIL } element={<TokenMail />} />
 							<Route exact path={ APP_ROUTES.TOKEN_PASSWORD } element={<TokenPassword />} />
 							<Route exact path={ APP_ROUTES.TOKEN_NEWMAIL } element={<TokenNewMail />} />
-							<Route exact path={ APP_ROUTES.DASHBOARD } element={<AuthRoute element={<Dashboard />} />} />
-							<Route exact path={ APP_ROUTES.MATCH } element={<AuthRoute element={<Match />} />} />
-							<Route exact path={ APP_ROUTES.CONVERSATION } element={<AuthRoute element={<Conversation />} />} />
-							<Route exact path={ APP_ROUTES.NOTIFICATION } element={<AuthRoute element={<Notification />} />} />
-							<Route exact path={APP_ROUTES.COMPLETE_PROFILE} element={<CompleteProfileRoute element={<CompleteProfile />} />} />
-							<Route exact path={ APP_ROUTES.PARAMETERS } element={<AuthRoute element={<Parameters />} />} />
+							<Route path="*" element={<Error404 />} />
 						</Routes>
-					</Layout>
-				</AuthProvider>
-			}
+					</>
+				)
+			)}
 		</>
 	)
 }

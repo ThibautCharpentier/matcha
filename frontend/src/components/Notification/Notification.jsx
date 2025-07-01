@@ -72,6 +72,9 @@ export default function Notification() {
 					setIsModalProfileUserOpen={setIsModalProfileUserOpen}
 					dataUser={dataUser}
 					setDataUser={setDataUser}
+					functionDeleteContact={() => {
+                        setIsModalProfileUserOpen(false)
+                    }}
 				/>}
 			</div>
 		</>

@@ -3,11 +3,10 @@ import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import PicturesSlider from "./PicturesSlider";
 import UserProfile from "./UserProfile";
-import ReportButton from "./ReportButton";
 import ClipLoader from "react-spinners/ClipLoader";
 import BtnUnlikeBlockReport from "../ActionWithUser/BtnUnlikeBlockReport";
 
-export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProfileUserOpen, dataUser, setDataUser}) {
+export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProfileUserOpen, dataUser, setDataUser, functionDeleteContact}) {
     const [toggleProfile, setToggleProfile] = useState(false);
     const [isLikeState, setIsLikeState] = useState(null)
     const [reload, setReload] = useState(true)
@@ -27,40 +26,6 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
 			if (res.status != 200)
 				throw new Error('Une erreur est survenue');
 			switchToggleProfile()
-		})
-		.catch((err) => {
-			console.log(err)
-		});
-	}
-
-    function unlikeMatch() {
-		const obj = {
-			target: dataUser[0].id
-		}
-		axios.post(API_ROUTES.DISLIKE, obj, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-            setReload(!reload)
-		})
-		.catch((err) => {
-			console.log(err)
-		});
-	}
-
-	function likeMatch() {
-		const obj = {
-			target: dataUser[0].id
-		}
-		axios.post(API_ROUTES.LIKE, obj, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-            setReload(!reload)
 		})
 		.catch((err) => {
 			console.log(err)
@@ -137,9 +102,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
                                         isLikeState={isLikeState}
                                         setIsLikeState={setIsLikeState}
                                         idContact={dataUser[0].id}
-                                        functionDeleteContact={() => {
-                                            setIsModalProfileUserOpen(false)
-                                        }}
+                                        functionDeleteContact={functionDeleteContact}
                                         color="#ffffff"
                                     />
                                     </div>

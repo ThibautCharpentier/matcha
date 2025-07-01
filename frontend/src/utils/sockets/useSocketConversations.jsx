@@ -43,9 +43,8 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
                             return lastMessage.view != false;
                         }
                     });
-                    if (!allLastMessagesViewed) {
+                    if (!allLastMessagesViewed)
                         setHasNewMessage(true);
-                    }
                 }
                 setConversations(res);
             }

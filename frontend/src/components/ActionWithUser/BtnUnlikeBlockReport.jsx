@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { API_ROUTES } from "../../utils/constants";
 import axios from 'axios';
 import ModalBlock from './ModalBlock';
@@ -10,6 +10,13 @@ export default function BtnUnlikeBlockReport({isLikeState, setIsLikeState, idCon
     const [isModalUnlikeOpen, setIsModalUnlikeOpen ] = useState(false);
     const [isModalBlockOpen, setIsModalBlockOpen ] = useState(false);
     const [isModalReportOpen, setIsModalReportOpen ] = useState(false);
+    const menuRef = useRef(null);
+
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setActivateDots(false);
+        }
+    };
 
     function likeMatch() {
 		const obj = {
@@ -27,6 +34,18 @@ export default function BtnUnlikeBlockReport({isLikeState, setIsLikeState, idCon
 			console.log(err)
 		});
 	}
+
+    useEffect(() => {
+        if (activateDots) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [activateDots]);
     
     return (
         <>
@@ -35,7 +54,7 @@ export default function BtnUnlikeBlockReport({isLikeState, setIsLikeState, idCon
                     <svg width="24px" height="24px" viewBox="0 0 24 24" id="three-dots" xmlns="http://www.w3.org/2000/svg" fill={color}><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="_20x20_three-dots--grey" data-name="20x20/three-dots--grey" transform="translate(24) rotate(90)"> <rect id="Rectangle" width="24" height="24" fill="none"></rect> <circle id="Oval" cx="1" cy="1" r="1" transform="translate(5 11)" stroke={color} strokeMiterlimit="10" strokeWidth="0.5"></circle> <circle id="Oval-2" data-name="Oval" cx="1" cy="1" r="1" transform="translate(11 11)" stroke={color} strokeMiterlimit="10" strokeWidth="0.5"></circle> <circle id="Oval-3" data-name="Oval" cx="1" cy="1" r="1" transform="translate(17 11)" stroke={color} strokeMiterlimit="10" strokeWidth="0.5"></circle> </g> </g></svg>
                 </button>
                 {activateDots && (
-                    <div className='absolute z-10  bg-white border border-gray-300 rounded-md shadow-md overflow-y-auto right-0 w-48 flex flex-col items-start'>
+                    <div ref={menuRef} className='absolute z-10  bg-white border border-gray-300 rounded-md shadow-md overflow-y-auto right-0 w-48 flex flex-col items-start'>
                     {isLikeState === "like" && (
                         <button
                             className='flex flex-row items-center hover:bg-gray-100 w-full cursor-pointer p-2'
@@ -45,7 +64,7 @@ export default function BtnUnlikeBlockReport({isLikeState, setIsLikeState, idCon
                             <p className='ml-1'>Retirer le like</p>
                         </button>
                     )}
-                    {isLikeState === "dislike" || isLikeState === "nothing" && (
+                    {(isLikeState === "dislike" || isLikeState === "nothing") && (
                         <button
                             className='flex flex-row items-center hover:bg-gray-100 w-full cursor-pointer p-2'
                             onClick={likeMatch}

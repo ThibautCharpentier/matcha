@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const user = require('../db/user');
+const interest = require('../db/interests')
 const matchs = require('../db/matchs');
 const admin = require('../db/admin');
 const notif = require('../db/notifications');
@@ -62,7 +63,7 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 			tagsTab = []
 
 		for (let i = 0; i < tagsTab.length; i++) {
-			let tmp = await user.getInterestIdbyInterestName(tagsTab[i])
+			let tmp = await interest.getInterestIdbyInterestName(tagsTab[i])
 			tagsIdTab.push(tmp)
 		}
 		let res_user = await user.selectById(req.user_id);
@@ -70,6 +71,7 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 		res_query = await matchs.getResearch(res_user, sortValues, filterValues, tagsIdTab, {lat, lng});
 	}
 	catch (err) {
+		console.log(err)
 		return res.status(400).json({message: err});
 	}
 	return res.status(200).json({message: res_query});

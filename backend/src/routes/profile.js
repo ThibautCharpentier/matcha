@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const fs = require('fs');
 const { validateDto } = require('../dto/validatedto');
 const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
@@ -125,21 +126,33 @@ router.patch('/notifverified', jwtrequired(), async (req, res) => {
 router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), validateDto(CompleteProfileDto), async (req, res) => {
 	const { gender, preferences, birthdate, interest } = req.body;
     const files = req.files;
+
     try {
         await user.changeGender(req.user_id, gender);
         await user.changePreferences(req.user_id, preferences);
         await user.changeBirthdate(req.user_id, birthdate);
-        if (files && files.length > 0)
-            await user.addProfilPicture(req.user_id, files[0].path);
-        for (let i = 1; i < files.length; i++)
-            await user.addPicture(req.user_id, files[i].path);
-        if (Array.isArray(interest)) {
-            for (let i = 0; i < interest.length; i++) {
-                let interestId = await interests.getInterestIdbyInterestName(interest[i]);
-                if (interestId)
-                    await user.addUserInterest(req.user_id, interestId);
-            }
+		const res_query = await user.selectById(req.user_id);
+		let imagesToDelete
+		if (res_query.pictures)
+			imagesToDelete = res_query.pictures;
+		else
+			imagesToDelete = []
+        for (let imagePath of imagesToDelete) {
+            const pathToDelete = imagePath;
+            if (fs.existsSync(pathToDelete))
+                fs.unlinkSync(pathToDelete);
         }
+		if (res_query.picture_profile && fs.existsSync(res_query.picture_profile))
+            fs.unlinkSync(res_query.picture_profile);
+        if (files && files.length > 0) {
+            await user.addProfilPicture(req.user_id, files[0].path);
+        	await user.updatePictures(req.user_id, files.slice(1).map(file => file.path));
+		}
+		if (interest.length > 0) {
+			let idInterests = await interests.getTabInteretsIdbyTabInterestName(interest);
+			await user.removeInterestsNotInTab(req.user_id, idInterests);
+			await user.addAllUserInterests(req.user_id, idInterests);
+		}
     } catch (err) { 
         console.error(err);
         return res.status(400).json({ message: 'Invalid data' });
@@ -227,17 +240,19 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
 			imagesToDelete = []
 
         for (let imagePath of imagesToDelete) {
-            const fs = require('fs');
             const pathToDelete = imagePath;
-
             if (fs.existsSync(pathToDelete))
                 fs.unlinkSync(pathToDelete);
         }
-		if (modifyProfilePicture)
+		if (modifyProfilePicture) {
+			if (fs.existsSync(res_query.picture_profile))
+                fs.unlinkSync(res_query.picture_profile);
 			await user.addProfilPicture(req.user_id, finalPictures[0]);
+		}
 		await user.updatePictures(req.user_id, finalPictures.slice(1));
     } catch (err) {
-        console.error("Erreur lors de la récupération des images de la base de données :", err);
+        console.error(err);
+		return res.status(400).json({ message: 'Invalid data' });
     }
 
     return res.status(200).json({message: 'OK'});

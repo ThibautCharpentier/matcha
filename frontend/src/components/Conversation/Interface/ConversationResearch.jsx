@@ -7,6 +7,7 @@ export default function ConversationTags({ setRoomSelected }) {
 	const { contacts } = useAuthentified();
 	const [inputSearchContact, setInputSearchContact] = useState('');
 	const [filteredContacts, setFilteredContacts] = useState([]);
+	const [displayResearch, setDisplayResearch] = useState(false)
 
 	useEffect(() => {
 		if (inputSearchContact.length < 3) {
@@ -74,9 +75,15 @@ export default function ConversationTags({ setRoomSelected }) {
                         handleSelectContact(filteredContacts[0]);
                     }
                 }}
+				onFocus={() => {
+					setDisplayResearch(true)
+				}}
+				onBlur={() => {
+					setTimeout(() => {setDisplayResearch(false)}, 100)
+				}}
 				/>
 			</div>
-			{filteredContacts.length > 0 && (
+			{filteredContacts.length > 0 && displayResearch && (
 				<div className="absolute z-10 bg-white border border-gray-300 rounded-md shadow-md max-h-96 overflow-y-auto w-[calc(100%-2.5rem)] ml-5">
 					{filteredContacts.map((contact, index) => (
 						<div
