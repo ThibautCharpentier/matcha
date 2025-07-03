@@ -8,7 +8,7 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 	const [tagConv, setTagConv] = useState("récents");
 	
 	return (
-		<div className={`max-h-screen w-full sm:w-5/12 lg:w-1/4 flex flex-col ${roomSelected != null && "hidden sm:flex"}`}>
+		<div className={`max-h-screen w-full md:w-1/4 lg:w-1/4 flex-col ${roomSelected != null && "hidden md:flex"}`}>
 			<ConversationResearch 
 				setRoomSelected={setRoomSelected}
 			/>
@@ -16,12 +16,14 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 				tagConv={tagConv}
 				setTagConv={setTagConv}
 			/>
-			<div className='flex-grow overflow-y-auto'>
+			<div className='flex-grow'>
 				{tagConv == "récents" ?
-				<ConversationRecent
-					roomSelected={roomSelected}
-					setRoomSelected={setRoomSelected}
-				/>
+				<>
+					<ConversationRecent
+						roomSelected={roomSelected}
+						setRoomSelected={setRoomSelected}
+					/>
+				</>
 				:
 				<>
 					{contacts.map(contact => (

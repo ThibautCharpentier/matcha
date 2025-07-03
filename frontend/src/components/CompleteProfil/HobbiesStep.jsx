@@ -29,7 +29,7 @@ export default function HobbiesStep({nextStep, infosUser}) {
             <div className="mb-5 mt-3">
                 <ul className="flex flex-wrap">
                 {passions.map(passion => (
-                    <li key={passion} className="text-md rounded-xl border p-2 border-[--color-pink] mr-2 mb-2">{passion}</li>
+                    <li key={passion} className="text-md rounded-xl border p-2 border-[--color-dark-green] bg-[--color-dark-green] mr-2 mb-2">{passion}</li>
                 ))}
                 </ul>
             </div>

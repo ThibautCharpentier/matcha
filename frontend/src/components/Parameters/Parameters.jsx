@@ -16,6 +16,7 @@ import { API_ROUTES } from "../../utils/constants";
 import BeatLoader from "react-spinners/BeatLoader";
 import { showErrorData, showSuccess } from "../../utils/toastUtils";
 
+
 export default function Parameters() {
 	const { data } = useAuthentified();
 	const [isGpsVisible, setIsGpsVisible] = useState(data.gps);
@@ -43,6 +44,8 @@ export default function Parameters() {
 	})
 	const [verified, setVerified] = useState(false);
 	const [hasSubmit, setHasSubmit] = useState(false)
+	
+	console.log(changeSettings);
 
 	useEffect(() => {
 		setIsGpsVisible(data.gps)
@@ -73,7 +76,8 @@ export default function Parameters() {
 			position: false,
 		}
 
-		if (changeSettings.firstname != null && changeSettings.firstname.length < 1) {
+		console.log(changeSettings.firstname)
+		if (changeSettings.firstname != null && (changeSettings.firstname.length < 1 || changeSettings.firstname.length > 20)) {
 			setErrorState(prev => ({
 				...prev,
 				firstname: "Ce champ ne peut pas être vide"
@@ -87,7 +91,7 @@ export default function Parameters() {
 			}))
 		}
 
-		if (changeSettings.lastname != null && changeSettings.lastname.length < 1) {
+		if (changeSettings.lastname != null && (changeSettings.lastname.length < 1 || changeSettings.lastname.length > 20)) {
 			setErrorState(prev => ({
 				...prev,
 				lastname: "Ce champ ne peut pas être vide"

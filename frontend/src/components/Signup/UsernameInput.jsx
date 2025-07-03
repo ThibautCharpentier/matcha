@@ -14,7 +14,7 @@ export default function UsernameInput({inputsStates, setInputsStates, showValida
 			autoComplete="username"
 			placeholder="Entrez un nom d'utilisateur"
 			value={inputsStates.username}
-			onChange={e => setInputsStates({...inputsStates, username: e.target.value})}
+			onChange={e => setInputsStates({...inputsStates, username: e.target.value.trimStart() })}
 			/>
 			{showValidation.username != "" && (
 				<p className=" text-red-600 text-sm ">{showValidation.username}</p>

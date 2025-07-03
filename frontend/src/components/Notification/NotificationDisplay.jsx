@@ -39,8 +39,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 			{notifs && notifs.map((notif, index) => (
 				(filterNotif === "vues" || filterNotif === "tout") && notif.action == "view" && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
@@ -50,8 +50,12 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b> a <b>vu</b> votre profil</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
+						)}
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -61,8 +65,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 				) ||
 				(filterNotif === "likes" || filterNotif === "tout") && (notif.action == "like" || notif.action == "unlike") && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
@@ -72,8 +76,12 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> a <b>{notif.action}</b> votre profil</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b> a <b>{notif.action}</b> votre profil</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>{notif.action}</b> votre profil</p>
+						)}
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -83,8 +91,8 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 				) ||
 				(filterNotif === "matchs" || filterNotif === "tout") && notif.action == "match" && (
 					<div key={index} className="relative mt-1 flex flex-row bg-gray-50 w-full sm:w-[495px] rounded-full space-x-3">
-						<div className="min-w-[17%] max-w-[20%] h-auto m-2 border-2 border-gray-500 rounded-full">
-							<div className="relative">
+						<div className="min-w-[17%] max-w-[20%] m-2 flex items-center justify-center">
+							<div className="relative border-2 rounded-full border-gray-500 ">
 								{notif.picture_profile ?
 									<img style={{userSelect: 'none'}} src={`${API_URL}/${notif.picture_profile}`} className="rounded-full"/>
 								:
@@ -94,8 +102,12 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center"><b>{notif.firstname} {notif.lastname}</b> <b>match</b> avec vous</p>
-						<div className="w-[33%] self-center flex-grow flex justify-end">
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b><b> match</b> avec vous</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> <b> match</b> avec vous</p>
+						)}
+						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
 						<div className="w-full absolute flex items-center justify-end -translate-x-3 inset-0 bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">

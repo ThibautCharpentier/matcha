@@ -55,7 +55,7 @@ export default function ModalHobbies({ isOpen, onClose, onSave, passions }) {
 					{interestNames.map(passion => (
 					<button
 					key={passion}
-					className={`text-md rounded-xl border p-2 mx-2 mb-2 ${selectedPassions?.includes(passion) && 'border-[--color-pink]' }`}
+					className={`text-md rounded-xl border p-2 mx-2 mb-2 ${selectedPassions?.includes(passion) && 'border-[--color-dark-green] bg-[--color-light-green]' }`}
 					onClick={() => handlePassionClick(passion)}
 					>
 					{passion}

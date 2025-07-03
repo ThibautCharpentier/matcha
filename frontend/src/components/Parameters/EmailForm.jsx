@@ -17,10 +17,11 @@ export default function EmailForm({ data, setChangeSettings, errState, verified,
 					value={inputState}
 					onChange={(e) => {
 						setVerified(false)
-						if (e.target.value.length > 0)
+						const cleanValue = e.target.value.trimStart();
+						if (cleanValue.length > 0)
 							setChangeSettings(prev => ({
 								...prev,
-								mail: e.target.value
+								mail: cleanValue
 							}));
 						else {
 							setChangeSettings(prev => ({
@@ -28,7 +29,7 @@ export default function EmailForm({ data, setChangeSettings, errState, verified,
 								mail: null,
 							}));
 						}
-						setInputState(e.target.value)
+						setInputState(cleanValue)
 					}}
 					/>
 				</div>
