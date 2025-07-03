@@ -33,7 +33,7 @@ export default function Conversation() {
 
 	return (
 		<div className="w-full h-screen bg-gray-50 border-gray-300 border-l-[1px]">
-			<div className="flex flex-row">
+			<div className="flex flex-row w-full">
 				<ConversationInterface
 					contacts={contacts}
 					roomSelected={roomSelected}

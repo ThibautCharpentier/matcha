@@ -8,7 +8,7 @@ export default function ConversationInterface({ contacts, roomSelected, setRoomS
 	const [tagConv, setTagConv] = useState("récents");
 	
 	return (
-		<div className={`max-h-screen w-full md:w-1/4 lg:w-1/4 flex-col ${roomSelected != null && "hidden md:flex"}`}>
+		<div className={`max-h-screen w-full md:max-w-64 lg:w-1/3 lg:min-w-64 flex-col ${roomSelected != null && "hidden md:flex"}`}>
 			<ConversationResearch 
 				setRoomSelected={setRoomSelected}
 			/>
