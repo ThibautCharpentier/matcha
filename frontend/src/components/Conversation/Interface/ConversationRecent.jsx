@@ -25,9 +25,11 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	};
 
 	const truncLastMessage = (message) => {
-		let truncMessage = message.slice(0, 40);
-		if (message.length > 40)
+		let truncMessage = message.slice(0, 30);
+		if (message.length > 30)
 			truncMessage = truncMessage + "...";
+		console.log(message);
+		console.log(truncMessage)
 		return truncMessage;
 	}
 
@@ -76,7 +78,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}, [conversations])
 
 	return (
-		<div className="overflow-y-auto">
+		<div className="overflow-y-auto flex-grow">
 		{recentsConversations.map(conv => (
 			<div
 			key={conv.chatId}
@@ -105,8 +107,8 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 					className="w-14 h-14 rounded-full flex-shrink-0 mr-3"
 					style={{ userSelect: 'none' }}
 				/>
-				<div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-					<p className="text-sm font-medium truncate">{conv.firstname} {conv.lastname}</p>
+				<div className="flex flex-col min-w-0 overflow-hidden">
+					<p className="text-sm font-medium truncate w-full">{truncLastMessage(conv.firstname + " " + conv.lastname)}</p>
 					<div className="flex items-center text-sm text-gray-500 w-full min-w-0 overflow-hidden max-w-full">
 						<p className={`truncate break-all flex-1 min-w-0 overflow-hidden text-ellipsis ${conv.chatId != roomSelected?.room_id && !conv.viewMessage && conv.lastMessageSender != idUser && 'font-semibold text-black'}`}>
 							{conv.lastMessageSender === idUser &&

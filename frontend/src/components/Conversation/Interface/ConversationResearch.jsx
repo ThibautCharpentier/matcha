@@ -46,7 +46,7 @@ export default function ConversationTags({ setRoomSelected }) {
 		if (lower.startsWith(search)) {
 			return (
 				<>
-					<strong>{text.slice(0, search.length)}</strong>
+					<span className="text-[--color-pink] font-bold">{text.slice(0, search.length)}</span>
 					{text.slice(search.length)}
 				</>
 			);
@@ -86,7 +86,7 @@ export default function ConversationTags({ setRoomSelected }) {
 								handleSelectContact(contact);
 							}}
 						>
-							<img src={contact.picture_profil ? API_URL + "/" + contact.picture_profil : profile} className="w-[17%] h-auto m-2 mx-3 rounded-full" style={{userSelect: 'none'}}/>
+							<img src={contact.picture_profil ? API_URL + "/" + contact.picture_profil : profile} className="w-14 h-auto m-2 ml-0 rounded-full" style={{userSelect: 'none'}}/>
 							<p className="">{highlight(contact.firstname)} {highlight(contact.lastname)}</p>
 						</div>
 					))}

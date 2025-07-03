@@ -23,7 +23,7 @@ export default function ModalPhotos({ isOpen, onClose, onSave, photos, picture_p
 
     const handleDeleteImage = (index) => {
         const updatedImages = [...croppedImages];
-        updatedImages[index] = null; // Remplacer l'image par null
+        updatedImages[index] = null;
         if (index === 0 && updatedImages[index + 1] != null)
             updatedImages[index + 1] = null;
         setCroppedImages(updatedImages);

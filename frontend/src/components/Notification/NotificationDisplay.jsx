@@ -50,7 +50,11 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b> a <b>vu</b> votre profil</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>vu</b> votre profil</p>
+						)}
 						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
@@ -72,7 +76,11 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b> a <b>like</b> votre profil</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> a <b>like</b> votre profil</p>
+						)}
 						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>
@@ -94,7 +102,11 @@ export default function NotificationDisplay({filterNotif, notifs, getProfileUser
 								</div>
 							</div>
 						</div>
-						<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> <b>match</b> avec vous</p>
+						{notif.firstname.length + notif.lastname.length > 13 ? (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname[0]}.</b><b> match</b> avec vous</p>
+						): (
+							<p className="self-center w-[60%]"><b className="break-all">{notif.firstname} {notif.lastname}</b> <b> match</b> avec vous</p>
+						)}
 						<div className="w-[20%] self-center flex-grow flex justify-end">
 							<p className="text-gray-500 text-sm mr-6 ml-4">{findTimeNotif(notif.created)}</p>
 						</div>

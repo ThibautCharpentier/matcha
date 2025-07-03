@@ -1,5 +1,6 @@
 import { API_URL} from "../../utils/constants";
 import profile from '../../assets/images/img_profile.png';
+import NameBlock from "./NameBlock";
 
 export default function UserProfile({userData, userIndex}) {
     const picture = userData[userIndex]?.picture_profile || "";
@@ -44,7 +45,10 @@ export default function UserProfile({userData, userIndex}) {
 						}
 					</div>
 					<div className="flex flex-col items-start justify-center text-white text-sm w-0 flex-grow">
-						<div className="break-all whitespace-normal">{userData[userIndex].firstname} {userData[userIndex].lastname}</div>
+						<NameBlock
+							firstname={userData[userIndex].firstname}
+							lastname={userData[userIndex].lastname}
+						/>
 						<div>{userData[userIndex].age} ans</div>
 						<div>{userData[userIndex].city}</div>
 						<div className="flex space-x-1 flex-row mt-3">

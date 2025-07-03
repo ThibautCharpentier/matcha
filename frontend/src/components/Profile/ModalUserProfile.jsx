@@ -85,7 +85,7 @@ export default function ModalUserProfile({isModalProfileUserOpen, setIsModalProf
     }, [reload])
 
     return (
-        <div className={`fixed inset-0 flex items-center justify-center z-50 ${isModalProfileUserOpen ? 'block' : 'hidden'}`}>
+        <div className={`fixed inset-0 flex items-center justify-center z-20 ${isModalProfileUserOpen ? 'block' : 'hidden'}`}>
             <div className="bg-gray-800 bg-opacity-50 absolute inset-0" onClick={() => {
                 setDataUser(null)
                 setIsModalProfileUserOpen(false)
