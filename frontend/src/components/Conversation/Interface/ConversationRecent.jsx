@@ -28,8 +28,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 		let truncMessage = message.slice(0, 30);
 		if (message.length > 30)
 			truncMessage = truncMessage + "...";
-		console.log(message);
-		console.log(truncMessage)
 		return truncMessage;
 	}
 

@@ -17,8 +17,6 @@ export default function ConversationMessage({roomSelected, setRoomSelected, getP
 		let truncMessage = message.slice(0, 20);
 		if (message.length > 20)
 			truncMessage = truncMessage + "...";
-		console.log(message);
-		console.log(truncMessage)
 		return truncMessage;
 	}
 	

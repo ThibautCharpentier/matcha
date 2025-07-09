@@ -44,8 +44,6 @@ export default function Parameters() {
 	})
 	const [verified, setVerified] = useState(false);
 	const [hasSubmit, setHasSubmit] = useState(false)
-	
-	console.log(changeSettings);
 
 	useEffect(() => {
 		setIsGpsVisible(data.gps)
@@ -76,7 +74,6 @@ export default function Parameters() {
 			position: false,
 		}
 
-		console.log(changeSettings.firstname)
 		if (changeSettings.firstname != null && (changeSettings.firstname.length < 1 || changeSettings.firstname.length > 20)) {
 			setErrorState(prev => ({
 				...prev,

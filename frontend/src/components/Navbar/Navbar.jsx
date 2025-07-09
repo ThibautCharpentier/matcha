@@ -83,7 +83,7 @@ const Navbar = ({ hasNewNotif, hasNewMessage }) => {
 										{hasNewMessage && <span className="absolute top-0 right-0 sm:right-1 w-3 h-3 bg-[--color-dark-green] rounded-full"></span>
 										}
 									</div>	
-									<span className={`hidden lg:block ${isActive && 'text-gray-900'}`}>Messageries</span>
+									<span className={`hidden lg:block ${isActive && 'text-gray-900'}`}>Messagerie</span>
 									</>
 									)}  
 								</NavLink>
