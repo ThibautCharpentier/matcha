@@ -124,13 +124,14 @@ router.patch('/notifverified', jwtrequired(), async (req, res) => {
 });
 
 router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), validateDto(CompleteProfileDto), async (req, res) => {
-	const { gender, preferences, birthdate, interest } = req.body;
+	const { gender, preferences, birthdate, bio, interest } = req.body;
     const files = req.files;
 
     try {
         await user.changeGender(req.user_id, gender);
         await user.changePreferences(req.user_id, preferences);
         await user.changeBirthdate(req.user_id, birthdate);
+        await user.changeBio(req.user_id, bio);
 		const res_query = await user.selectById(req.user_id);
 		let imagesToDelete
 		if (res_query.pictures)
@@ -146,7 +147,7 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
             fs.unlinkSync(res_query.picture_profile);
         if (files && files.length > 0) {
             await user.addProfilPicture(req.user_id, files[0].path);
-        	await user.updatePictures(req.user_id, files.slice(1).map(file => file.path));
+			await user.updatePictures(req.user_id, files.slice(1).map(file => file.path));
 		}
 		if (interest.length > 0) {
 			let idInterests = await interests.getTabInteretsIdbyTabInterestName(interest);
