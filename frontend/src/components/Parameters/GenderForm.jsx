@@ -38,7 +38,7 @@ export default function GenderForm({ data, setChangeSettings, errState, setVerif
 					</div>
 				</div>
 				{errState != "" && (
-				<p className=" text-red-600 text-sm ">{errState}</p>
+				<p className=" text-[--color-pink] text-sm ">{errState}</p>
 				)}
 			</div>
 		</>

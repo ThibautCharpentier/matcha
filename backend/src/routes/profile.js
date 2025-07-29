@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const { validateDto } = require('../dto/validatedto');
@@ -67,7 +68,7 @@ router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), a
 });
 
 router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto), async (req, res) => {
-	const { firstname, lastname, gender, preferences, username, email, password, lat, lng, city } = req.body;
+	const { firstname, lastname, gender, preferences, username, email, currentPassword, password, lat, lng, city } = req.body;
 	try {
 		if (username) {
 			const res_query = await user.selectByUsername(username);
@@ -89,10 +90,16 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 			await user.changeGender(req.user_id, gender);
 		if (preferences)
 			await user.changePreferences(req.user_id, preferences);
-		if (password)
-			await user.changePassword(req.user_id, password);
 		if (lat && lng && city)
 			await user.changeLocation(req.user_id, { lat, lng, city });
+		if (currentPassword) {
+			let res_query = await user.selectById(req.user_id);
+			
+			if (!bcrypt.compareSync(currentPassword, res_query.password))
+				return res.status(400).json({message: 'Invalid password'});
+			if (password)
+				await user.changePassword(req.user_id, password);
+		}
 	}
 	catch (err) {
 		console.log(err);
