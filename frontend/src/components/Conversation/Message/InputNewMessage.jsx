@@ -1,7 +1,5 @@
 import { useState, useRef } from 'react';
-import { API_URL } from '../../../utils/constants';
 import Request from '../../../utils/request';
-import { useAuthentified } from '../../AuthentifiedContext';
 
 export default function InputNewMessage({roomSelected}) {
     const [newMessage, setNewMessage] = useState("");

@@ -4,7 +4,7 @@ import { API_URL } from '../../../utils/constants';
 import { useAuthentified } from "../../AuthentifiedContext";
 
 export default function ConversationRecent({roomSelected, setRoomSelected}) {
-	const { conversations, contacts, idUser, setHasNewMessage } = useAuthentified();
+	const { conversations, contacts, idUser } = useAuthentified();
 	const [recentsConversations, setRecentsConversations] = useState([]);
 
 	const formatRelativeDate = (date) => {
@@ -32,7 +32,7 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 	}
 
 	useEffect(() => {
-		if (conversations.length > 0) {
+		if (contacts && conversations && conversations.length > 0) {
 			let newRecents = conversations.map((conv) => {
 				const lastMessage = conv.messages?.at(-1); 
 				const contactId = conv.user1 === idUser ? conv.user2 : conv.user1;
@@ -40,7 +40,6 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			
 				if (!lastMessage || !contact) return null;
 		
-			
 				return {
 					chatId: conv.chatId,
 					contactId: contact.user_id,
@@ -57,10 +56,9 @@ export default function ConversationRecent({roomSelected, setRoomSelected}) {
 			newRecents.sort((a, b) => b.lastDate - a.lastDate);
 			setRecentsConversations(newRecents);
 		}
-		else {
+		else
 			setRecentsConversations([]);
-		}
-	}, [conversations])
+	}, [conversations, contacts])
 
 	return (
 		<div className="overflow-y-auto flex-grow">

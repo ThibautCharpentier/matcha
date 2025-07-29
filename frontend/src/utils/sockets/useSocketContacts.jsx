@@ -14,7 +14,7 @@ export const useSocketContacts = (isAuthenticated, setContacts) => {
 				repeat.current = setInterval(() => {
 					if (socketContactsRef.current.readyState === WebSocket.OPEN)
 						socketContactsRef.current.send("CONTACT");
-				}, 100);
+				}, 1000);
 			}
 
 			socketContactsRef.current.onmessage = (event) => {

@@ -35,8 +35,8 @@ export default function AuthentifiedProvider({ children }) {
 		city: "",
 		interest: []
 	})
-	const [contacts, setContacts] = useState([])
-	const [conversations, setConversations] = useState([]);
+	const [contacts, setContacts] = useState(null)
+	const [conversations, setConversations] = useState(null);
 	const [idUser, setIdUser] = useState(null);
 
 	const contextClass = {

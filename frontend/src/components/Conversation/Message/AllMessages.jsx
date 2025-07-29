@@ -67,6 +67,8 @@ export default function AllMessages({ roomId, roomSelected}) {
     }, [messageLimit]);
     
     useEffect(() => {
+        if (!conversations)
+            return
         const convRoomId = conversations.find(conv => conv.chatId === roomId);
         const lastMessage = convRoomId?.messages[convRoomId?.messages.length - 1] || null;
 

@@ -1,26 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import AllMessages from './AllMessages';
 import profile from '../../../assets/images/img_profile.png';
 import { API_URL } from '../../../utils/constants';
 import InputNewMessage from './InputNewMessage';
 import BtnUnlikeBlockReport from '../../ActionWithUser/BtnUnlikeBlockReport';
-import NameBlock from '../../Profile/NameBlock';
 
 export default function ConversationMessage({roomSelected, setRoomSelected, getProfileUser}) {
 	const pathPicture = API_URL + "/" + roomSelected?.contact_picture_profile;
-	const nameRef = useRef(null);
-		const [isOverflowing, setIsOverflowing] = useState(false);
-		const [showTooltip, setShowTooltip] = useState(false);
-		const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-		const truncLastMessage = (message) => {
-		let truncMessage = message.slice(0, 20);
-		if (message.length > 20)
-			truncMessage = truncMessage + "...";
-		return truncMessage;
-	}
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 	
-		const getTruncatedName = (firstname, lastname, width) => {
+	const getTruncatedName = (firstname, lastname, width) => {
 		let maxChars = 15; // default
 
 		if (width < 640) maxChars = 10;       // xs
@@ -40,16 +29,7 @@ export default function ConversationMessage({roomSelected, setRoomSelected, getP
 		return fullName;
 	};
 		
-		useEffect(() => {
-			const el = nameRef.current;
-			if (el && el.scrollWidth > el.clientWidth) {
-				setIsOverflowing(true);
-			} else {
-				setIsOverflowing(false);
-			}
-		}, [roomSelected?.contact_firstname, roomSelected?.contact_lastname]);
-		
-			useEffect(() => {
+	useEffect(() => {
 		const handleResize = () => setWindowWidth(window.innerWidth);
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);

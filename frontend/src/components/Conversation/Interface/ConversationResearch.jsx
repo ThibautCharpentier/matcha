@@ -14,7 +14,8 @@ export default function ConversationTags({ setRoomSelected }) {
 			setFilteredContacts([]);
 			return ;
 		}
-
+		if (!contacts)
+			return
 		const filtered = contacts.filter(contact => {
 			const search = inputSearchContact.toLowerCase();
 			const firstname = contact.firstname.toLowerCase();

@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from 'react';
 import profile from '../../../assets/images/img_profile.png';
 import { API_URL } from '../../../utils/constants';
 import NameBlock from '../../Profile/NameBlock';

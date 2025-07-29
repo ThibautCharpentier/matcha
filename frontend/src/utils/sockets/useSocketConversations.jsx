@@ -28,7 +28,7 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
                 repeat.current = setInterval(() => {
                     if (socketConversationsRef.current.readyState === WebSocket.OPEN)
                         socketConversationsRef.current.send("CONVERSATIONS");
-                }, 100);
+                }, 1000);
             }
 
             socketConversationsRef.current.onmessage = (event) => {

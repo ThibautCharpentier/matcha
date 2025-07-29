@@ -14,7 +14,7 @@ export const useSocketNotifs = (isAuthenticated, setNotifs, setHasNewNotif) => {
 				repeat.current = setInterval(() => {
 					if (socketNotifsRef.current.readyState === WebSocket.OPEN)
 						socketNotifsRef.current.send("NOTIF");
-				}, 100);
+				}, 1000);
 			}
 
 			socketNotifsRef.current.onmessage = (event) => {

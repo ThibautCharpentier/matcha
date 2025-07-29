@@ -7,7 +7,7 @@ import { API_ROUTES } from "../../utils/constants";
 import ModalUserProfile from "../Profile/ModalUserProfile";
 
 export default function Conversation() {
-	const { contacts, setHasNewMessage } = useAuthentified();
+	const { setHasNewMessage } = useAuthentified();
 	const [roomSelected, setRoomSelected] = useState(null);
 	const [isModalProfileUserOpen, setIsModalProfileUserOpen] = useState(false);
 	const [dataUser, setDataUser] = useState(null)
@@ -35,7 +35,6 @@ export default function Conversation() {
 		<div className="w-full h-screen bg-gray-50 border-gray-300 border-l-[1px]">
 			<div className="flex flex-row w-full">
 				<ConversationInterface
-					contacts={contacts}
 					roomSelected={roomSelected}
 					setRoomSelected={setRoomSelected}
 				/>
