@@ -2,17 +2,12 @@ import { useState } from "react";
 import axios from 'axios';
 import { API_ROUTES } from "../../../utils/constants";
 
-export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchState, setMatchIndexState, setIsResearch}) {
-	const [filterAge, setFilterAge] = useState("");
-	const [filterLocation, setFilterLocation] = useState("");
-	const [filterFameRating, setFameRating] = useState("");
-	const [filterCommonTags, setCommonTags] = useState("");
-	const [sortState, setSortState] = useState({
-		age: false,
-		location: false,
-		fameRating: false,
-		commonTags: false
-	})
+export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchState, setMatchIndexState, setIsResearch, sortParameters, filterParameters, suggestionState, setSuggestionState}) {
+	const [filterAge, setFilterAge] = useState(suggestionState.filterAge);
+	const [filterLocation, setFilterLocation] = useState(suggestionState.filterLocation);
+	const [filterFameRating, setFameRating] = useState(suggestionState.filterFameRating);
+	const [filterCommonTags, setCommonTags] = useState(suggestionState.filterCommonTags);
+	const [sortState, setSortState] = useState(suggestionState.sort)
 
 	const handleSortChange = (e) => {
 		const { name, checked } = e.target;
@@ -22,62 +17,16 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 		}));
 	};
 
-	function sortParameters() {
-		let sort = ""
-		let plus = false;
-		if (sortState.age) {
-			sort += "age"
-			plus = true
-		}
-		if (sortState.location) {
-			if (plus == true)
-				sort += "+"
-			sort += "location"
-			plus = true
-		}
-		if (sortState.fameRating) {
-			if (plus == true)
-				sort += "+"
-			sort += "fame"
-			plus = true
-		}
-		if (sortState.commonTags) {
-			if (plus == true)
-				sort += "+"
-			sort += "tags"
-		}
-		return (sort)
-	}
-
-	function filterParameters() {
-		let filter = ""
-		let plus = false;
-		if (filterAge != "") {
-			filter += filterAge
-			plus = true
-		}
-		if (filterLocation != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterLocation
-			plus = true
-		}
-		if (filterFameRating != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterFameRating
-			plus = true
-		}
-		if (filterCommonTags != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterCommonTags
-		}
-		return (filter)
-	}
-
 	function handleSubmit() {
-		axios.get(`${API_ROUTES.GET_MATCHS}?sort=${sortParameters()}&filter=${filterParameters()}`, {
+		let obj = {
+			sort: sortState,
+			filterAge: filterAge,
+			filterLocation: filterLocation,
+			filterFameRating: filterFameRating,
+			filterCommonTags: filterCommonTags
+		}
+		setSuggestionState(obj)
+		axios.get(`${API_ROUTES.GET_MATCHS}?sort=${sortParameters(obj)}&filter=${filterParameters(obj)}`, {
 			withCredentials: true,
 		})
 		.then((res) => {
@@ -154,7 +103,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 					value={filterAge}
 					onChange={(e) => setFilterAge(e.target.value)}
 					className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="age18_20">18 - 20 ans</option>
@@ -179,7 +128,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 					value={filterLocation}
 					onChange={(e) => setFilterLocation(e.target.value)}
 					className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="location10">moins de 10 km</option>
@@ -195,7 +144,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 					value={filterFameRating}
 					onChange={(e) => setFameRating(e.target.value)}
 					className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="fameRate90">90+ %</option>
@@ -212,7 +161,7 @@ export default function MatchSortAndFilter({closeSidebarSortAndFilter, setMatchS
 					value={filterCommonTags}
 					onChange={(e) => setCommonTags(e.target.value)}
 					className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="commonTags1">1+</option>

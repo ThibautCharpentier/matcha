@@ -1,7 +1,7 @@
 import MatchSortAndFilter from "./MatchSortAndFilter";
 import MatchResearch from "./MatchResearch";
 
-export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResearchOpen, closeSidebarSortAndFilter, closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch}) {
+export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResearchOpen, closeSidebarSortAndFilter, closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch, sortParameters, filterParameters, suggestionState, setSuggestionState, researchState, setResearchState}) {
 	return (
 		<>
 			<div
@@ -16,6 +16,10 @@ export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResea
 						setMatchState={setMatchState}
 						setMatchIndexState={setMatchIndexState}
 						setIsResearch={setIsResearch}
+						sortParameters={sortParameters}
+						filterParameters={filterParameters}
+						suggestionState={suggestionState}
+						setSuggestionState={setSuggestionState}
 					/>
 				)}
 				{(isSidebarResearchOpen &&
@@ -24,6 +28,10 @@ export default function MatchSidebar({isSidebarSortAndFilterOpen, isSidebarResea
 						setMatchState={setMatchState}
 						setMatchIndexState={setMatchIndexState}
 						setIsResearch={setIsResearch}
+						sortParameters={sortParameters}
+						filterParameters={filterParameters}
+						researchState={researchState}
+						setResearchState={setResearchState}
 					/>
 				)}
       		</div>

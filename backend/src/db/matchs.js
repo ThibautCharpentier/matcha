@@ -9,6 +9,8 @@ const getMatchs = async (res_user, sort, filter) => {
 	query += `
 		`
 	query += utils.getOrderByQueryMatchs(sort)
+	query += `
+		LIMIT 10`
 
 	const res = await client.query(query, [res_user.tags.array_agg, res_user.latitude, res_user.longitude, res_user.id, res_user.age]);
 	client.release();

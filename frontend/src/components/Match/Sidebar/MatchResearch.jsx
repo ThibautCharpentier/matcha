@@ -26,21 +26,16 @@ function LocationMarker({position, setPosition}) {
     );
 }
 
-export default function MatchResearch({closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch}) {
+export default function MatchResearch({closeSidebarResearch, setMatchState, setMatchIndexState, setIsResearch, sortParameters, filterParameters, researchState, setResearchState}) {
 	const { data } = useAuthentified();
-	const [filterAge, setFilterAge] = useState("");
-	const [filterLocation, setFilterLocation] = useState("");
-	const [filterFameRating, setFameRating] = useState("");
-	const [filterCommonTags, setCommonTags] = useState("");
-	const [position, setPosition] = useState(null);
-	const [listTags, setListTags] = useState([])
-	const [selectTags, setSelectTags] = useState([])
-	const [sortState, setSortState] = useState({
-		age: false,
-		location: false,
-		fameRating: false,
-		commonTags: false
-	})
+	const [filterAge, setFilterAge] = useState(researchState.filterAge);
+	const [filterLocation, setFilterLocation] = useState(researchState.filterLocation);
+	const [filterFameRating, setFameRating] = useState(researchState.filterFameRating);
+	const [filterCommonTags, setCommonTags] = useState(researchState.filterCommonTags);
+	const [position, setPosition] = useState(researchState.position);
+	const [listTags, setListTags] = useState(researchState.listTags)
+	const [selectTags, setSelectTags] = useState(researchState.selectTags)
+	const [sortState, setSortState] = useState(researchState.sort)
 
 	const handleSortChange = (e) => {
 		const { name, checked } = e.target;
@@ -71,76 +66,24 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 	};
 
 	useEffect(() => {
-		axios.get(API_ROUTES.GET_ALL_INTERESTS, {
-			withCredentials: true,
-			timeout: 5000,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('une erreur est survenue')
-			let tab = []
-			for (let i = 0; i < res.data.data.length; i++)
-				tab.push(res.data.data[i].name)
-			setListTags(tab)
-		})
-		.catch((err) => {
-			console.log(err)
-		})
+		if (listTags.length < 1) {
+			axios.get(API_ROUTES.GET_ALL_INTERESTS, {
+				withCredentials: true,
+				timeout: 5000,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('une erreur est survenue')
+				let tab = []
+				for (let i = 0; i < res.data.data.length; i++)
+					tab.push(res.data.data[i].name)
+				setListTags(tab)
+			})
+			.catch((err) => {
+				console.log(err)
+			})
+		}
     }, []);
-
-	function filterParameters() {
-		let filter = ""
-		let plus = false;
-		if (filterAge != "") {
-			filter += filterAge
-			plus = true
-		}
-		if (filterLocation != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterLocation
-			plus = true
-		}
-		if (filterFameRating != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterFameRating
-			plus = true
-		}
-		if (filterCommonTags != "") {
-			if (plus == true)
-				filter += "+"
-			filter += filterCommonTags
-		}
-		return (filter)
-	}
-
-	function sortParameters() {
-		let sort = ""
-		let plus = false;
-		if (sortState.age) {
-			sort += "age"
-			plus = true
-		}
-		if (sortState.location) {
-			if (plus == true)
-				sort += "+"
-			sort += "location"
-			plus = true
-		}
-		if (sortState.fameRating) {
-			if (plus == true)
-				sort += "+"
-			sort += "fame"
-			plus = true
-		}
-		if (sortState.commonTags) {
-			if (plus == true)
-				sort += "+"
-			sort += "tags"
-		}
-		return (sort)
-	}
 
 	function handleSubmit() {
 		let positionToSend
@@ -156,7 +99,18 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				lng: parseFloat(position.lng.toFixed(6))
 			}
 		}
-		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${positionToSend.lat}&lng=${positionToSend.lng}&tags=${selectTags}&sort=${sortParameters()}&filter=${filterParameters()}`, {
+		let obj = {
+			sort: sortState,
+			filterAge: filterAge,
+			filterLocation: filterLocation,
+			filterFameRating: filterFameRating,
+			filterCommonTags: filterCommonTags,
+			position: positionToSend,
+			listTags: listTags,
+			selectTags: selectTags
+		}
+		setResearchState(obj)
+		axios.get(`${API_ROUTES.GET_RESEARCH}?lat=${positionToSend.lat}&lng=${positionToSend.lng}&tags=${selectTags}&sort=${sortParameters(obj)}&filter=${filterParameters(obj)}`, {
 			withCredentials: true,
 		})
 		.then((res) => {
@@ -265,7 +219,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 					value={filterAge}
 					onChange={(e) => setFilterAge(e.target.value)}
 					className="w-full py-1 px-3 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="age18_20">18 - 20 ans</option>
@@ -290,7 +244,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 					value={filterLocation}
 					onChange={(e) => setFilterLocation(e.target.value)}
 					className="w-full py-1 px-3 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="location10">moins de 10 km</option>
@@ -306,7 +260,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 					value={filterFameRating}
 					onChange={(e) => setFameRating(e.target.value)}
 					className="w-full py-1 px-3 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="fameRate90">90+ %</option>
@@ -323,7 +277,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 					value={filterCommonTags}
 					onChange={(e) => setCommonTags(e.target.value)}
 					className="w-full py-1 px-3 border border-gray-300 rounded-md">
-					<option value="" disabled>
+					<option value="">
 						-- Sélectionnez une option --
 					</option>
 					<option value="commonTags1">1+</option>

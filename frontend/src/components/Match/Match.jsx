@@ -17,6 +17,33 @@ export default function Match() {
 	const [matchState, setMatchState] = useState(null);
 	const [matchIndexState, setMatchIndexState] = useState(0);
 	const [isResearch, setIsResearch] = useState(false);
+	const [suggestionState, setSuggestionState] = useState({
+		sort: {
+			age: false,
+			location: false,
+			fameRating: false,
+			commonTags: false
+		},
+		filterAge: "",
+		filterLocation: "",
+		filterFameRating: "",
+		filterCommonTags: ""
+	})
+	const [researchState, setResearchState] = useState({
+		sort: {
+			age: false,
+			location: false,
+			fameRating: false,
+			commonTags: false
+		},
+		filterAge: "",
+		filterLocation: "",
+		filterFameRating: "",
+		filterCommonTags: "",
+		position: null,
+		listTags: [],
+		selectTags: []
+	})
 
 	const openSidebarSortAndFilter = () => {
 		setSidebarSortAndFilterOpen(true);
@@ -38,20 +65,77 @@ export default function Match() {
 		setToggleProfile((prevState) => !prevState);
 	}
 
+	function sortParameters(state) {
+		let sort = ""
+		let plus = false;
+		if (state.sort.age) {
+			sort += "age"
+			plus = true
+		}
+		if (state.sort.location) {
+			if (plus == true)
+				sort += "+"
+			sort += "location"
+			plus = true
+		}
+		if (state.sort.fameRating) {
+			if (plus == true)
+				sort += "+"
+			sort += "fame"
+			plus = true
+		}
+		if (state.sort.commonTags) {
+			if (plus == true)
+				sort += "+"
+			sort += "tags"
+		}
+		return (sort)
+	}
+
+	function filterParameters(state) {
+		let filter = ""
+		let plus = false;
+		if (state.filterAge != "") {
+			filter += state.filterAge
+			plus = true
+		}
+		if (state.filterLocation != "") {
+			if (plus == true)
+				filter += "+"
+			filter += state.filterLocation
+			plus = true
+		}
+		if (state.filterFameRating != "") {
+			if (plus == true)
+				filter += "+"
+			filter += state.filterFameRating
+			plus = true
+		}
+		if (state.filterCommonTags != "") {
+			if (plus == true)
+				filter += "+"
+			filter += state.filterCommonTags
+		}
+		return (filter)
+	}
+
 	useEffect(() => {
-        axios.get(`${API_ROUTES.GET_MATCHS}`, {
-			withCredentials: true,
-		})
-		.then((res) => {
-			if (res.status != 200)
-				throw new Error('Une erreur est survenue');
-			setMatchState(res.data.message);
-			setMatchIndexState(0);
-		})
-		.catch((err) => {
-			console.log(err)
-		});
-    }, []);
+		if ((matchState && !matchState[matchIndexState] && matchIndexState != 0 || !matchState) && !isResearch) {
+			setMatchState(null)
+			axios.get(`${API_ROUTES.GET_MATCHS}?sort=${sortParameters(suggestionState)}&filter=${filterParameters(suggestionState)}` , {
+				withCredentials: true,
+			})
+			.then((res) => {
+				if (res.status != 200)
+					throw new Error('Une erreur est survenue');
+				setMatchState(res.data.message);
+				setMatchIndexState(0);
+			})
+			.catch((err) => {
+				console.log(err)
+			});
+		}
+    }, [matchIndexState]);
 
 	return (
 		<>
@@ -134,6 +218,12 @@ export default function Match() {
 				setMatchState={setMatchState}
 				setMatchIndexState={setMatchIndexState}
 				setIsResearch={setIsResearch}
+				sortParameters={sortParameters}
+				filterParameters={filterParameters}
+				suggestionState={suggestionState}
+				setSuggestionState={setSuggestionState}
+				researchState={researchState}
+				setResearchState={setResearchState}
 			/>
 		</>
 	)
