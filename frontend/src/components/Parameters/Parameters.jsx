@@ -14,8 +14,8 @@ import DOMPurify from 'dompurify';
 import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import BeatLoader from "react-spinners/BeatLoader";
-import zxcvbn from "zxcvbn"
 import { showErrorData, showSuccess } from "../../utils/toastUtils";
+import { validatePassword } from "../../utils/utils";
 
 
 export default function Parameters() {
@@ -64,10 +64,6 @@ export default function Parameters() {
 			}));
 			return (null);
 		}
-	}
-
-	function validatePassword(password) {
-		const analysisPwd = zxcvb(password)
 	}
 	
 	async function validationCheck() {
@@ -141,7 +137,7 @@ export default function Parameters() {
 		if (changeSettings.currentPassword != null && changeSettings.currentPassword.length < 10) {
 			setErrorState(prev => ({
 				...prev,
-				currentPassword: "Ton mot de passe contient au moins 10 caractères dont au moins un chiffre, une lettre et un caractère spécial"
+				currentPassword: "Mod de passe invalide"
 			}))
 		}
 		else {
@@ -153,16 +149,17 @@ export default function Parameters() {
 		}	
 
 		if (changeSettings.password != null) {
+			let errorStr = validatePassword(changeSettings.password)
 			if (changeSettings.currentPassword == null) {
 				setErrorState(prev => ({
 					...prev,
 					password: "Pour modifier ton mot de passe entre ton mot de passe actuel"
 				}))
 			}
-			else if (changeSettings.password.length < 10) {
+			else if (errorStr != null) {
 				setErrorState(prev => ({
 					...prev,
-					password: "Ton mot de passe doit contenir au moins 10 caractères dont au moins un chiffre et un caractère spécial"
+					password: errorStr
 				}))
 			}
 			else {
@@ -187,6 +184,15 @@ export default function Parameters() {
 				}
 			}
 		}
+		else {
+			areValid.password = true;
+			areValid.confirmPassword = true;
+			setErrorState(prev => ({
+				...prev,
+				password: "",
+				confirmPassword: ""
+			}))
+		}
 
 		if (changeSettings.position != null && !(changeSettings.position.city = await getCityName(changeSettings.position.lat, changeSettings.position.lng))) {
 			setErrorState(prev => ({
@@ -202,10 +208,10 @@ export default function Parameters() {
 			}))
 		}
 
-		if (Object.values(areValid).every(value => value == true))
-			return true
+		if (Object.values(areValid).every(value => value == true)) 
+			return true;
 		else
-			return false
+			return false;
 	}
 
 	const handleSubmit = async (e) => {
@@ -286,6 +292,7 @@ export default function Parameters() {
 			})
 		}
 		else {
+			console.log("test")
 			showErrorData();
 		}
 	}

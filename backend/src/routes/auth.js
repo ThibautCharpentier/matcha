@@ -10,6 +10,7 @@ const { ForgotUsernameDto } = require('../dto/forgotusername.dto');
 const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const user = require('../db/user');
 const mail = require('../config/mail');
+const utils = require('../utils/utils');
 const { jwtrequired } = require('../config/jwt');
 const router = express.Router();
 
@@ -30,6 +31,8 @@ router.get('/isconnected', jwtrequired(), async (req, res) => {
 router.post('/signup', validateDto(SignupDto), async (req, res) => {
 	const { username, firstname, lastname, email, password } = req.body;
 	try {
+		if (!utils.validatePassword(password))
+			return res.status(400).json({message: 'Invalid password'});
 		const hashedPassword = await bcrypt.hash(password, 10);
 		let res_query = await user.selectByUsername(username);
 		if (res_query)
@@ -124,7 +127,10 @@ router.post('/changepassword', validateDto(ChangePasswordDto), async (req, res) 
 		return res.status(403).json({message: err});
 	}
 	try {
-		await user.changePassword(userId, password);
+		if (utils.validatePassword(password))
+			await user.changePassword(userId, password);
+		else
+			return res.status(400).json({message: "Invalid Password"});
 	}
 	catch (err) {
 		return res.status(400).json({message: err});

@@ -92,13 +92,16 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 			await user.changePreferences(req.user_id, preferences);
 		if (lat && lng && city)
 			await user.changeLocation(req.user_id, { lat, lng, city });
-		if (currentPassword) {
-			let res_query = await user.selectById(req.user_id);
-			
-			if (!bcrypt.compareSync(currentPassword, res_query.password))
-				return res.status(400).json({message: 'Invalid password'});
-			if (password)
+		if (currentPassword && password) {
+			if (utils.validatePassword(password)) {
+				let res_query = await user.selectById(req.user_id);
+				
+				if (!bcrypt.compareSync(currentPassword, res_query.password))
+					return res.status(400).json({message: 'Invalid password'});
 				await user.changePassword(req.user_id, password);
+			}
+			else
+				return res.status(400).json({message: 'Invalid password'});
 		}
 	}
 	catch (err) {

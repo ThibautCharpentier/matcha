@@ -11,6 +11,7 @@ import ValidateSignup from "./ValidateSignup"
 import DOMPurify from 'dompurify';
 import axios from 'axios';
 import BeatLoader from "react-spinners/BeatLoader";
+import { validatePassword } from "../../utils/utils";
 
 export default function SignUp() {
 	const [showValidateSignup, setShowValidateSignup] = useState(false)
@@ -65,6 +66,8 @@ export default function SignUp() {
 					setShowValidation(state => ({...state, username: "Le nom d'utilisateur est déjà pris"}))
 				else if (err.response.data.message == "Email already exists")
 					setShowValidation(state => ({...state, mail: "Cette adresse e-mail est déjà utilisée"}))
+				else if (err.response.data.message == "Invalid password")
+					setShowValidation(state => ({...state, password: "Ce mot de passe est invalide"}))
 				else
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
@@ -116,8 +119,9 @@ export default function SignUp() {
 			setShowValidation(state => ({...state, mail: ""}))
 		}
 
-		if (inputsStates.password.length < 10)
-			setShowValidation(state => ({...state, password: "Votre mot de passe doit contenir au moins 10 caractères"}))
+		const errorPwd = validatePassword(inputsStates.password);
+		if (errorPwd != null)
+			setShowValidation(state => ({...state, password: errorPwd}))
 		else {
 			areValid.password = true
 			setShowValidation(state => ({...state, password: ""}))

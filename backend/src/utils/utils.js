@@ -1,3 +1,5 @@
+const zxcvbn = require('zxcvbn');
+
 function calculateAge(birthdate) {
     const today = new Date();
     const birthDate = new Date(birthdate);
@@ -317,4 +319,17 @@ function getOrderByQueryMatchs(sort) {
 	return (query)
 }
 
-module.exports = { calculateAge, getQueryAllReports, getInitialQueryMatchs, getFilterQueryMatchs, getOrderByQueryMatchs }
+function validatePassword(pwd) {
+	const analysisPwd = zxcvbn(pwd)
+	
+	const hasMinLength = pwd.length >= 10;
+	const hasLetter = /[a-zA-Z]/.test(pwd);
+	const hasNumber = /[0-9]/.test(pwd);
+	const hasSpecialChar = /[!$@%]/.test(pwd);
+	
+	if (!hasMinLength || !hasLetter || !hasNumber || !hasSpecialChar || analysisPwd.score < 3)
+		return 0;
+	return 1;
+}
+
+module.exports = { calculateAge, getQueryAllReports, getInitialQueryMatchs, getFilterQueryMatchs, getOrderByQueryMatchs, validatePassword }
