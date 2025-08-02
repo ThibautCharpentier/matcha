@@ -285,6 +285,9 @@ router.get('/getrecentsviews', jwtrequired(), async(req, res) => {
 router.post('/removenotif', jwtrequired(), validateDto(TargetDto), async(req, res) => {
 	const { target } = req.body;
 	try {
+		const res_query = await notif.getNotificationById(target)
+		if (res_query && res_query.user_id != req.user_id)
+			return res.status(400).json({message: 'Invalid Notif'});
 		await notif.deleteNotif(target);
 	}
 	catch (err) {

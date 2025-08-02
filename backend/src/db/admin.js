@@ -34,6 +34,15 @@ const getReport = async (id, target) => {
 	return res.rows[0];
 }
 
+const getAllReportsToUser = async (target) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT * FROM public.report WHERE target = $1`, [target]);
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
 const addReport = async (id, target) => {
 	const client = await pool.connect();
 	await client.query(`INSERT INTO public.report (user_id, target) VALUES ($1, $2)`, [id, target]);
@@ -61,4 +70,4 @@ const getAllReports = async () => {
 	return (res.rows)
 }
 
-module.exports = { selectById, selectByEmail, changeCode, getReport, addReport, deleteReport, deleteUser, getAllReports };
+module.exports = { selectById, selectByEmail, changeCode, getReport, getAllReportsToUser, addReport, deleteReport, deleteUser, getAllReports };

@@ -46,6 +46,15 @@ const getNotification = async (from_id, user_id, action) => {
 	return (true)
 }
 
+const getNotificationById = async (id) => {
+	const client = await pool.connect()
+	const res = await client.query(`SELECT * FROM public.notification WHERE id = $1`, [id])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
 const addNotif = async (from_id, user_id, action) => {
 	const client = await pool.connect()
 	const res = await client.query(`SELECT * FROM public.interaction WHERE user_id = $1 AND target = $2 AND (action = 'block' OR action = 'unlike')`, [user_id, from_id])
@@ -76,4 +85,4 @@ const deleteAllNotifs = async (user_id, from_id) => {
 	await client.query(`DELETE FROM public.notification WHERE user_id = $1 AND from_id = $2`, [user_id, from_id])
 }
 
-module.exports = { getNotifications, addNotif, verifiedNotifs, deleteNotif, deleteAllNotifs }
+module.exports = { getNotifications, getNotificationById, addNotif, verifiedNotifs, deleteNotif, deleteAllNotifs }

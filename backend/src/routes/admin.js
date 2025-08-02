@@ -10,6 +10,8 @@ const mail = require('../config/mail');
 const { TargetDto } = require('../dto/target.dto');
 const { jwtadminrequired } = require('../config/jwt');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -38,6 +40,7 @@ router.post('/verification', validateDto(CodeAdminDto), async (req, res) => {
 			return res.status(400).json({message: 'Invalid data'});
 		if (res_query.code != code)
 			return res.status(400).json({message: 'Invalid code'});
+		await admin.changeCode(id, "")
 		adminToken = jwt.sign({ id: res_query.id }, process.env.ADMIN_SECRET_TOKEN_KEY, { expiresIn: process.env.JWT_ADMINTOKEN_EXPIRATION });
 	}
 	catch (err) {
@@ -73,9 +76,16 @@ router.post('/deletereport', jwtadminrequired(), validateDto(TargetDto), async (
 router.post('/confirmreport', jwtadminrequired(), validateDto(TargetDto), async (req, res) => {
 	const { target } = req.body
 	try {
-		const res_query = await user.selectById(target)
+		let res_query = await admin.getAllReportsToUser(target)
+		if (!res_query)
+			return res.status(400).json({message: 'Invalid User'});
+		res_query = await user.selectById(target)
 		await mail.sendUserDeleted(res_query.email)
 		await admin.deleteUser(target)
+		const userDir = path.join("uploads", "user" + target);
+		if (fs.existsSync(userDir)) {
+			fs.rmSync(userDir, { recursive: true, force: true });
+		}
 	}
 	catch (err) {
 		console.log(err);

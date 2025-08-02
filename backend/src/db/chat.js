@@ -35,6 +35,15 @@ const getChat = async (user1, user2) => {
 	return res.rows[0];
 }
 
+const getChatById = async (id) => {
+	const client = await pool.connect();
+	const res = await client.query(`SELECT * FROM public.chat WHERE id = $1`, [id])
+	client.release();
+	if (res.rows.length == 0)
+		return null;
+	return res.rows[0];
+}
+
 const getAllChatsAndMessagesByUserId = async (userId) => {
 	const client = await pool.connect();
 	
@@ -83,4 +92,4 @@ const allMessagesView = async (room_id, receiver_id) => {
 	client.release();
 }
 
-module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat, addMessageInChat, allMessagesView, getChat }
+module.exports = { addChat, getChats, getAllChatsAndMessagesByUserId, deleteChat, addMessageInChat, allMessagesView, getChat, getChatById }

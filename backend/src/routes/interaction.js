@@ -178,8 +178,10 @@ router.post('/block', jwtrequired(), validateDto(TargetDto), async (req, res) =>
 	
 router.post('/sendmessage', jwtrequired(), validateDto(NewMessageDto), async (req, res) => {
 	const { newMessage, receiver_id, room_id } = req.body;
-	
 	try {
+		const res_query = await chat.getChatById(room_id)
+		if (res_query && res_query.user1 != req.user_id && res_query.user2 != req.user_id)
+			return res.status(400).json({message: 'Invalid Room'});
 		await chat.addMessageInChat(room_id, req.user_id, receiver_id, newMessage)
 	}
 	catch (err) {
@@ -212,8 +214,10 @@ router.post('/report', jwtrequired(), validateDto(TargetDto), async (req, res) =
 
 router.patch('/sendmessageview', jwtrequired(), async (req, res) => {
 	const { room_id } = req.body;
-
 	try {
+		const res_query = await chat.getChatById(room_id)
+		if (res_query && res_query.user1 != req.user_id && res_query.user2 != req.user_id)
+			return res.status(400).json({message: 'Invalid Room'});
 		await chat.allMessagesView(room_id, req.user_id)
 	}
 	catch (err) {
