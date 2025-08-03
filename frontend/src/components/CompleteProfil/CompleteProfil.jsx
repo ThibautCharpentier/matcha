@@ -3,11 +3,13 @@ import PreferencesStep from "./PreferencesStep"
 import AgeStep from "./AgeStep"
 import HobbiesStep from "./HobbiesStep"
 import PicturesStep from "./PicturesStep"
+import BioStep from "./BioStep"
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { API_ROUTES } from "../../utils/constants";
 import axios from 'axios';
 import { useAuthentified } from "../AuthentifiedContext"
+import DOMPurify from 'dompurify';
 
 export default function CompleteProfil() {
     const { profileComplete } = useAuthentified();
@@ -16,6 +18,7 @@ export default function CompleteProfil() {
         gender: "",
         preferences: "",
         birthdate: "",
+        bio: "",
         interest: [],
         pictures: [],
     })
@@ -37,6 +40,8 @@ export default function CompleteProfil() {
             case 4:
                 return <HobbiesStep nextStep={nextStep} infosUser={infosUser.current}/>;
             case 5:
+                return <BioStep nextStep={nextStep} infosUser={infosUser.current}/>;
+            case 6:
                 return <PicturesStep validateProfil={validateProfil} infosUser={infosUser.current}/>;
             default:
                 return <div>Profile Completion Finished</div>;
@@ -50,6 +55,7 @@ export default function CompleteProfil() {
         formData.append('gender', infosUser.current.gender);
         formData.append('preferences', infosUser.current.preferences);
         formData.append('birthdate', infosUser.current.birthdate);
+        formData.append('bio', DOMPurify.sanitize(infosUser.current.bio));
 
         infosUser.current.interest.forEach((interest) => {
             formData.append('interest[]', interest);
@@ -85,7 +91,7 @@ export default function CompleteProfil() {
                 <div className="bg-gray-300 h-1">
                     <div
                         className="bg-[--color-pink] h-1 rounded-full transition-all duration-500 ease-in-out"
-                        style={{ width: `${((step - 1) / 5) * 100}%` }}
+                        style={{ width: `${((step - 1) / 6) * 100}%` }}
                     >
                     </div>
                 </div>

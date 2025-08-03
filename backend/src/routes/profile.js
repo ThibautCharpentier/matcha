@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const { validateDto } = require('../dto/validatedto');
@@ -67,7 +68,7 @@ router.patch('/updatelocation', jwtrequired(), validateDto(UpdateLocationDto), a
 });
 
 router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto), async (req, res) => {
-	const { firstname, lastname, gender, preferences, username, email, password, lat, lng, city } = req.body;
+	const { firstname, lastname, gender, preferences, username, email, currentPassword, password, lat, lng, city } = req.body;
 	try {
 		if (username) {
 			const res_query = await user.selectByUsername(username);
@@ -89,10 +90,19 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 			await user.changeGender(req.user_id, gender);
 		if (preferences)
 			await user.changePreferences(req.user_id, preferences);
-		if (password)
-			await user.changePassword(req.user_id, password);
 		if (lat && lng && city)
 			await user.changeLocation(req.user_id, { lat, lng, city });
+		if (currentPassword && password) {
+			if (utils.validatePassword(password)) {
+				let res_query = await user.selectById(req.user_id);
+				
+				if (!bcrypt.compareSync(currentPassword, res_query.password))
+					return res.status(400).json({message: 'Invalid password'});
+				await user.changePassword(req.user_id, password);
+			}
+			else
+				return res.status(400).json({message: 'Invalid password'});
+		}
 	}
 	catch (err) {
 		console.log(err);
@@ -124,13 +134,14 @@ router.patch('/notifverified', jwtrequired(), async (req, res) => {
 });
 
 router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), validateDto(CompleteProfileDto), async (req, res) => {
-	const { gender, preferences, birthdate, interest } = req.body;
+	const { gender, preferences, birthdate, bio, interest } = req.body;
     const files = req.files;
 
     try {
         await user.changeGender(req.user_id, gender);
         await user.changePreferences(req.user_id, preferences);
         await user.changeBirthdate(req.user_id, birthdate);
+        await user.changeBio(req.user_id, bio);
 		const res_query = await user.selectById(req.user_id);
 		let imagesToDelete
 		if (res_query.pictures)
@@ -146,7 +157,7 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
             fs.unlinkSync(res_query.picture_profile);
         if (files && files.length > 0) {
             await user.addProfilPicture(req.user_id, files[0].path);
-        	await user.updatePictures(req.user_id, files.slice(1).map(file => file.path));
+			await user.updatePictures(req.user_id, files.slice(1).map(file => file.path));
 		}
 		if (interest.length > 0) {
 			let idInterests = await interests.getTabInteretsIdbyTabInterestName(interest);

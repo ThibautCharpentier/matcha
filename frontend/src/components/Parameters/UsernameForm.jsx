@@ -39,7 +39,7 @@ export default function UsernameForm({ data, setChangeSettings, errState, verifi
 					/>
 				</div>
 				{errState != "" && (
-				<p className=" text-red-600 text-sm ">{errState}</p>
+				<p className=" text-[--color-pink] text-sm ">{errState}</p>
 				)}
 			</div>
 		</>

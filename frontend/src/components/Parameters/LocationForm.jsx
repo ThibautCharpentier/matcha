@@ -44,7 +44,7 @@ export default function LocationForm({ data, setChangeSettings, errState, setVer
 					<LocationMarker position={position} setPosition={setPosition} setChangeSettings={setChangeSettings} setVerified={setVerified}/>
 				</MapContainer>
 				{errState != "" && (
-				<p className=" text-red-600 text-sm text-center">{errState}</p>
+				<p className=" text-[--color-pink] text-sm text-center">{errState}</p>
 				)}
 			</div>
 		</>

@@ -33,6 +33,11 @@ class UpdateParametersDto {
     @IsOptional()
     @IsString()
     @MinLength(10)
+    currentPassword;
+
+    @IsOptional()
+    @IsString()
+    @MinLength(10)
     password;
 
     @IsOptional()
@@ -48,7 +53,7 @@ class UpdateParametersDto {
     city;
 
     validateFields() {
-        const allowedFields = ['firstname', 'lastname', 'gender', 'preferences', 'username', 'email', 'password', 'lat', 'lng', 'city'];
+        const allowedFields = ['firstname', 'lastname', 'gender', 'preferences', 'username', 'email', 'currentPassword', 'password', 'lat', 'lng', 'city'];
         const receivedFields = Object.keys(this);
         const unauthorizedFields = receivedFields.filter(field => !allowedFields.includes(field));
         if (unauthorizedFields.length > 0)

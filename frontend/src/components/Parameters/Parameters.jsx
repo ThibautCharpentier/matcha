@@ -15,6 +15,7 @@ import axios from 'axios';
 import { API_ROUTES } from "../../utils/constants";
 import BeatLoader from "react-spinners/BeatLoader";
 import { showErrorData, showSuccess } from "../../utils/toastUtils";
+import { validatePassword } from "../../utils/utils";
 
 
 export default function Parameters() {
@@ -27,6 +28,7 @@ export default function Parameters() {
 		preferences: null,
 		username: null,
 		mail: null,
+		currentPassword: null,
 		password: null,
 		confirmPassword: null,
 		position: null,
@@ -38,6 +40,7 @@ export default function Parameters() {
 		preferences: "",
 		username: "",
 		mail: "",
+		currentPassword: "",
 		password: "",
 		position: "",
 		global: ""
@@ -69,6 +72,7 @@ export default function Parameters() {
 			lastname: false,
 			username: false,
 			mail: false,
+			currentPassword: false,
 			password: false,
 			confirmPassword: false,
 			position: false,
@@ -105,7 +109,7 @@ export default function Parameters() {
 		if (changeSettings.username != null && (changeSettings.username.length < 3 || changeSettings.username.length > 10)) {
 			setErrorState(prev => ({
 				...prev,
-				username: "Votre nom d'utilisateur doit contenir entre 3 et 10 caractères"
+				username: "Ton nom d'utilisateur doit contenir entre 3 et 10 caractères"
 			}))
 		}
 		else {
@@ -130,32 +134,64 @@ export default function Parameters() {
 			}))
 		}
 
-		if (changeSettings.password != null && changeSettings.password.length < 10) {
+		if (changeSettings.currentPassword != null && changeSettings.currentPassword.length < 10) {
 			setErrorState(prev => ({
 				...prev,
-				password: "Votre mot de passe doit contenir au moins 10 caractères"
+				currentPassword: "Mod de passe invalide"
 			}))
 		}
 		else {
-			areValid.password = true
+			areValid.currentPassword = true
 			setErrorState(prev => ({
 				...prev,
-				password: ""
+				currentPassword: ""
 			}))
+		}	
 
-			if (changeSettings.confirmPassword !== changeSettings.password) {
+		if (changeSettings.password != null) {
+			let errorStr = validatePassword(changeSettings.password)
+			if (changeSettings.currentPassword == null) {
 				setErrorState(prev => ({
 					...prev,
-					password: "Les mots de passe ne correspondent pas"
+					password: "Pour modifier ton mot de passe entre ton mot de passe actuel"
+				}))
+			}
+			else if (errorStr != null) {
+				setErrorState(prev => ({
+					...prev,
+					password: errorStr
 				}))
 			}
 			else {
-				areValid.confirmPassword = true
+				areValid.password = true
 				setErrorState(prev => ({
 					...prev,
 					password: ""
 				}))
+	
+				if (changeSettings.confirmPassword !== changeSettings.password) {
+					setErrorState(prev => ({
+						...prev,
+						password: "Les mots de passe ne correspondent pas"
+					}))
+				}
+				else {
+					areValid.confirmPassword = true
+					setErrorState(prev => ({
+						...prev,
+						password: ""
+					}))
+				}
 			}
+		}
+		else {
+			areValid.password = true;
+			areValid.confirmPassword = true;
+			setErrorState(prev => ({
+				...prev,
+				password: "",
+				confirmPassword: ""
+			}))
 		}
 
 		if (changeSettings.position != null && !(changeSettings.position.city = await getCityName(changeSettings.position.lat, changeSettings.position.lng))) {
@@ -172,10 +208,10 @@ export default function Parameters() {
 			}))
 		}
 
-		if (Object.values(areValid).every(value => value == true))
-			return true
+		if (Object.values(areValid).every(value => value == true)) 
+			return true;
 		else
-			return false
+			return false;
 	}
 
 	const handleSubmit = async (e) => {
@@ -188,6 +224,7 @@ export default function Parameters() {
 			preferences: "",
 			username: "",
 			mail: "",
+			currentPassword: "",
 			password: "",
 			position: "",
 			global: ""
@@ -201,6 +238,7 @@ export default function Parameters() {
 				preferences: changeSettings.preferences === null ? undefined : DOMPurify.sanitize(changeSettings.preferences),
 				username: changeSettings.username === null ? undefined : DOMPurify.sanitize(changeSettings.username),
 				email: changeSettings.mail === null ? undefined : DOMPurify.sanitize(changeSettings.mail),
+				currentPassword: changeSettings.currentPassword === null ? undefined : DOMPurify.sanitize(changeSettings.currentPassword),
 				password: changeSettings.password === null ? undefined : DOMPurify.sanitize(changeSettings.password),
 				lat: changeSettings.position === null ? undefined : parseFloat(changeSettings.position.lat.toFixed(6)),
 				lng: changeSettings.position === null ? undefined : parseFloat(changeSettings.position.lng.toFixed(6)),
@@ -221,6 +259,7 @@ export default function Parameters() {
 					preferences: null,
 					username: null,
 					mail: null,
+					currentPassword: null,
 					password: null,
 					confirmPassword: null,
 					position: null,
@@ -228,13 +267,19 @@ export default function Parameters() {
 				showSuccess("Les modifications ont été enregistrées.");
 			})
 			.catch((err) => {
-				if (err.response.data.message == 'Username already exists') {
+				if (err.response?.data?.message === "Invalid password") {
+					setErrorState(prev => ({
+						...prev,
+						currentPassword: "Mot de passe invalide"
+					}))
+				}
+				if (err.response?.data?.message == 'Username already exists') {
 					setErrorState(prev => ({
 						...prev,
 						username: "Le nom d'utilisateur est déjà pris"
 					}))
 				}
-				else if (err.response.data.message == 'Email already exists') {
+				else if (err.response?.data?.message == 'Email already exists') {
 					setErrorState(prev => ({
 						...prev,
 						mail: "Cette adresse e-mail est déjà utilisée"
@@ -247,6 +292,7 @@ export default function Parameters() {
 			})
 		}
 		else {
+			console.log("test")
 			showErrorData();
 		}
 	}
@@ -288,7 +334,7 @@ export default function Parameters() {
 								<EmailForm data={data} setChangeSettings={setChangeSettings} errState={errState.mail} verified={verified} setVerified={setVerified} />
 							</div>
 							<div className="md:w-3/4  w-full">
-								<PasswordForm setChangeSettings={setChangeSettings} errState={errState.password} verified={verified} setVerified={setVerified}/>
+								<PasswordForm setChangeSettings={setChangeSettings} errStatePassword={errState.password}  errStateCurrentPassword={errState.currentPassword} verified={verified} setVerified={setVerified}/>
 							</div>
 						</div>
 					</div>

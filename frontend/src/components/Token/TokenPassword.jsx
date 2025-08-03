@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import BeatLoader from "react-spinners/BeatLoader";
+import { validatePassword } from "../../utils/utils";
 
 export default function TokenPassword() {
 	const location = useLocation();
@@ -47,6 +48,8 @@ export default function TokenPassword() {
 			.catch((err) => {
 				if (err.response.status == 403)
 					setShowValidation(state => ({...state, server: "Le formulaire a expiré ! Veuillez fermer cette page."}))
+				else if (err.response.message == "Invalid Password")
+					setShowValidation(state => ({...state, password: "Mot de passe invalide"}))
 				else
 					setShowValidation(state => ({...state, server: "Formulaire invalide"}))
 			})
@@ -61,8 +64,9 @@ export default function TokenPassword() {
 			password: false,
 		}
 
-		if (inputsStates.password.length < 10)
-			setShowValidation(state => ({...state, password: "Le mot de passe doit contenir au moins 10 caractères"}))
+		const errPwd = validatePassword(inputsStates.password);
+		if (errPwd != null)
+			setShowValidation(state => ({...state, password: errPwd}))
 		else if (inputsStates.confirmPassword.length == 0)
 			setShowValidation(state => ({...state, password: "Veuillez confirmer votre mot de passe"}))
 		else if (inputsStates.confirmPassword != inputsStates.password)

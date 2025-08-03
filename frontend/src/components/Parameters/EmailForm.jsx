@@ -34,7 +34,7 @@ export default function EmailForm({ data, setChangeSettings, errState, verified,
 					/>
 				</div>
 				{errState != "" && (
-				<p className=" text-red-600 text-sm ">{errState}</p>
+				<p className=" text-[--color-pink] text-sm ">{errState}</p>
 				)}
 				{verified != "" && inputState != "" && (
 				<p className="text-sm">Un mail de validation a été envoyé à votre nouvelle adresse</p>
