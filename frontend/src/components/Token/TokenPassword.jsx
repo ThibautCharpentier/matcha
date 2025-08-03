@@ -91,7 +91,10 @@ export default function TokenPassword() {
 					<>
 						<p className="font-poppins-regular mt-4 text-sm">Veuillez indiquer un nouveau mot de passe</p>
 						<form onSubmit={handleSubmit} action="" className="flex flex-col mt-6">
-							<label className="font-poppins-medium" htmlFor="password">Mot de passe</label>
+							<label className="font-poppins-medium" htmlFor="password">
+								Mot de passe{" "}
+								<span className="text-sm">(minimum 10 caractères)</span>
+							</label>
 							<div className="relative">
 								<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 								placeholder="Entrez un mot de passe"

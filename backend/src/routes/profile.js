@@ -82,16 +82,6 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 				return res.status(400).json({message: 'Email already exists'});
 			await mail.sendValidateEmail(req.user_id, email);
 		}
-		if (firstname)
-			await user.changeFirstname(req.user_id, firstname);
-		if (lastname)
-			await user.changeLastname(req.user_id, lastname);
-		if (gender)
-			await user.changeGender(req.user_id, gender);
-		if (preferences)
-			await user.changePreferences(req.user_id, preferences);
-		if (lat && lng && city)
-			await user.changeLocation(req.user_id, { lat, lng, city });
 		if (currentPassword && password) {
 			if (utils.validatePassword(password)) {
 				let res_query = await user.selectById(req.user_id);
@@ -103,6 +93,16 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 			else
 				return res.status(400).json({message: 'Invalid password'});
 		}
+		if (firstname)
+			await user.changeFirstname(req.user_id, firstname);
+		if (lastname)
+			await user.changeLastname(req.user_id, lastname);
+		if (gender)
+			await user.changeGender(req.user_id, gender);
+		if (preferences)
+			await user.changePreferences(req.user_id, preferences);
+		if (lat && lng && city)
+			await user.changeLocation(req.user_id, { lat, lng, city });
 	}
 	catch (err) {
 		console.log(err);

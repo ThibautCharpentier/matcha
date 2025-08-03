@@ -5,8 +5,8 @@ export default function PasswordInput({inputsStates, setInputsStates, showValida
 	return (
 	<>
 		<label className="mt-3 font-poppins-medium" htmlFor="password">
-		Mot de passe{" "}
-		<span className="text-sm">(minimum 10 caractères)</span>
+			Mot de passe{" "}
+			<span className="text-sm">(minimum 10 caractères)</span>
 		</label>
 		<div className="relative">
 			<input

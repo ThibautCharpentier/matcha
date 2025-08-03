@@ -291,10 +291,8 @@ export default function Parameters() {
 				setHasSubmit(false)
 			})
 		}
-		else {
-			console.log("test")
+		else
 			showErrorData();
-		}
 	}
 
 	return (

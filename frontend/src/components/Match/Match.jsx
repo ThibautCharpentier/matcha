@@ -137,6 +137,40 @@ export default function Match() {
 		}
     }, [matchIndexState]);
 
+	useEffect(() => {
+		if (isResearch) {
+			setSuggestionState({
+				sort: {
+					age: false,
+					location: false,
+					fameRating: false,
+					commonTags: false
+				},
+				filterAge: "",
+				filterLocation: "",
+				filterFameRating: "",
+				filterCommonTags: ""
+			})
+		}
+		else {
+			setResearchState({
+				sort: {
+					age: false,
+					location: false,
+					fameRating: false,
+					commonTags: false
+				},
+				filterAge: "",
+				filterLocation: "",
+				filterFameRating: "",
+				filterCommonTags: "",
+				position: null,
+				listTags: [],
+				selectTags: []
+			})
+		}
+	}, [isResearch])
+
 	return (
 		<>
 			<div className="w-full sm:p-2 mb-[4em] sm:mb-0">
