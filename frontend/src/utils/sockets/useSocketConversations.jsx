@@ -19,8 +19,6 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
     }, [location.pathname])
 
     useEffect(() => {
-        if (!isAuthenticated || !idUser) return;
-        
         if (isAuthenticated && socketConversationsRef.current == null) {
             socketConversationsRef.current = new WebSocket(WS_URL);
 
@@ -65,6 +63,6 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
             if (socketConversationsRef.current && (socketConversationsRef.current.readyState === WebSocket.OPEN || socketConversationsRef.current.readyState === WebSocket.CLOSING))
                 socketConversationsRef.current.close();
         };
-    }, [isAuthenticated, closeState, idUser])
+    }, [isAuthenticated, closeState])
 }
 

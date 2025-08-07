@@ -1,7 +1,7 @@
 export default function SexualPreferencesStep({nextStep, infosUser}) {
     let titleSection 
     
-    if (infosUser.gender === "men")
+    if (infosUser.gender === "man")
         titleSection = "Je suis intéressé par"
     else
         titleSection = "Je suis intéressée par"

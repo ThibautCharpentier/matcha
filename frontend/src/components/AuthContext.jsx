@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
 					if (res.status != 200)
 						throw new Error('Une erreur est survenue');
 					const obj = {
-						lat: parseFloat(res.data.latitude.toFixed(6)),
-						lng: parseFloat(res.data.longitude.toFixed(6)),
+						lat: parseFloat(parseFloat(res.data.latitude).toFixed(6)),
+						lng: parseFloat(parseFloat(res.data.longitude).toFixed(6)),
 						city: res.data.city
 					}
 					axios.patch(API_ROUTES.UPDATE_LOCATION, obj, {

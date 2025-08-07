@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AgeStep({nextStep, infosUser}) {
 
-    const titleSection = infosUser.gender === "men" ? "Je suis né" : "Je suis née";
+    const titleSection = infosUser.gender === "man" ? "Je suis né" : "Je suis née";
 
     const days = useMemo(() => Array.from({ length: 31 }, (_, i) => i + 1), []);
     const months = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), []);

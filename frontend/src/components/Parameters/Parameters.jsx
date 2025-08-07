@@ -240,8 +240,8 @@ export default function Parameters() {
 				email: changeSettings.mail === null ? undefined : DOMPurify.sanitize(changeSettings.mail),
 				currentPassword: changeSettings.currentPassword === null ? undefined : DOMPurify.sanitize(changeSettings.currentPassword),
 				password: changeSettings.password === null ? undefined : DOMPurify.sanitize(changeSettings.password),
-				lat: changeSettings.position === null ? undefined : parseFloat(changeSettings.position.lat.toFixed(6)),
-				lng: changeSettings.position === null ? undefined : parseFloat(changeSettings.position.lng.toFixed(6)),
+				lat: changeSettings.position === null ? undefined : parseFloat(parseFloat(changeSettings.position.lat).toFixed(6)),
+				lng: changeSettings.position === null ? undefined : parseFloat(parseFloat(changeSettings.position.lng).toFixed(6)),
 				city: changeSettings.position === null ? undefined : DOMPurify.sanitize(changeSettings.position.city),
 			}
 

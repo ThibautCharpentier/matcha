@@ -56,12 +56,11 @@ export default function AuthentifiedProvider({ children }) {
         .then((res) => {
             if (res.status != 200)
 				throw new Error('Une erreur est survenue');
-            if (res.data.message == true) {
-				setIdUser(res.data.id_user);
+            if (res.data.message == true)
                 setIsCompleteProfile(true);
-			}
             else
                 setIsCompleteProfile(false);
+			setIdUser(res.data.id_user);
         })
         .catch((err) => {
 			console.log(err)

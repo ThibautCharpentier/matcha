@@ -179,8 +179,12 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	catch (err) {
 		return res.status(400).json({message: err});
 	}
-    if (res_query.gender == null || res_query.birthdate == null)
-        return res.status(200).json({message: false});
+    if (res_query.gender == null || res_query.birthdate == null) {
+        return res.status(200).json({
+			message: false,
+			id_user: res_query.id
+		});
+	}
 	return res.status(200).json({
 		message: true,
 		id_user: res_query.id

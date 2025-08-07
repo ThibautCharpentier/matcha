@@ -95,8 +95,8 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 		}
 		else {
 			positionToSend = {
-				lat: parseFloat(position.lat.toFixed(6)),
-				lng: parseFloat(position.lng.toFixed(6))
+				lat: parseFloat(parseFloat(position.lat).toFixed(6)),
+				lng: parseFloat(parseFloat(position.lng).toFixed(6))
 			}
 		}
 		let obj = {
