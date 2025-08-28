@@ -17,7 +17,7 @@ export default function EmailForm({ data, setChangeSettings, errState, verified,
 					value={inputState}
 					onChange={(e) => {
 						setVerified(false)
-						const cleanValue = e.target.value.trimStart();
+						const cleanValue = e.target.value.trim();
 						if (cleanValue.length > 0)
 							setChangeSettings(prev => ({
 								...prev,

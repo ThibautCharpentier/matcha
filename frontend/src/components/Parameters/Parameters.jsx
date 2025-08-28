@@ -78,7 +78,7 @@ export default function Parameters() {
 			position: false,
 		}
 
-		if (changeSettings.firstname != null && (changeSettings.firstname.length < 1 || changeSettings.firstname.length > 20)) {
+		if (changeSettings.firstname != null && (changeSettings.firstname.trim().length < 1 || changeSettings.firstname.trim().length > 20)) {
 			setErrorState(prev => ({
 				...prev,
 				firstname: "Ce champ ne peut pas être vide"
@@ -92,7 +92,7 @@ export default function Parameters() {
 			}))
 		}
 
-		if (changeSettings.lastname != null && (changeSettings.lastname.length < 1 || changeSettings.lastname.length > 20)) {
+		if (changeSettings.lastname != null && (changeSettings.lastname.trim().length < 1 || changeSettings.lastname.trim().length > 20)) {
 			setErrorState(prev => ({
 				...prev,
 				lastname: "Ce champ ne peut pas être vide"
@@ -106,10 +106,10 @@ export default function Parameters() {
 			}))
 		}
 
-		if (changeSettings.username != null && (changeSettings.username.length < 3 || changeSettings.username.length > 10)) {
+		if (changeSettings.username != null && (changeSettings.username.trim().length < 3 || changeSettings.username.trim().length > 10)) {
 			setErrorState(prev => ({
 				...prev,
-				username: "Ton nom d'utilisateur doit contenir entre 3 et 10 caractères"
+				username: "Votre nom d'utilisateur doit contenir entre 3 et 10 caractères"
 			}))
 		}
 		else {
@@ -120,10 +120,16 @@ export default function Parameters() {
 			}))
 		}
 
-		if (changeSettings.mail != null && changeSettings.mail.length < 1) {
+		if (changeSettings.mail != null && changeSettings.mail.trim().length < 1) {
 			setErrorState(prev => ({
 				...prev,
 				mail: "Ce champ ne peut pas être vide"
+			}))
+		}
+		else if (changeSettings.mail != null && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(changeSettings.mail.trim())) {
+			setErrorState(prev => ({
+				...prev,
+				mail: "Email invalide"
 			}))
 		}
 		else {
@@ -232,12 +238,12 @@ export default function Parameters() {
 		if (await validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				firstname: changeSettings.firstname === null ? undefined : DOMPurify.sanitize(changeSettings.firstname),
-				lastname: changeSettings.lastname === null ? undefined : DOMPurify.sanitize(changeSettings.lastname),
+				firstname: changeSettings.firstname === null ? undefined : DOMPurify.sanitize(changeSettings.firstname.trim()),
+				lastname: changeSettings.lastname === null ? undefined : DOMPurify.sanitize(changeSettings.lastname.trim()),
 				gender: changeSettings.gender === null ? undefined : DOMPurify.sanitize(changeSettings.gender),
 				preferences: changeSettings.preferences === null ? undefined : DOMPurify.sanitize(changeSettings.preferences),
-				username: changeSettings.username === null ? undefined : DOMPurify.sanitize(changeSettings.username),
-				email: changeSettings.mail === null ? undefined : DOMPurify.sanitize(changeSettings.mail),
+				username: changeSettings.username === null ? undefined : DOMPurify.sanitize(changeSettings.username.trim()),
+				email: changeSettings.mail === null ? undefined : DOMPurify.sanitize(changeSettings.mail.trim()),
 				currentPassword: changeSettings.currentPassword === null ? undefined : DOMPurify.sanitize(changeSettings.currentPassword),
 				password: changeSettings.password === null ? undefined : DOMPurify.sanitize(changeSettings.password),
 				lat: changeSettings.position === null ? undefined : parseFloat(parseFloat(changeSettings.position.lat).toFixed(6)),

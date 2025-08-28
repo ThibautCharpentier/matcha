@@ -32,7 +32,7 @@ const createTables = async () => {
 				gender VARCHAR,
 				preferences VARCHAR DEFAULT 'bi',
 				bio TEXT,
-				birthdate DATE DEFAULT CURRENT_DATE,
+				birthdate DATE,
 				picture_profile VARCHAR,
 				pictures VARCHAR[],
 				famerating FLOAT DEFAULT 1,

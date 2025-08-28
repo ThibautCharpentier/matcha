@@ -31,7 +31,6 @@ export default function InputNewMessage({roomSelected}) {
                 onChange={(e) => {
                     setNewMessage(e.target.value);
                     const target = e.target;
-                    target.style.height = 'auto';
                     target.style.height = target.scrollHeight + 'px';
                 }}
                 onKeyDown={(e) => {

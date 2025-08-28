@@ -55,7 +55,7 @@ export default function CompleteProfil() {
         formData.append('gender', infosUser.current.gender);
         formData.append('preferences', infosUser.current.preferences);
         formData.append('birthdate', infosUser.current.birthdate);
-        formData.append('bio', DOMPurify.sanitize(infosUser.current.bio));
+        formData.append('bio', DOMPurify.sanitize(infosUser.current.bio.trim()));
 
         infosUser.current.interest.forEach((interest) => {
             formData.append('interest[]', interest);

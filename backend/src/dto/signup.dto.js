@@ -1,31 +1,38 @@
-const { IsEmail, IsString, Length, MinLength } = require('class-validator');
-
 class SignupDto {
-	@IsString()
-	@Length(3, 10)
-	username;
+    constructor(data) {
+        this.username = data.username.trim();
+        this.firstname = data.firstname.trim();
+        this.lastname = data.lastname.trim();
+        this.email = data.email.trim();
+        this.password = data.password;
 
-  	@IsString()
-  	@Length(1, 20)
-  	firstname;
+		const allowedFields = ['username', 'firstname', 'lastname', 'email', 'password'];
+        const receivedFields = Object.keys(data);
+        const unauthorizedFields = receivedFields.filter(field => !allowedFields.includes(field));
+        if (unauthorizedFields.length > 0)
+            throw new Error(`Champs non autorisés : ${unauthorizedFields.join(', ')}`);
+    }
 
-  	@IsString()
-  	@Length(1, 20)
-  	lastname;
+    validate() {
+        const errors = [];
 
-  	@IsEmail()
-  	email;
+        if (typeof this.username !== 'string' || this.username.length < 3 || this.username.length > 10)
+            errors.push('Username doit contenir entre 3 et 10 caractères.');
 
-  	@IsString()
-  	@MinLength(10)
-  	password;
+        if (typeof this.firstname !== 'string' || this.firstname.length < 1 || this.firstname.length > 20)
+            errors.push('Firstname doit contenir entre 1 et 20 caractères.');
 
-	validateFields() {
-    	const allowedFields = ['username', 'firstname', 'lastname', 'email', 'password'];
-    	const receivedFields = Object.keys(this);
-    	const unauthorizedFields = receivedFields.filter(field => !allowedFields.includes(field));
-    	if (unauthorizedFields.length > 0)
-    		throw new Error(`Champs non autorisés : ${unauthorizedFields.join(', ')}`);
+        if (typeof this.lastname !== 'string' || this.lastname.length < 1 || this.lastname.length > 20)
+            errors.push('Lastname doit contenir entre 1 et 20 caractères.');
+
+        if (typeof this.email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email))
+            errors.push('Email invalide.');
+
+        if (typeof this.password !== 'string' || this.password.length < 10)
+            errors.push('Password doit contenir au moins 10 caractères.');
+
+        if (errors.length > 0)
+            throw new Error(errors.join(' | '));
     }
 }
 

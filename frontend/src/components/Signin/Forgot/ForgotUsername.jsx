@@ -22,7 +22,7 @@ export default function ForgotUsername({changeState}) {
 		if (validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				email: DOMPurify.sanitize(inputsStates.email),
+				email: DOMPurify.sanitize(inputsStates.email.trim()),
 			}
 
 			axios.post(API_ROUTES.FORGOT_USERNAME, obj, {
@@ -51,8 +51,10 @@ export default function ForgotUsername({changeState}) {
 			email: false,
 		}
 
-		if (inputsStates.email.length == 0)
+		if (inputsStates.email.trim().length == 0)
 			setShowValidation(state => ({...state, email: "Veuillez entrer votre email"}))
+		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputsStates.email))
+			setShowValidation(state => ({...state, email: "Email invalide"}))
 		else {
 			areValid.email = true
 			setShowValidation(state => ({...state, email: ""}))
@@ -78,7 +80,7 @@ export default function ForgotUsername({changeState}) {
 						id="email"
 						autoComplete="email"
 						value={inputsStates.email}
-						onChange={e => setInputsStates({...inputsStates, email: e.target.value})}
+						onChange={e => setInputsStates({...inputsStates, email: e.target.value.trim()})}
 						/>
 						{showValidation.email != "" && (
 							<p className="text-red-600 text-sm">{showValidation.email}</p>

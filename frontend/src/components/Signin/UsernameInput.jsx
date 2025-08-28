@@ -8,7 +8,7 @@ export default function UsernameInput({inputsStates, setInputsStates, showValida
 			id="username"
 			autoComplete="username"
 			value={inputsStates.username}
-			onChange={e => setInputsStates({...inputsStates, username: e.target.value})}
+			onChange={e => setInputsStates({...inputsStates, username: e.target.value.trimStart().replace(/\s{2,}/g, ' ')})}
 			/>
 			{showValidation.username != "" && (
 				<p className="text-red-600 text-sm">{showValidation.username}</p>

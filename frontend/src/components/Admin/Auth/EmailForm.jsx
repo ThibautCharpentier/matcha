@@ -15,7 +15,7 @@ export default function EmailForm({ setAuthStep, idAdmin }) {
         if (validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				email: DOMPurify.sanitize(inputState),
+				email: DOMPurify.sanitize(inputState.trim()),
 			}
 
             try {
@@ -36,10 +36,14 @@ export default function EmailForm({ setAuthStep, idAdmin }) {
     }
 
 	function validationCheck() {
-		if (inputState.length == 0) {
+		if (inputState.trim().length == 0) {
 			setErrState("Ce champ ne peut pas être vide")
 			return false;
 		}
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputState.trim())) {
+			setErrState("Email invalide")
+            return false
+        }
 		else {
 			setErrState("")
 			return true;
@@ -57,7 +61,7 @@ export default function EmailForm({ setAuthStep, idAdmin }) {
             autoComplete="email"
             value={inputState}
             onChange={(e) => {
-                setInputState(e.target.value)
+                setInputState(e.target.value.trim())
             }}
             />
             {errState != "" && (

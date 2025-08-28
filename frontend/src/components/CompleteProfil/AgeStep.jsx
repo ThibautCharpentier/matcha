@@ -38,8 +38,7 @@ export default function AgeStep({nextStep, infosUser}) {
     }, [day, month, year]);
     
     function handleSubmit() {
-        const date = new Date(year, month - 1, day);
-        infosUser.birthdate = date.toISOString();
+        infosUser.birthdate = Number(year) + '-' + Number(month - 1) + '-' + Number(day)
     
         nextStep()
     }

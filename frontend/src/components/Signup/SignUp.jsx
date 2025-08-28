@@ -45,10 +45,10 @@ export default function SignUp() {
 		if (validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				username: DOMPurify.sanitize(inputsStates.username),
-				firstname: DOMPurify.sanitize(inputsStates.name),
-				lastname: DOMPurify.sanitize(inputsStates.lastname),
-				email: DOMPurify.sanitize(inputsStates.mail),
+				username: DOMPurify.sanitize(inputsStates.username.trim()),
+				firstname: DOMPurify.sanitize(inputsStates.name.trim()),
+				lastname: DOMPurify.sanitize(inputsStates.lastname.trim()),
+				email: DOMPurify.sanitize(inputsStates.mail.trim()),
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
 
@@ -87,33 +87,35 @@ export default function SignUp() {
 			confirmPassword: false
 		}
 
-		if (inputsStates.username.length < 3 || inputsStates.username.length > 10)
+		if (inputsStates.username.trim().length < 3 || inputsStates.username.trim().length > 10)
 			setShowValidation(state => ({...state, username: "Votre nom d'utilisateur doit contenir entre 3 et 10 caractères"}))
 		else {
 			areValid.username = true
 			setShowValidation(state => ({...state, username: ""}))
 		}
 
-		if (inputsStates.name.length == 0)
+		if (inputsStates.name.trim().length == 0)
 			setShowValidation(state => ({...state, name: "Ce champ ne peut pas être vide"}))
-		else if (inputsStates.name.length > 20)
+		else if (inputsStates.name.trim().length > 20)
 			setShowValidation(state => ({...state, name: "Votre prénom doit contenir 20 caractères maximum"}))
 		else {
 			areValid.name = true
 			setShowValidation(state => ({...state, name: ""}))
 		}
 
-		if (inputsStates.lastname.length == 0)
+		if (inputsStates.lastname.trim().length == 0)
 			setShowValidation(state => ({...state, lastname: "Ce champ ne peut pas être vide"}))
-		else if (inputsStates.lastname.length > 20)
+		else if (inputsStates.lastname.trim().length > 20)
 			setShowValidation(state => ({...state, lastname: "Votre nom doit contenir 20 caractères maximum"}))
 		else {
 			areValid.lastname = true
 			setShowValidation(state => ({...state, lastname: ""}))
 		}
 
-		if (inputsStates.mail.length == 0)
+		if (inputsStates.mail.trim().length == 0)
 			setShowValidation(state => ({...state, mail: "Ce champ ne peut pas être vide"}))
+		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputsStates.mail.trim()))
+			setShowValidation(state => ({...state, mail: "Email invalide"}))
 		else {
 			areValid.mail = true
 			setShowValidation(state => ({...state, mail: ""}))

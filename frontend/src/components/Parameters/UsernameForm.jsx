@@ -22,7 +22,7 @@ export default function UsernameForm({ data, setChangeSettings, errState, verifi
 					value={inputState}
 					onChange={(e) => {
 						setVerified(false)
-						const cleanValue = e.target.value.trimStart();
+						const cleanValue = e.target.value.trimStart().replace(/\s{2,}/g, ' ');
 						if (cleanValue.length > 0)
 							setChangeSettings(prev => ({
 								...prev,

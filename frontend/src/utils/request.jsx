@@ -82,7 +82,7 @@ const Request = {
     },
     changeBio : async (newBio) => {
         const obj = {
-            bio: DOMPurify.sanitize(newBio),
+            bio: DOMPurify.sanitize(newBio.trim()),
         }
 
         return axios.patch(`${API_ROUTES.UPDATE_BIO}`, obj, {
@@ -110,7 +110,7 @@ const Request = {
     },
     sendNewMessage : async (newMessage, room_id, receiver_id) => {
         const obj = {
-            newMessage: DOMPurify.sanitize(newMessage),
+            newMessage: DOMPurify.sanitize(newMessage.trim()),
             receiver_id: receiver_id,
             room_id: room_id
         }

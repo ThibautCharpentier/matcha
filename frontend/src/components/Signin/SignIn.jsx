@@ -33,7 +33,7 @@ export default function SignIn() {
 		if (validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				username: DOMPurify.sanitize(inputsStates.username),
+				username: DOMPurify.sanitize(inputsStates.username.trim()),
 				password: DOMPurify.sanitize(inputsStates.password),
 			}
 
@@ -63,7 +63,7 @@ export default function SignIn() {
 			password: false
 		}
 
-		if (inputsStates.username.length < 3 || inputsStates.username.length > 10)
+		if (inputsStates.username.trim().length < 3 || inputsStates.username.trim().length > 10)
 			setShowValidation(state => ({...state, username: "Nom d'utilisateur invalide"}))
 		else {
 			areValid.username = true

@@ -22,7 +22,7 @@ export default function ForgotPassword({changeState}) {
 		if (validationCheck()) {
 			setHasSubmit(true)
 			const obj = {
-				username: DOMPurify.sanitize(inputsStates.username),
+				username: DOMPurify.sanitize(inputsStates.username.trim()),
 			}
 
 			axios.post(API_ROUTES.FORGOT_PASSWORD, obj, {
@@ -51,7 +51,7 @@ export default function ForgotPassword({changeState}) {
 			username: false,
 		}
 
-		if (inputsStates.username.length < 3 || inputsStates.username.length > 10)
+		if (inputsStates.username.trim().length < 3 || inputsStates.username.trim().length > 10)
 			setShowValidation(state => ({...state, username: "Nom d'utilisateur invalide"}))
 		else {
 			areValid.username = true
@@ -78,7 +78,7 @@ export default function ForgotPassword({changeState}) {
 						id="username"
 						autoComplete="username"
 						value={inputsStates.username}
-						onChange={e => setInputsStates({...inputsStates, username: e.target.value})}
+						onChange={e => setInputsStates({...inputsStates, username: e.target.value.trimStart().replace(/\s{2,}/g, ' ')})}
 						/>
 						{showValidation.username != "" && (
 							<p className="text-red-600 text-sm">{showValidation.username}</p>

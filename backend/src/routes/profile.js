@@ -6,7 +6,6 @@ const { validateDto } = require('../dto/validatedto');
 const { UpdateBioDto } = require('../dto/updatebio.dto');
 const { UpdateGpsDto } = require('../dto/updategps.dto');
 const { UpdateLocationDto } = require('../dto/updatelocation.dto');
-const { ChangePasswordDto } = require('../dto/changepassword.dto');
 const { TargetDto } = require('../dto/target.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const { UpdateParametersDto } = require('../dto/updateparameters.dto');
@@ -165,7 +164,7 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
 			await user.addAllUserInterests(req.user_id, idInterests);
 		}
     } catch (err) { 
-        console.error(err);
+        console.log(err);
         return res.status(400).json({ message: 'Invalid data' });
     }
     return res.status(200).json({ message: 'OK' });
@@ -179,7 +178,7 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	catch (err) {
 		return res.status(400).json({message: err});
 	}
-    if (res_query.gender == null || res_query.birthdate == null) {
+    if (res_query.birthdate == null) {
         return res.status(200).json({
 			message: false,
 			id_user: res_query.id
@@ -266,7 +265,7 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
 		}
 		await user.updatePictures(req.user_id, finalPictures.slice(1));
     } catch (err) {
-        console.error(err);
+        console.log(err);
 		return res.status(400).json({ message: 'Invalid data' });
     }
 

@@ -8,7 +8,7 @@ export function validatePassword(pwd) {
 	const hasSpecialChar = /[!$@%]/.test(pwd);
 
 	if (!hasMinLength)
-		return "Au moins 10 caractères"
+		return "Le mot de passe doit contenir au moins 10 caractères"
 	if (!hasLetter)
 		return "Le mot de passe doit contenir au moins une lettre"
 	if (!hasNumber)

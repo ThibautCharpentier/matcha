@@ -94,6 +94,8 @@ function getInitialQueryMatchs(res_user) {
 			AND
 			verified != false
 			AND
+			birthdate IS NOT NULL
+			AND
 			`
 	if (res_user.gender == "man")
 		query += `(preferences = 'men' OR preferences = 'bi')`
