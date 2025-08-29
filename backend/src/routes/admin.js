@@ -80,6 +80,8 @@ router.post('/confirmreport', jwtadminrequired(), validateDto(TargetDto), async 
 		if (!res_query)
 			return res.status(400).json({message: 'Invalid User'});
 		res_query = await user.selectById(target)
+		if (!res_query)
+			return res.status(400).json({message: 'Invalid User'});
 		await mail.sendUserDeleted(res_query.email)
 		await admin.deleteUser(target)
 		const userDir = path.join("uploads", "user" + target);

@@ -31,6 +31,8 @@ router.get('/getmatchs', jwtrequired(), async (req, res) => {
 			filterValues = []
 
 		let res_user = await user.selectById(req.user_id);
+		if (!res_user)
+			return res.status(400).json({message: 'User not found'});
 		res_user.tags = await user.getInterestsId(res_user.id);
 		res_user.age = await utils.calculateAge(res_user.birthdate);
 		res_query = await matchs.getMatchs(res_user, sortValues, filterValues);
@@ -64,9 +66,12 @@ router.get('/getresearch', jwtrequired(), async (req, res) => {
 
 		for (let i = 0; i < tagsTab.length; i++) {
 			let tmp = await interest.getInterestIdbyInterestName(tagsTab[i])
-			tagsIdTab.push(tmp)
+			if (tmp)
+				tagsIdTab.push(tmp)
 		}
 		let res_user = await user.selectById(req.user_id);
+		if (!res_user)
+			return res.status(400).json({message: 'User not found'});
 		res_user.age = await utils.calculateAge(res_user.birthdate);
 		res_query = await matchs.getResearch(res_user, sortValues, filterValues, tagsIdTab, {lat, lng});
 	}

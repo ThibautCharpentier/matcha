@@ -9,6 +9,7 @@ const { UpdateLocationDto } = require('../dto/updatelocation.dto');
 const { TargetDto } = require('../dto/target.dto');
 const { CompleteProfileDto } = require('../dto/completeprofile.dto');
 const { UpdateParametersDto } = require('../dto/updateparameters.dto');
+const { UpdateInterestsDto } = require('../dto/updateinterests.dto')
 const user = require('../db/user');
 const interests = require('../db/interests');
 const utils = require('../utils/utils');
@@ -84,6 +85,8 @@ router.patch('/updateparameters', jwtrequired(), validateDto(UpdateParametersDto
 		if (currentPassword && password) {
 			if (utils.validatePassword(password)) {
 				let res_query = await user.selectById(req.user_id);
+				if (!res_query)
+					return res.status(400).json({message: 'User not found'});
 				
 				if (!bcrypt.compareSync(currentPassword, res_query.password))
 					return res.status(400).json({message: 'Invalid password'});
@@ -142,6 +145,8 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
         await user.changeBirthdate(req.user_id, birthdate);
         await user.changeBio(req.user_id, bio);
 		const res_query = await user.selectById(req.user_id);
+		if (!res_query)
+			return res.status(400).json({message: 'User not found'});
 		let imagesToDelete
 		if (res_query.pictures)
 			imagesToDelete = res_query.pictures;
@@ -174,6 +179,8 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	let res_query;
 	try {
 		res_query = await user.selectById(req.user_id);
+		if (!res_query)
+			return res.status(400).json({message: 'User not found'});
 	}
 	catch (err) {
 		return res.status(400).json({message: err});
@@ -190,19 +197,16 @@ router.get('/iscompleteprofile', jwtrequired(), async(req, res) => {
 	});
 });
 
-router.patch('/updateinterests', jwtrequired(), async(req, res) => {
+router.patch('/updateinterests', jwtrequired(), validateDto(UpdateInterestsDto), async(req, res) => {
 	const { tabInterests } = req.body;
 	let idInterests = []
 
 	try {
-		if (tabInterests.length === 0) {
-			await user.removeAllInterests(req.user_id);
-		}
-		else {
-			idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
-			await user.removeInterestsNotInTab(req.user_id, idInterests);
-			await user.addAllUserInterests(req.user_id, idInterests);
-		}
+		idInterests = await interests.getTabInteretsIdbyTabInterestName(tabInterests);
+		if (!idInterests)
+			return res.status(400).json({message: 'Invalid data'});
+		await user.removeInterestsNotInTab(req.user_id, idInterests);
+		await user.addAllUserInterests(req.user_id, idInterests);
 	}
 	catch (err) {
 		console.log(err);
@@ -246,6 +250,8 @@ router.patch('/updatepictures', jwtrequired(), upload.array('pictures'), async (
 
 	try {
         const res_query = await user.selectById(req.user_id);
+		if (!res_query)
+			return res.status(400).json({message: 'User not found'});
 
 		let imagesToDelete
 		if (res_query.pictures)
@@ -277,6 +283,8 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	let res_query;
 	try {
 		let res_user = await user.selectById(req.user_id);
+		if (!res_query)
+			return res.status(400).json({message: 'User not found'});
 		res_query = await user.getProfileUser(id_user, res_user.latitude, res_user.longitude);
 	}
 	catch (err) {
