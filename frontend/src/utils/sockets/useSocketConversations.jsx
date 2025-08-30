@@ -12,15 +12,11 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
     const locationRef = useRef(location.pathname);
 
     useEffect(() => {
-
-    })
-
-    useEffect(() => {
         locationRef.current = location.pathname;
     }, [location.pathname])
 
     useEffect(() => {
-        if (isAuthenticated && socketConversationsRef.current == null) {
+        if (idUser && isAuthenticated && socketConversationsRef.current == null) {
             socketConversationsRef.current = new WebSocket(WS_URL);
 
             socketConversationsRef.current.onopen = () => {
@@ -39,15 +35,9 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
                             const lastMessage = conv.messages[conv.messages.length - 1];
                             if (lastMessage.sender == idUser)
                                 return true;
-                            else if (lastMessage.view === false) {
-                                console.log(lastMessage.sender)
-                                console.log(idUser)
-                                return false;
-                            }
                             return lastMessage.view != false;
                         }
                     });
-                    console.log(allLastMessagesViewed)
                     if (!allLastMessagesViewed)
                         setHasNewMessage(true);
                 }
@@ -70,6 +60,6 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
             if (socketConversationsRef.current && (socketConversationsRef.current.readyState === WebSocket.OPEN || socketConversationsRef.current.readyState === WebSocket.CLOSING))
                 socketConversationsRef.current.close();
         };
-    }, [isAuthenticated, closeState])
+    }, [isAuthenticated, closeState, idUser])
 }
 
