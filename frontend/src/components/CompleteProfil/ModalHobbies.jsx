@@ -47,7 +47,7 @@ export default function ModalHobbies({ isOpen, onClose, onSave, passions }) {
 						</div>
 						<div className="flex justify-between items-center mt-3">
 							<h2 className="text-xl text-center">Sélectionnez vos passions</h2>
-							<button className="btn btn-primary" onClick={() => onSave(selectedPassions)}>Valider</button>
+							<button className={`btn btn-primary ${selectedPassions.length > 0 ? 'block' : 'hidden'}`} onClick={() => onSave(selectedPassions)}>Valider</button>
 						</div>
 					</div>
 				</div>
