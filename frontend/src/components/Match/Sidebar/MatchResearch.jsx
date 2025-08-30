@@ -77,7 +77,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 				let tab = []
 				for (let i = 0; i < res.data.data.length; i++)
 					tab.push(res.data.data[i].name)
-				setListTags(tab)
+				setListTags(tab.sort())
 			})
 			.catch((err) => {
 				console.log(err)
