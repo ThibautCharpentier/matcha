@@ -140,13 +140,13 @@ router.patch('/completeprofile', jwtrequired(), upload.array('pictures'), valida
     const files = req.files;
 
     try {
+		const res_query = await user.selectById(req.user_id);
+		if (!res_query)
+			return res.status(400).json({message: 'User not found'});
         await user.changeGender(req.user_id, gender);
         await user.changePreferences(req.user_id, preferences);
         await user.changeBirthdate(req.user_id, birthdate);
         await user.changeBio(req.user_id, bio);
-		const res_query = await user.selectById(req.user_id);
-		if (!res_query)
-			return res.status(400).json({message: 'User not found'});
 		let imagesToDelete
 		if (res_query.pictures)
 			imagesToDelete = res_query.pictures;
@@ -283,7 +283,7 @@ router.get('/getprofileuser', jwtrequired(), async(req, res) => {
 	let res_query;
 	try {
 		let res_user = await user.selectById(req.user_id);
-		if (!res_query)
+		if (!res_user)
 			return res.status(400).json({message: 'User not found'});
 		res_query = await user.getProfileUser(id_user, res_user.latitude, res_user.longitude);
 	}
@@ -308,7 +308,7 @@ router.post('/removenotif', jwtrequired(), validateDto(TargetDto), async(req, re
 	const { target } = req.body;
 	try {
 		const res_query = await notif.getNotificationById(target)
-		if (res_query && res_query.user_id != req.user_id)
+		if (!res_query || res_query.user_id != req.user_id)
 			return res.status(400).json({message: 'Invalid Notif'});
 		await notif.deleteNotif(target);
 	}
