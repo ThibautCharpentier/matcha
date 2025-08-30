@@ -5,10 +5,10 @@ export default function PasswordInput({inputsStates, setInputsStates, showValida
 	return (
 	<>
 		<label className="mt-3 font-poppins-medium" htmlFor="password">
-			Mot de passe{" "}
-			<span className="text-sm">(minimum 10 caractères)</span>
+			Mot de passe
 		</label>
-		<div className="relative">
+		<p className="text-sm text-gray-700 font-poppins-light">Ton mot de passe doit contenir au moins 10 caractères, un chiffre, une lettre et un caractère spécial (!$@%)</p>
+		<div className="relative mt-1">
 			<input
 			type={isPasswordVisible ? "text" : "password"}
 			className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
