@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { WS_URL } from '../constants';
-import { useAuthentified } from "../../components/AuthentifiedContext"
-import { all } from 'axios';
 
 export const useSocketConversations = (isAuthenticated, setConversations, setHasNewMessage, idUser) => {
     const socketConversationsRef = useRef(null);
@@ -62,4 +60,3 @@ export const useSocketConversations = (isAuthenticated, setConversations, setHas
         };
     }, [isAuthenticated, closeState, idUser])
 }
-
