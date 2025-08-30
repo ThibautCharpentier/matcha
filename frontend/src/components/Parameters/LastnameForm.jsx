@@ -11,7 +11,7 @@ export default function LastnameForm({ data, setChangeSettings, errState, verifi
 	return (
 		<>
 			<div className="flex flex-col mt-6 w-1/2">
-				<label className="font-poppins-light" htmlFor="lastname">Nom{" "}<span className="text-xs font-poppins-light">(maximun 20 caractères)</span></label>
+				<label className="font-poppins-light whitespace-nowrap" htmlFor="lastname">Nom{" "}<span className="text-xs font-poppins-light whitespace-nowrap">(20 caractères max)</span></label>
 				<div className="flex items-center space-x-2">
 					<input className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none"
 					placeholder={data.lastname === "" ? "Entrez votre nom" : data.lastname}
