@@ -97,7 +97,7 @@ export default function CompleteProfil() {
                 </div>
             </div>
             <h1 className="text-3xl text-center font-poppins-bold mt-20">Compléter le profil</h1>
-            <div className="mt-14 p-2">
+            <div className="mt-14 p-2 md:w-1/3 w-full">
                 {renderStep()}
             </div>
         </div>

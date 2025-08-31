@@ -81,8 +81,9 @@ const deleteNotif = async (id) => {
 }
 
 const deleteAllNotifs = async (user_id, from_id) => {
-	const client = await pool.connect()
-	await client.query(`DELETE FROM public.notification WHERE user_id = $1 AND from_id = $2`, [user_id, from_id])
+	const client = await pool.connect();
+	await client.query(`DELETE FROM public.notification WHERE user_id = $1 AND from_id = $2`, [user_id, from_id]);
+	client.release();
 }
 
 module.exports = { getNotifications, getNotificationById, addNotif, verifiedNotifs, deleteNotif, deleteAllNotifs }

@@ -308,7 +308,7 @@ export default function Parameters() {
 					<div className="flex lg:flex-row flex-col sm:p-2 w-full text-gray-600 ">
 						<div className="flex flex-col lg:w-1/2 px-4 sm:py-4 items-start">
 							<h2 className="text-xl text-black">Informations personnelles</h2>
-							<div className="flex flex-row space-x-6 font-light w-full">
+							<div className="flex flex-col sm:flex-row sm:space-x-6 font-light w-full">
 								<FirstnameForm data={data} setChangeSettings={setChangeSettings} errState={errState.firstname} verified={verified} setVerified={setVerified} />
 								<LastnameForm data={data} setChangeSettings={setChangeSettings} errState={errState.lastname} verified={verified} setVerified={setVerified}/>
 							</div>
@@ -337,7 +337,7 @@ export default function Parameters() {
 							<div className="md:w-3/4 w-full">
 								<EmailForm data={data} setChangeSettings={setChangeSettings} errState={errState.mail} verified={verified} setVerified={setVerified} />
 							</div>
-							<div className="md:w-3/4  w-full">
+							<div className="md:w-3/4 w-full">
 								<PasswordForm setChangeSettings={setChangeSettings} errStatePassword={errState.password}  errStateCurrentPassword={errState.currentPassword} verified={verified} setVerified={setVerified}/>
 							</div>
 						</div>

@@ -58,7 +58,7 @@ export default function MatchResearch({closeSidebarResearch, setMatchState, setM
 	const handleRemoveTags = (tag) => {
 		setListTags((prevTags) => {
 			if (!prevTags.includes(tag)) {
-				return [...prevTags, tag];
+				return [...prevTags, tag].sort();
 			}
 			return prevTags;
 		});
